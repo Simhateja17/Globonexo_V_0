@@ -31,30 +31,31 @@
     --radius: 0.5rem;
   }
   .dark {
-    --background: 0 0% 3.9%;
+    /* Background from Figma: dark greenish-black */
+    --background: 120 30% 2%;
     --foreground: 0 0% 98%;
-    --card: 0 0% 3.9%;
+    --card: 120 20% 4%;
     --card-foreground: 0 0% 98%;
-    --popover: 0 0% 3.9%;
+    --popover: 120 20% 4%;
     --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 9%;
-    --secondary: 0 0% 14.9%;
+    --primary: 133 56% 48%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 120 15% 10%;
     --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
-    --accent: 0 0% 14.9%;
-    --accent-foreground: 0 0% 98%;
+    --muted: 120 15% 10%;
+    --muted-foreground: 120 10% 65%;
+    --accent: 133 56% 48%;
+    --accent-foreground: 0 0% 100%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
-    --ring: 0 0% 83.1%;
-    --chart-1: 220 70% 50%;
+    --border: 120 15% 12%;
+    --input: 120 15% 12%;
+    --ring: 133 56% 48%;
+    --chart-1: 133 56% 48%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
+    --chart-4: 100 65% 60%;
+    --chart-5: 140 75% 55%;
   }
 }
 
@@ -65,4 +66,55 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Heading gradient — white → #95DE64 green (Figma: fill_RRW0FJ) */
+.gradient-text {
+  background: linear-gradient(180deg, #FFFFFF 54%, #95DE64 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* "What are we offering?" gradient — white → #255D00 dark green (Figma: fill_J445YF) */
+.gradient-text-green {
+  background: linear-gradient(180deg, #FFFFFF 12%, #255D00 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Blur effects */
+.blur-gradient {
+  filter: blur(100px);
+}
+
+/* Card glass effect */
+.glass-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+/* Navbar glass effect */
+.navbar-glass {
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Bento card styles — from Figma fill_BDE3GQ + stroke_DTKRD9 + effect_JT0FDP */
+.bento-card {
+  background: linear-gradient(47deg, rgba(104, 1, 254, 0.06) 0%, rgba(217, 217, 217, 0.06) 97%);
+  box-shadow: 0px 16px 64px 0px rgba(57, 125, 79, 0.5);
+}
+
+/* Star background animation */
+@keyframes twinkle {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+.star {
+  animation: twinkle 3s ease-in-out infinite;
 }
