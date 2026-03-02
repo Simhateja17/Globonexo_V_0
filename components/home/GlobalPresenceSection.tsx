@@ -12,7 +12,7 @@ export function GlobalPresenceSection() {
     >
       <div
         className="relative z-10 mx-auto px-4 sm:px-6"
-        style={{ maxWidth: "min(1200px, 96vw)" }}
+        style={{ maxWidth: "min(1300px, 96vw)" }}
       >
         <h2
           className="mb-8"

@@ -6,8 +6,8 @@ const gradientHeadingStyle: React.CSSProperties = {
   fontFamily: "Inter, sans-serif",
   fontWeight: 500,
   fontSize: "clamp(28px, 3.2vw, 50px)",
-  lineHeight: "65px",
-  letterSpacing: "-2.53px",
+  lineHeight: "clamp(40px, 5vw, 65px)",
+  letterSpacing: "-0.05em",
   background:
     "linear-gradient(179deg, rgba(255,255,255,1) 23%, rgba(37,93,0,1) 85%)",
   WebkitBackgroundClip: "text",
@@ -50,7 +50,7 @@ function AboutHero() {
         <div
           className="flex flex-col md:flex-row items-start w-full"
           style={{
-            maxWidth: "min(1280px, 96vw)",
+            maxWidth: "min(1400px, 96vw)",
             gap: "clamp(32px, 4vw, 64px)",
           }}
         >
@@ -61,8 +61,8 @@ function AboutHero() {
                 fontFamily: "Inter, sans-serif",
                 fontWeight: 500,
                 fontSize: "clamp(32px, 3.5vw + 1rem, 55px)",
-                lineHeight: "65px",
-                letterSpacing: "-2.783px",
+                lineHeight: "clamp(40px, 5vw, 65px)",
+                letterSpacing: "-0.05em",
                 background:
                   "linear-gradient(179deg, rgba(255,255,255,1) 23%, rgba(37,93,0,1) 85%)",
                 WebkitBackgroundClip: "text",
@@ -140,7 +140,7 @@ function AboutHero() {
           {/* Right illustration ~40% */}
           <div
             className="flex items-end justify-center"
-            style={{ flex: "1 1 40%", maxWidth: "323px", marginTop: "200px" }}
+            style={{ flex: "1 1 40%", maxWidth: "323px", marginTop: "clamp(40px, 15vw, 200px)" }}
           >
             <Image
               src="/images/about-illustration.png"
@@ -172,7 +172,7 @@ function JourneySection() {
     >
       <div
         className="relative z-10 mx-auto px-4 sm:px-6"
-        style={{ maxWidth: "min(1200px, 96vw)" }}
+        style={{ maxWidth: "min(1300px, 96vw)" }}
       >
         <h2 style={{ ...gradientHeadingStyle, marginBottom: "clamp(32px, 4vw, 56px)" }}>
           The journey and Background of the Company
@@ -268,7 +268,7 @@ function ExecutivesSection() {
 
       <div
         className="relative z-10 mx-auto px-4 sm:px-6"
-        style={{ maxWidth: "min(1200px, 96vw)" }}
+        style={{ maxWidth: "min(1300px, 96vw)" }}
       >
         <h2 style={{ ...gradientHeadingStyle, marginBottom: "16px" }}>
           Bios and photos of key executives and managers
@@ -324,7 +324,7 @@ function ExecutivesSection() {
               <div
                 key={i}
                 className="flex flex-col items-start"
-                style={{ width: "clamp(220px, 22vw, 300px)" }}
+                style={{ width: "min(100%, 300px)" }}
               >
                 {/* Executive photo with glow */}
                 <div

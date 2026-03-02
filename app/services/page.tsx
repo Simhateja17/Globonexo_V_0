@@ -12,8 +12,8 @@ const gradientHeadingStyle: React.CSSProperties = {
   fontFamily: "Inter, sans-serif",
   fontWeight: 500,
   fontSize: "clamp(28px, 3.2vw, 50px)",
-  lineHeight: "65px",
-  letterSpacing: "-2.53px",
+  lineHeight: "clamp(40px, 5vw, 65px)",
+  letterSpacing: "-0.05em",
   background:
     "linear-gradient(180deg, #FFF 54%, #95DE64 100%)",
   WebkitBackgroundClip: "text",
@@ -77,15 +77,15 @@ function HeroSection() {
       >
         <div
           className="flex flex-col items-start w-full"
-          style={{ maxWidth: "min(1280px, 96vw)" }}
+          style={{ maxWidth: "min(1400px, 96vw)" }}
         >
           <h1
             style={{
               fontFamily: "Inter, sans-serif",
               fontWeight: 500,
               fontSize: "clamp(32px, 3.5vw + 1rem, 55px)",
-              lineHeight: "65px",
-              letterSpacing: "-2.783px",
+              lineHeight: "clamp(40px, 5vw, 65px)",
+              letterSpacing: "-0.05em",
               background:
                 "linear-gradient(180deg, #FFF 54%, #95DE64 100%)",
               WebkitBackgroundClip: "text",
@@ -126,7 +126,7 @@ function EndToEndSection() {
     >
       <div
         className="relative z-10 mx-auto px-5 sm:px-6 md:px-8 lg:px-10"
-        style={{ maxWidth: "min(1280px, 96vw)" }}
+        style={{ maxWidth: "min(1400px, 96vw)" }}
       >
         <div
           className="flex flex-col md:flex-row items-center w-full"
@@ -195,7 +195,7 @@ function AutomatedSectionLeft() {
     >
       <div
         className="relative z-10 mx-auto px-5 sm:px-6 md:px-8 lg:px-10"
-        style={{ maxWidth: "min(1280px, 96vw)" }}
+        style={{ maxWidth: "min(1400px, 96vw)" }}
       >
         <h2
           style={{
@@ -227,8 +227,8 @@ function AutomatedSectionLeft() {
 
           {/* Right text ~60% */}
           <div
-            className="flex flex-col"
-            style={{ flex: "1 1 60%", textAlign: "right" }}
+            className="flex flex-col text-left md:text-right"
+            style={{ flex: "1 1 60%" }}
           >
             <p style={{ ...bodyTextStyle, marginTop: 0 }}>
               Our comprehensive testing services cover every aspect of your
@@ -274,7 +274,7 @@ function AutomatedSectionRight() {
     >
       <div
         className="relative z-10 mx-auto px-5 sm:px-6 md:px-8 lg:px-10"
-        style={{ maxWidth: "min(1280px, 96vw)" }}
+        style={{ maxWidth: "min(1400px, 96vw)" }}
       >
         <div
           className="flex flex-col md:flex-row items-center w-full"

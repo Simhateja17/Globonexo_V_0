@@ -10,7 +10,7 @@ const contactInfo = [
 
 const inputStyle: React.CSSProperties = {
   width: "100%",
-  padding: "19px 16px",
+  padding: "clamp(14px, 1.5vw, 20px) clamp(14px, 1.2vw, 18px)",
   border: "1px solid rgba(255,255,255,0.15)",
   borderRadius: "8px",
   background: "transparent",
@@ -104,7 +104,7 @@ export function ContactSection() {
 
       <div
         className="relative z-20 mx-auto px-4 sm:px-6"
-        style={{ maxWidth: "min(1200px, 96vw)" }}
+        style={{ maxWidth: "min(1300px, 96vw)" }}
       >
         {/* Heading */}
         <h2
@@ -113,7 +113,7 @@ export function ContactSection() {
             fontFamily: "Inter, sans-serif",
             fontWeight: 500,
             fontSize: "clamp(28px, 3.2vw, 50px)",
-            lineHeight: "65px",
+            lineHeight: "clamp(40px, 5vw, 65px)",
             letterSpacing: "-0.75px",
             background:
               "linear-gradient(179deg, rgba(255,255,255,1) 23%, rgba(37,93,0,1) 85%)",

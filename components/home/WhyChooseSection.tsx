@@ -108,7 +108,7 @@ export function WhyChooseSection() {
 
       <div
         className="relative z-10 mx-auto px-4 sm:px-6"
-        style={{ maxWidth: "min(1200px, 96vw)" }}
+        style={{ maxWidth: "min(1300px, 96vw)" }}
       >
         {/* Heading */}
         <h2
@@ -151,9 +151,8 @@ export function WhyChooseSection() {
 
         {/* 2×2 grid for first 4 cards */}
         <div
+          className="grid grid-cols-1 sm:grid-cols-2"
           style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(2, 1fr)",
             gap: "clamp(16px, 2vw, 24px)",
             marginBottom: "clamp(16px, 2vw, 24px)",
           }}
@@ -170,7 +169,7 @@ export function WhyChooseSection() {
             justifyContent: "center",
           }}
         >
-          <div style={{ width: "50%", minWidth: "280px", maxWidth: "588px" }}>
+          <div style={{ width: "min(100%, 588px)" }}>
             <WhyCard title={cards[4].title} description={cards[4].description} />
           </div>
         </div>

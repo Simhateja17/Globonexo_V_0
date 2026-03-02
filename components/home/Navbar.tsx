@@ -42,7 +42,7 @@ export function Navbar() {
       <div
         className="w-full flex items-center justify-between relative"
         style={{
-          maxWidth: "min(1280px, 96vw)",
+          maxWidth: "min(1400px, 96vw)",
           height: "clamp(56px, 5vh, 72px)",
           paddingLeft: "clamp(1rem, 2vw, 2.5rem)",
           paddingRight: "clamp(1rem, 2vw, 2.5rem)",
@@ -72,7 +72,7 @@ export function Navbar() {
           style={{
             borderRadius: "clamp(40px, 4vw, 60px)",
             border: "1px solid rgba(255, 255, 255, 0.15)",
-            width: "clamp(480px, 48vw, 640px)",
+            width: "clamp(480px, 48vw, 720px)",
             padding: "clamp(6px, 0.6vw, 12px) clamp(1.5rem, 2.5vw, 2.5rem)",
             gap: "clamp(16px, 2vw, 30px)",
             justifyContent: "center",
@@ -82,7 +82,7 @@ export function Navbar() {
           <Link
             href="/"
             className="flex items-center gap-[3px] text-white/60 hover:text-white transition-colors whitespace-nowrap"
-            style={{ fontSize: "clamp(12px, 1vw, 14px)", lineHeight: 1.5 }}
+            style={{ fontSize: "clamp(13px, 1vw, 15px)", lineHeight: 1.5 }}
           >
             Home
             <ChevronDown className="w-3.5 h-3.5 opacity-60" />
@@ -92,7 +92,7 @@ export function Navbar() {
           <Link
             href="/about"
             className="text-white/60 hover:text-white transition-colors whitespace-nowrap"
-            style={{ fontSize: "clamp(12px, 1vw, 14px)", lineHeight: 1.5 }}
+            style={{ fontSize: "clamp(13px, 1vw, 15px)", lineHeight: 1.5 }}
           >
             About Us
           </Link>
@@ -101,7 +101,7 @@ export function Navbar() {
           <Link
             href="/services"
             className="flex items-center gap-[3px] text-white/60 hover:text-white transition-colors whitespace-nowrap"
-            style={{ fontSize: "clamp(12px, 1vw, 14px)", lineHeight: 1.5 }}
+            style={{ fontSize: "clamp(13px, 1vw, 15px)", lineHeight: 1.5 }}
           >
             Services
             <ChevronDown className="w-3.5 h-3.5 opacity-60" />
@@ -111,7 +111,7 @@ export function Navbar() {
           <Link
             href="/global-presence"
             className="text-white/60 hover:text-white transition-colors whitespace-nowrap"
-            style={{ fontSize: "clamp(12px, 1vw, 14px)", lineHeight: 1.5 }}
+            style={{ fontSize: "clamp(13px, 1vw, 15px)", lineHeight: 1.5 }}
           >
             Global Presence
           </Link>
@@ -120,7 +120,7 @@ export function Navbar() {
           <Link
             href="/blogs"
             className="text-white/60 hover:text-white transition-colors whitespace-nowrap"
-            style={{ fontSize: "clamp(12px, 1vw, 14px)", lineHeight: 1.5 }}
+            style={{ fontSize: "clamp(13px, 1vw, 15px)", lineHeight: 1.5 }}
           >
             Blogs
           </Link>
@@ -131,7 +131,7 @@ export function Navbar() {
           <Link
             href="/learn-more"
             className="text-white/60 hover:text-white transition-colors whitespace-nowrap"
-            style={{ fontSize: "clamp(12px, 1vw, 14px)", lineHeight: 1.5 }}
+            style={{ fontSize: "clamp(13px, 1vw, 15px)", lineHeight: 1.5 }}
           >
             Learn More
           </Link>
@@ -150,11 +150,11 @@ export function Navbar() {
             <button
               className="text-white font-normal text-center whitespace-nowrap"
               style={{
-                minWidth: "clamp(90px, 8vw, 115px)",
-                height: "clamp(28px, 2.5vw, 34px)",
+                minWidth: "clamp(90px, 8vw, 130px)",
+                height: "clamp(28px, 2.5vw, 38px)",
                 paddingLeft: "clamp(12px, 1.2vw, 16px)",
                 paddingRight: "clamp(12px, 1.2vw, 16px)",
-                fontSize: "clamp(12px, 1vw, 14px)",
+                fontSize: "clamp(13px, 1vw, 15px)",
                 lineHeight: 1.5,
                 borderRadius: "clamp(6px, 0.6vw, 8px)",
                 background: "#35BC47",

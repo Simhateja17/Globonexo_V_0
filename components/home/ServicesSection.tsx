@@ -76,7 +76,7 @@ function ServiceCard({ title, description, icon, iconWidth, iconHeight }: Servic
   return (
     <div className="p-[1px] h-full" style={conicBorder}>
       <div
-        className="relative flex flex-col p-8 h-full"
+        className="relative flex flex-col p-5 md:p-8 h-full"
         style={{ ...bentoCardStyle, minHeight: "280px" }}
       >
         <Image
@@ -110,7 +110,7 @@ export function ServicesSection() {
     >
       <div
         className="relative z-10 mx-auto px-4 sm:px-6"
-        style={{ maxWidth: "min(1200px, 96vw)" }}
+        style={{ maxWidth: "min(1300px, 96vw)" }}
       >
         {/* Header: badge → title → subtitle (top-to-bottom) */}
         <h2
@@ -149,7 +149,7 @@ export function ServicesSection() {
         </p>
 
         {/* Bento grid — Row 1: [~32% laptop] [~59% bars chart] */}
-        <div className="flex gap-6 mb-6">
+        <div className="flex flex-col md:flex-row gap-6 mb-6">
           <div style={{ flex: "32 0 0%" }}>
             <ServiceCard {...services[0]} />
           </div>
@@ -159,7 +159,7 @@ export function ServicesSection() {
         </div>
 
         {/* Bento grid — Row 2: [~65% building] [~32% terminal] */}
-        <div className="flex gap-6">
+        <div className="flex flex-col md:flex-row gap-6">
           <div style={{ flex: "65 0 0%" }}>
             <ServiceCard {...services[2]} />
           </div>

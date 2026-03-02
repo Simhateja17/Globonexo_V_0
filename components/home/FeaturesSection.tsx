@@ -23,7 +23,7 @@ const statCardInner: React.CSSProperties = {
   justifyContent: "center",
   width: "100%",
   height: "100%",
-  padding: "16px",
+  padding: "clamp(12px, 1.5vw, 24px)",
 };
 
 function StatCard({ value, label }: { value: string; label: string }) {
@@ -101,7 +101,7 @@ export function FeaturesSection() {
 
       <div
         className="relative z-10 mx-auto px-4 sm:px-6"
-        style={{ maxWidth: "min(1200px, 96vw)" }}
+        style={{ maxWidth: "min(1300px, 96vw)" }}
       >
         {/* Heading */}
         <h2
@@ -133,7 +133,7 @@ export function FeaturesSection() {
           }}
         >
           {/* Left column — body text + CTA */}
-          <div style={{ flex: "1 1 400px", minWidth: 0 }}>
+          <div style={{ flex: "1 1 300px", minWidth: 0 }}>
             <p
               style={{
                 fontFamily: "Inter, sans-serif",
@@ -186,7 +186,7 @@ export function FeaturesSection() {
           {/* Right column — 2×2 stat cards */}
           <div
             style={{
-              flex: "0 1 380px",
+              flex: "0 1 clamp(300px, 30vw, 440px)",
               display: "grid",
               gridTemplateColumns: "1fr 1fr",
               gap: "clamp(12px, 1.5vw, 20px)",

@@ -38,7 +38,7 @@ export function TestimonialsSection() {
     >
       <div
         className="relative z-10 mx-auto px-4 sm:px-6"
-        style={{ maxWidth: "min(1200px, 96vw)" }}
+        style={{ maxWidth: "min(1300px, 96vw)" }}
       >
         {/* Heading */}
         <h2
@@ -75,9 +75,8 @@ export function TestimonialsSection() {
             {/* Avatar placeholder */}
             <div
               style={{
-                width: "200px",
-                height: "200px",
-                minWidth: "200px",
+                width: "clamp(120px, 30vw, 200px)",
+                height: "clamp(120px, 30vw, 200px)",
                 borderRadius: "20px",
                 overflow: "hidden",
                 flexShrink: 0,
@@ -102,7 +101,7 @@ export function TestimonialsSection() {
                   fontFamily: "Inter, sans-serif",
                   fontWeight: 500,
                   fontSize: "clamp(16px, 1.6vw, 23px)",
-                  lineHeight: "34px",
+                  lineHeight: "clamp(24px, 3vw, 34px)",
                   color: "white",
                   letterSpacing: "-0.0023px",
                   margin: 0,

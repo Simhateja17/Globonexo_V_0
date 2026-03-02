@@ -85,7 +85,7 @@ export function FaqSection() {
 
       <div
         className="relative z-10 mx-auto px-4 sm:px-6"
-        style={{ maxWidth: "min(1200px, 96vw)" }}
+        style={{ maxWidth: "min(1300px, 96vw)" }}
       >
         {/* Heading */}
         <h2
@@ -94,8 +94,8 @@ export function FaqSection() {
             fontFamily: "Inter, sans-serif",
             fontWeight: 500,
             fontSize: "clamp(28px, 3.2vw, 50px)",
-            lineHeight: "65px",
-            letterSpacing: "-2.53px",
+            lineHeight: "clamp(40px, 5vw, 65px)",
+            letterSpacing: "-0.05em",
             marginBottom: "clamp(32px, 4vw, 56px)",
             background:
               "linear-gradient(179deg, rgba(255,255,255,1) 23%, rgba(37,93,0,1) 85%)",
@@ -161,7 +161,7 @@ export function FaqSection() {
 
                 <div
                   style={{
-                    maxHeight: isOpen ? "300px" : "0px",
+                    maxHeight: isOpen ? "500px" : "0px",
                     opacity: isOpen ? 1 : 0,
                     transition:
                       "max-height 0.3s ease, opacity 0.3s ease, padding 0.3s ease",

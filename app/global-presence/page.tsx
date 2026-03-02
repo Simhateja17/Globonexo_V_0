@@ -59,7 +59,7 @@ export default function GlobalPresencePage() {
           style={{
             paddingTop: "calc(clamp(80px, 10vh, 120px) + 7px)",
             paddingBottom: "clamp(60px, 8vw, 120px)",
-            maxWidth: "min(1280px, 96vw)",
+            maxWidth: "min(1400px, 96vw)",
             margin: "0 auto",
           }}
         >
@@ -68,8 +68,8 @@ export default function GlobalPresencePage() {
               fontFamily: "Inter, sans-serif",
               fontWeight: 500,
               fontSize: "clamp(32px, 3.5vw + 1rem, 55px)",
-              lineHeight: "65px",
-              letterSpacing: "-2.783px",
+              lineHeight: "clamp(40px, 5vw, 65px)",
+              letterSpacing: "-0.05em",
               background: "linear-gradient(180deg, #FFF 54%, #95DE64 100%)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",

@@ -17,7 +17,7 @@ export function HeroSection() {
       >
         <div
           className="flex flex-col items-center w-full"
-          style={{ maxWidth: "min(1280px, 96vw)" }}
+          style={{ maxWidth: "min(1400px, 96vw)" }}
         >
 
           <h1
@@ -72,8 +72,8 @@ export function HeroSection() {
                 href="/join"
                 className="relative flex items-center justify-center overflow-hidden px-6"
                 style={{
-                  minWidth: "clamp(110px, 10vw, 143px)",
-                  height: "clamp(36px, 3.2vw, 44px)",
+                  minWidth: "clamp(110px, 10vw, 160px)",
+                  height: "clamp(36px, 3.2vw, 50px)",
                   paddingLeft: "clamp(16px, 1.5vw, 24px)",
                   paddingRight: "clamp(16px, 1.5vw, 24px)",
                   borderRadius: "clamp(22px, 2.2vw, 35px)",
@@ -83,7 +83,7 @@ export function HeroSection() {
                   WebkitBackdropFilter: "blur(10px)",
                   fontFamily: "Inter, sans-serif",
                   fontWeight: 500,
-                  fontSize: "clamp(13px, 1.1vw, 16px)",
+                  fontSize: "clamp(13px, 1.1vw, 17px)",
                   letterSpacing: "-0.01em",
                   color: "#FFFFFF",
                   textDecoration: "none",
@@ -104,15 +104,15 @@ export function HeroSection() {
               href="/consultation"
               className="flex items-center justify-center px-5"
               style={{
-                minWidth: "clamp(160px, 14vw, 202px)",
-                height: "clamp(36px, 3.2vw, 44px)",
+                minWidth: "clamp(160px, 14vw, 230px)",
+                height: "clamp(36px, 3.2vw, 50px)",
                 paddingLeft: "clamp(16px, 1.5vw, 20px)",
                 paddingRight: "clamp(16px, 1.5vw, 20px)",
                 borderRadius: "clamp(24px, 2.5vw, 36px)",
                 background: "#FFFFFF",
                 fontFamily: "Inter, sans-serif",
                 fontWeight: 500,
-                fontSize: "clamp(13px, 1.1vw, 16px)",
+                fontSize: "clamp(13px, 1.1vw, 17px)",
                 letterSpacing: "-0.01em",
                 color: "#000000",
                 textDecoration: "none",

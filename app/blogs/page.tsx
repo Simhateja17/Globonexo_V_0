@@ -66,15 +66,15 @@ function HeroSection() {
       >
         <div
           className="flex flex-col items-start w-full"
-          style={{ maxWidth: "min(1280px, 96vw)" }}
+          style={{ maxWidth: "min(1400px, 96vw)" }}
         >
           <h1
             style={{
               fontFamily: "Inter, sans-serif",
               fontWeight: 500,
               fontSize: "clamp(32px, 3.5vw + 1rem, 55px)",
-              lineHeight: "65px",
-              letterSpacing: "-2.783px",
+              lineHeight: "clamp(40px, 5vw, 65px)",
+              letterSpacing: "-0.05em",
               background:
                 "linear-gradient(180deg, #FFF 54%, #95DE64 100%)",
               WebkitBackgroundClip: "text",
@@ -110,7 +110,7 @@ function HeroSection() {
 function FeaturedBlogCard() {
   return (
     <section className="relative z-10 mx-auto px-5 sm:px-6 md:px-8 lg:px-10"
-      style={{ maxWidth: "min(1280px, 96vw)" }}
+      style={{ maxWidth: "min(1400px, 96vw)" }}
     >
       <div
         className="flex flex-col md:flex-row"
@@ -122,7 +122,6 @@ function FeaturedBlogCard() {
             flex: "1 1 50%",
             minHeight: "300px",
             background: "rgba(255, 255, 255, 0.03)",
-            borderRadius: "20px 0 0 20px",
           }}
         />
 
@@ -180,7 +179,7 @@ function SmallBlogCards() {
     <section
       className="relative z-10 mx-auto px-5 sm:px-6 md:px-8 lg:px-10"
       style={{
-        maxWidth: "min(1280px, 96vw)",
+        maxWidth: "min(1400px, 96vw)",
         marginTop: "clamp(24px, 3vw, 48px)",
         paddingBottom: "clamp(60px, 8vw, 120px)",
       }}
@@ -198,7 +197,6 @@ function SmallBlogCards() {
                 aspectRatio: "16 / 10",
                 background:
                   "linear-gradient(135deg, rgba(57,125,79,0.3) 0%, rgba(20,20,20,0.8) 100%)",
-                borderRadius: "20px 20px 0 0",
               }}
             />
 
