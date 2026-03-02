@@ -22,11 +22,9 @@ const gradientHeadingStyle: React.CSSProperties = {
 function AboutHero() {
   return (
     <section
-      className="relative flex items-center justify-center"
+      className="relative flex justify-center"
       style={{
-        minHeight: "100vh",
         background: "transparent",
-        overflow: "hidden",
       }}
     >
       {/* Stars overlay */}
@@ -45,12 +43,12 @@ function AboutHero() {
       <div
         className="relative z-10 w-full flex justify-center px-5 sm:px-6 md:px-8 lg:px-10"
         style={{
-          paddingTop: "clamp(100px, 12vh, 160px)",
-          paddingBottom: "clamp(60px, 8vh, 120px)",
+          paddingTop: "calc(clamp(80px, 10vh, 120px) + 7px)",
+          paddingBottom: "0px",
         }}
       >
         <div
-          className="flex flex-col md:flex-row items-center w-full"
+          className="flex flex-col md:flex-row items-start w-full"
           style={{
             maxWidth: "min(1280px, 96vw)",
             gap: "clamp(32px, 4vw, 64px)",
@@ -66,7 +64,7 @@ function AboutHero() {
                 lineHeight: "65px",
                 letterSpacing: "-2.783px",
                 background:
-                  "linear-gradient(179deg, #FFF 54%, #95DE64 100%)",
+                  "linear-gradient(179deg, rgba(255,255,255,1) 23%, rgba(37,93,0,1) 85%)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text",
@@ -141,14 +139,14 @@ function AboutHero() {
 
           {/* Right illustration ~40% */}
           <div
-            className="flex items-center justify-center"
-            style={{ flex: "1 1 40%", maxWidth: "480px" }}
+            className="flex items-end justify-center"
+            style={{ flex: "1 1 40%", maxWidth: "323px", marginTop: "200px" }}
           >
             <Image
               src="/images/about-illustration.png"
               alt="IT solutions illustration"
-              width={654}
-              height={816}
+              width={323}
+              height={419}
               style={{ width: "100%", height: "auto" }}
               priority
             />
@@ -167,7 +165,7 @@ function JourneySection() {
     <section
       className="relative"
       style={{
-        paddingTop: "clamp(40px, 5vw, 80px)",
+        paddingTop: "0px",
         paddingBottom: "clamp(60px, 8vw, 120px)",
         overflow: "hidden",
       }}
@@ -272,58 +270,127 @@ function ExecutivesSection() {
         className="relative z-10 mx-auto px-4 sm:px-6"
         style={{ maxWidth: "min(1200px, 96vw)" }}
       >
-        <h2 style={{ ...gradientHeadingStyle, marginBottom: "clamp(32px, 4vw, 56px)" }}>
+        <h2 style={{ ...gradientHeadingStyle, marginBottom: "16px" }}>
           Bios and photos of key executives and managers
         </h2>
 
-        <div
-          className="flex flex-wrap justify-center"
-          style={{ gap: "clamp(24px, 3vw, 48px)" }}
+        <p
+          style={{
+            fontFamily: "Inter, sans-serif",
+            fontWeight: 400,
+            fontSize: "clamp(14px, 1.1vw + 0.2rem, 18px)",
+            lineHeight: "1.6",
+            color: "rgba(255,255,255,0.7)",
+            textAlign: "center",
+            maxWidth: "720px",
+            margin: "0 auto",
+            marginBottom: "clamp(32px, 4vw, 56px)",
+          }}
         >
-          {executives.map((exec, i) => (
-            <div
-              key={i}
-              className="flex flex-col items-center"
-              style={{ width: "clamp(180px, 18vw, 240px)" }}
-            >
-              {/* Green-bordered photo placeholder */}
+          Meet the talented individuals who drive our company forward with their
+          expertise and dedication.
+        </p>
+
+        {/* Bordered container with inner glow */}
+        <div
+          className="relative"
+          style={{
+            border: "1px solid rgba(255,255,255,0.15)",
+            borderRadius: "10px",
+            padding: "clamp(32px, 4vw, 60px) clamp(24px, 3vw, 48px)",
+          }}
+        >
+          {/* Inner green glow */}
+          <div
+            aria-hidden
+            className="absolute pointer-events-none"
+            style={{
+              width: "60%",
+              height: "80%",
+              top: "10%",
+              left: "20%",
+              background:
+                "radial-gradient(ellipse at 50% 50%, rgba(57,125,79,0.3) 0%, transparent 70%)",
+              filter: "blur(80px)",
+              zIndex: 0,
+            }}
+          />
+
+          <div
+            className="relative z-10 flex flex-wrap justify-center"
+            style={{ gap: "clamp(24px, 3vw, 48px)" }}
+          >
+            {executives.map((exec, i) => (
               <div
-                style={{
-                  width: "clamp(160px, 16vw, 200px)",
-                  height: "clamp(160px, 16vw, 200px)",
-                  borderRadius: "16px",
-                  border: "2px solid #397D4F",
-                  background: "rgba(57,125,79,0.1)",
-                  marginBottom: "16px",
-                }}
-              />
-              <span
-                style={{
-                  fontFamily: "Inter, sans-serif",
-                  fontWeight: 400,
-                  fontSize: "16px",
-                  lineHeight: "1.4",
-                  color: "white",
-                  textAlign: "center",
-                }}
+                key={i}
+                className="flex flex-col items-start"
+                style={{ width: "clamp(220px, 22vw, 300px)" }}
               >
-                {exec.name}
-              </span>
-              <span
-                style={{
-                  fontFamily: "Inter, sans-serif",
-                  fontWeight: 400,
-                  fontSize: "14px",
-                  lineHeight: "1.4",
-                  color: "rgba(255,255,255,0.7)",
-                  textAlign: "center",
-                  marginTop: "4px",
-                }}
-              >
-                {exec.title}
-              </span>
-            </div>
-          ))}
+                {/* Executive photo with glow */}
+                <div
+                  className="relative"
+                  style={{
+                    width: "100%",
+                    aspectRatio: "1",
+                    marginBottom: "16px",
+                  }}
+                >
+                  {/* Green glow behind photo */}
+                  <div
+                    aria-hidden
+                    className="absolute pointer-events-none"
+                    style={{
+                      width: "140%",
+                      height: "140%",
+                      top: "-20%",
+                      left: "-20%",
+                      background:
+                        "radial-gradient(ellipse at 50% 50%, rgba(57,200,79,0.5) 0%, rgba(57,125,79,0.3) 30%, transparent 65%)",
+                      filter: "blur(30px)",
+                      zIndex: 0,
+                    }}
+                  />
+                  <Image
+                    src="/images/bodhi-dymas.png"
+                    alt={exec.name}
+                    width={300}
+                    height={300}
+                    className="relative z-10"
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      objectPosition: "center top",
+                      borderRadius: "8px",
+                    }}
+                  />
+                </div>
+                <span
+                  style={{
+                    fontFamily: "Inter, sans-serif",
+                    fontWeight: 400,
+                    fontSize: "16px",
+                    lineHeight: "1.4",
+                    color: "white",
+                  }}
+                >
+                  {exec.name}
+                </span>
+                <span
+                  style={{
+                    fontFamily: "Inter, sans-serif",
+                    fontWeight: 400,
+                    fontSize: "14px",
+                    lineHeight: "1.4",
+                    color: "rgba(255,255,255,0.7)",
+                    marginTop: "4px",
+                  }}
+                >
+                  {exec.title}
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
