@@ -10,7 +10,7 @@ const navLinks = [
   { label: "Services", href: "/services", hasDropdown: true },
   { label: "About Us", href: "/about" },
   { label: "Global Presence", href: "/global-presence" },
-  { label: "Contact", href: "/contact" },
+  { label: "Blogs", href: "/blogs" },
 ];
 
 export function Navbar() {
@@ -116,13 +116,13 @@ export function Navbar() {
             Global Presence
           </Link>
 
-          {/* Contact */}
+          {/* Blogs */}
           <Link
-            href="/contact"
+            href="/blogs"
             className="text-white/60 hover:text-white transition-colors whitespace-nowrap"
             style={{ fontSize: "clamp(12px, 1vw, 14px)", lineHeight: 1.5 }}
           >
-            Contact
+            Blogs
           </Link>
         </div>
 
