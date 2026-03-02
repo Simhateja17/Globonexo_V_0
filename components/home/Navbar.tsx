@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ChevronDown, Menu, X } from "lucide-react";
 
 const navLinks = [
@@ -15,11 +15,25 @@ const navLinks = [
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [visible, setVisible] = useState(true);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setVisible(window.scrollY < window.innerHeight * 0.85);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <nav
       className="fixed top-2 left-0 right-0 z-50 flex justify-center px-5 sm:px-6 md:px-8 lg:px-10"
-      style={{ top: "8px" }}
+      style={{
+        top: "8px",
+        opacity: visible ? 1 : 0,
+        pointerEvents: visible ? "auto" : "none",
+        transition: "opacity 0.3s ease",
+      }}
     >
       {/*
         Matches hero content width: min(1280px, 96vw)
@@ -33,7 +47,10 @@ export function Navbar() {
           paddingLeft: "clamp(1rem, 2vw, 2.5rem)",
           paddingRight: "clamp(1rem, 2vw, 2.5rem)",
           borderBottom: "1px solid rgba(255, 255, 255, 0.15)",
-          background: "transparent",
+          background: "rgba(0, 0, 0, 0.6)",
+          backdropFilter: "blur(20px)",
+          WebkitBackdropFilter: "blur(20px)",
+          borderRadius: "clamp(12px, 1.5vw, 20px)",
         }}
       >
         {/* Logo — Layer 1 SVG, 189.15×29.22, at x:40 y:18 */}

@@ -3,3 +3,8 @@ export { HeroSection } from "./HeroSection";
 export { ServicesBadge } from "./ServicesBadge";
 export { ServicesSection } from "./ServicesSection";
 export { GlobalPresenceSection } from "./GlobalPresenceSection";
+export { FeaturesSection } from "./FeaturesSection";
+export { WhyChooseSection } from "./WhyChooseSection";
+export { TestimonialsSection } from "./TestimonialsSection";
+export { FaqSection } from "./FaqSection";
+export { ContactSection } from "./ContactSection";

@@ -1,4 +1,4 @@
-import { Navbar, HeroSection, ServicesSection, GlobalPresenceSection } from "@/components/home";
+import { Navbar, HeroSection, ServicesSection, GlobalPresenceSection, FeaturesSection, WhyChooseSection, TestimonialsSection, FaqSection, ContactSection } from "@/components/home";
 
 export default function Home() {
   return (
@@ -74,6 +74,11 @@ export default function Home() {
       <HeroSection />
       <ServicesSection />
       <GlobalPresenceSection />
+      <FeaturesSection />
+      <WhyChooseSection />
+      <TestimonialsSection />
+      <FaqSection />
+      <ContactSection />
     </main>
   );
 }
