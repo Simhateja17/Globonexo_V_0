@@ -113,10 +113,6 @@ export function ServicesSection() {
         style={{ maxWidth: "min(1200px, 96vw)" }}
       >
         {/* Header: badge → title → subtitle (top-to-bottom) */}
-        <div className="flex justify-center mb-4">
-          <ServicesBadge text="Our Services" />
-        </div>
-
         <h2
           className="text-center mb-4"
           style={{
