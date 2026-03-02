@@ -84,6 +84,8 @@ function ServiceCard({ title, description, icon, iconWidth, iconHeight }: Servic
           alt=""
           width={iconWidth}
           height={iconHeight}
+          sizes="80px"
+          loading="lazy"
           className="mb-auto"
           style={{ width: "80px", height: "auto" }}
         />

@@ -50,10 +50,11 @@ export function GlobalPresenceSection() {
           />
 
           <Image
-            src="/images/map.png"
+            src="/images/map.webp"
             alt="World map showing global presence"
-            width={1200}
-            height={600}
+            width={2400}
+            height={1312}
+            sizes="(max-width: 768px) 96vw, min(1300px, 96vw)"
             className="relative w-full h-auto"
             style={{ zIndex: 1 }}
           />

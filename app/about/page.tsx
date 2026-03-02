@@ -143,10 +143,11 @@ function AboutHero() {
             style={{ flex: "1 1 40%", maxWidth: "323px", marginTop: "clamp(40px, 15vw, 200px)" }}
           >
             <Image
-              src="/images/about-illustration.png"
+              src="/images/about-illustration.webp"
               alt="IT solutions illustration"
-              width={323}
-              height={419}
+              width={800}
+              height={1038}
+              sizes="(max-width: 768px) 80vw, 323px"
               style={{ width: "100%", height: "auto" }}
               priority
             />
@@ -351,10 +352,12 @@ function ExecutivesSection() {
                     }}
                   />
                   <Image
-                    src="/images/bodhi-dymas.png"
+                    src="/images/bodhi-dymas.webp"
                     alt={exec.name}
-                    width={300}
-                    height={300}
+                    width={600}
+                    height={762}
+                    sizes="(max-width: 768px) 80vw, min(300px, 22vw)"
+                    loading="lazy"
                     className="relative z-10"
                     style={{
                       width: "100%",

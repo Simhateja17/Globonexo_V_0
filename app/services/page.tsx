@@ -167,10 +167,12 @@ function EndToEndSection() {
             style={{ flex: "1 1 40%", maxWidth: "407px" }}
           >
             <Image
-              src="/images/first_illustration.png"
+              src="/images/first_illustration.webp"
               alt="End-to-end software testing illustration"
-              width={407}
-              height={360}
+              width={1000}
+              height={885}
+              sizes="(max-width: 768px) 96vw, 40vw"
+              loading="lazy"
               style={{ width: "100%", height: "auto" }}
             />
           </div>
@@ -217,10 +219,12 @@ function AutomatedSectionLeft() {
             style={{ flex: "1 1 40%", maxWidth: "407px" }}
           >
             <Image
-              src="/images/second_illustration.png"
+              src="/images/second_illustration.webp"
               alt="Automated testing illustration"
-              width={407}
-              height={360}
+              width={1000}
+              height={944}
+              sizes="(max-width: 768px) 96vw, 40vw"
+              loading="lazy"
               style={{ width: "100%", height: "auto" }}
             />
           </div>
@@ -315,10 +319,12 @@ function AutomatedSectionRight() {
             style={{ flex: "1 1 40%", maxWidth: "407px" }}
           >
             <Image
-              src="/images/third_illustration.png"
+              src="/images/third_illustration.webp"
               alt="Continuous delivery illustration"
-              width={407}
-              height={360}
+              width={1000}
+              height={1062}
+              sizes="(max-width: 768px) 96vw, 40vw"
+              loading="lazy"
               style={{ width: "100%", height: "auto" }}
             />
           </div>

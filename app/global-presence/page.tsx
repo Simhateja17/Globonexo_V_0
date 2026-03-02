@@ -96,10 +96,11 @@ export default function GlobalPresencePage() {
           {/* World map */}
           <div style={{ marginTop: "clamp(40px, 5vw, 80px)" }}>
             <Image
-              src="/images/map.png"
+              src="/images/map.webp"
               alt="Globonexo world map showing presence across Europe, India, and North America"
-              width={4600}
-              height={2513}
+              width={2400}
+              height={1312}
+              sizes="(max-width: 768px) 96vw, min(1400px, 96vw)"
               style={{ width: "100%", height: "auto" }}
               priority
             />
