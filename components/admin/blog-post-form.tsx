@@ -103,20 +103,20 @@ export function BlogPostForm({ post }: BlogPostFormProps) {
   return (
     <div>
       {/* Top bar */}
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-3">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+        <div className="flex items-center gap-3 min-w-0">
           <Link href="/admin/blog">
             <Button variant="ghost" size="sm">
               <ArrowLeft className="w-4 h-4 mr-1" />
               Back
             </Button>
           </Link>
-          <h1 className="text-xl font-bold">
+          <h1 className="text-lg sm:text-xl font-bold truncate">
             {post ? "Edit Post" : "New Blog Post"}
           </h1>
           {post && (
             <span
-              className={`text-xs px-2 py-0.5 rounded-full ${
+              className={`text-xs px-2 py-0.5 rounded-full whitespace-nowrap ${
                 status === "published"
                   ? "bg-emerald-500/10 text-emerald-500"
                   : "bg-amber-500/10 text-amber-500"
@@ -132,6 +132,7 @@ export function BlogPostForm({ post }: BlogPostFormProps) {
             size="sm"
             onClick={() => handleSave("draft")}
             disabled={saving}
+            className="flex-1 sm:flex-none"
           >
             <Save className="w-4 h-4 mr-1" />
             Save Draft
@@ -140,6 +141,7 @@ export function BlogPostForm({ post }: BlogPostFormProps) {
             size="sm"
             onClick={() => handleSave("published")}
             disabled={saving}
+            className="flex-1 sm:flex-none"
           >
             <Eye className="w-4 h-4 mr-1" />
             {status === "published" ? "Update" : "Publish"}

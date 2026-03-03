@@ -61,7 +61,7 @@ export function SettingsClient({ settings: initial }: SettingsClientProps) {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-2xl font-bold">Site Settings</h1>
+        <h1 className="text-xl sm:text-2xl font-bold">Site Settings</h1>
         <p className="text-muted-foreground mt-1">
           Manage global site configuration.
         </p>
@@ -88,7 +88,7 @@ export function SettingsClient({ settings: initial }: SettingsClientProps) {
                 className="mt-1"
               />
             </div>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <Label>Email</Label>
                 <Input

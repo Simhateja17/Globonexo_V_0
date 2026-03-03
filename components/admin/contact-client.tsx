@@ -90,17 +90,17 @@ export function ContactClient({
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <div>
-          <h1 className="text-2xl font-bold">Contact Submissions</h1>
-          <p className="text-muted-foreground mt-1">
+          <h1 className="text-xl sm:text-2xl font-bold">Contact Submissions</h1>
+          <p className="text-sm text-muted-foreground mt-1">
             {submissions.length} message{submissions.length !== 1 && "s"}
             {newCount > 0 && ` · ${newCount} new`}
           </p>
         </div>
       </div>
 
-      <div className="rounded-lg border border-border">
+      <div className="rounded-lg border border-border overflow-x-auto">
         <Table>
           <TableHeader>
             <TableRow>
@@ -179,13 +179,13 @@ export function ContactClient({
 
       {/* View Dialog */}
       <Dialog open={!!selected} onOpenChange={() => setSelected(null)}>
-        <DialogContent className="max-w-lg">
+        <DialogContent className="max-w-[95vw] sm:max-w-lg">
           <DialogHeader>
-            <DialogTitle>Message from {selected?.name}</DialogTitle>
+            <DialogTitle className="text-base sm:text-lg">Message from {selected?.name}</DialogTitle>
           </DialogHeader>
           {selected && (
             <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4 text-sm">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                 <div>
                   <p className="text-muted-foreground">Email</p>
                   <p className="font-medium">{selected.email}</p>

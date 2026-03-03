@@ -8,9 +8,9 @@ import { Skeleton } from "@/components/ui/skeleton";
 function PageLoader() {
   return (
     <div className="flex h-screen bg-background">
-      <div className="w-64 border-r border-border bg-muted/30" />
+      <div className="hidden lg:block w-64 border-r border-border bg-muted/30" />
       <main className="flex-1 overflow-y-auto">
-        <div className="p-6 lg:p-8 max-w-7xl mx-auto">
+        <div className="p-4 pt-16 lg:pt-6 lg:p-8 max-w-7xl mx-auto">
           <div className="space-y-4">
             <Skeleton className="h-8 w-48" />
             <Skeleton className="h-4 w-64" />
@@ -40,7 +40,7 @@ async function AuthenticatedAdmin({ children }: { children: React.ReactNode }) {
     <div className="flex h-screen bg-background">
       <AdminSidebar userEmail={user.email || ""} />
       <main className="flex-1 overflow-y-auto">
-        <div className="p-6 lg:p-8 max-w-7xl mx-auto">
+        <div className="p-4 pt-16 lg:pt-6 lg:p-8 max-w-7xl mx-auto">
           {children}
         </div>
       </main>

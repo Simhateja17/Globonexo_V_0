@@ -52,15 +52,15 @@ export function BlogListClient({ posts: initialPosts }: BlogListClientProps) {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <div>
-          <h1 className="text-2xl font-bold">Blog Posts</h1>
-          <p className="text-muted-foreground mt-1">
+          <h1 className="text-xl sm:text-2xl font-bold">Blog Posts</h1>
+          <p className="text-sm text-muted-foreground mt-1">
             {posts.length} post{posts.length !== 1 && "s"} total
           </p>
         </div>
         <Link href="/admin/blog/new">
-          <Button>
+          <Button className="w-full sm:w-auto">
             <Plus className="w-4 h-4 mr-1" />
             New Post
           </Button>
@@ -79,8 +79,8 @@ export function BlogListClient({ posts: initialPosts }: BlogListClientProps) {
       </div>
 
       {/* Table */}
-      <div className="rounded-lg border border-border">
-        <Table>
+      <div className="rounded-lg border border-border overflow-x-auto">
+        <Table className="min-w-[500px]">
           <TableHeader>
             <TableRow>
               <TableHead>Title</TableHead>

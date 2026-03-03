@@ -143,7 +143,7 @@ export function MediaLibrary({ initialMedia, picker, onSelect }: MediaLibraryPro
     <div>
       {/* Upload area */}
       <div
-        className="border-2 border-dashed border-border rounded-xl p-8 text-center hover:border-primary/50 transition-colors cursor-pointer mb-6"
+        className="border-2 border-dashed border-border rounded-xl p-4 sm:p-8 text-center hover:border-primary/50 transition-colors cursor-pointer mb-6"
         onDragOver={handleDragOver}
         onDrop={handleDrop}
         onClick={() => fileInputRef.current?.click()}
@@ -314,7 +314,7 @@ export function MediaPicker({ open, onOpenChange, onSelect }: MediaPickerProps) 
         onOpenChange(v);
       }}
     >
-      <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+      <DialogContent className="max-w-[95vw] sm:max-w-4xl max-h-[80vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Select Media</DialogTitle>
         </DialogHeader>

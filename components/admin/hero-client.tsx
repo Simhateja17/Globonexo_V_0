@@ -139,14 +139,14 @@ export function HeroClient({ sections: initial }: { sections: HeroSection[] }) {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <div>
-          <h1 className="text-2xl font-bold">Hero Sections</h1>
-          <p className="text-muted-foreground mt-1">
+          <h1 className="text-xl sm:text-2xl font-bold">Hero Sections</h1>
+          <p className="text-sm text-muted-foreground mt-1">
             Manage hero sections and page content blocks.
           </p>
         </div>
-        <Button onClick={openCreate}>
+        <Button onClick={openCreate} className="w-full sm:w-auto">
           <Plus className="w-4 h-4 mr-1" />
           Add Section
         </Button>
@@ -165,9 +165,9 @@ export function HeroClient({ sections: initial }: { sections: HeroSection[] }) {
               </h2>
               <div className="grid gap-3">
                 {pageSections.map((section) => (
-                  <div
+                   <div
                     key={section.id}
-                    className="rounded-lg border border-border p-4 flex items-start justify-between"
+                    className="rounded-lg border border-border p-3 sm:p-4 flex flex-col sm:flex-row sm:items-start justify-between gap-2"
                   >
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
@@ -213,14 +213,14 @@ export function HeroClient({ sections: initial }: { sections: HeroSection[] }) {
 
       {/* Create/Edit Dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="max-w-lg max-h-[80vh] overflow-y-auto">
+        <DialogContent className="max-w-[95vw] sm:max-w-lg max-h-[80vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>
               {editItem ? "Edit Section" : "New Section"}
             </DialogTitle>
           </DialogHeader>
           <div className="space-y-4 mt-2">
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <Label>Page</Label>
                 <select
@@ -268,7 +268,7 @@ export function HeroClient({ sections: initial }: { sections: HeroSection[] }) {
                 rows={3}
               />
             </div>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <Label>CTA Text</Label>
                 <Input

@@ -295,19 +295,19 @@ export function CrudTable<T extends { id: string }>({
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <div>
-          <h1 className="text-2xl font-bold">{title}</h1>
-          <p className="text-muted-foreground mt-1">{description}</p>
+          <h1 className="text-xl sm:text-2xl font-bold">{title}</h1>
+          <p className="text-sm text-muted-foreground mt-1">{description}</p>
         </div>
-        <Button onClick={openCreate}>
+        <Button onClick={openCreate} className="w-full sm:w-auto shrink-0">
           <Plus className="w-4 h-4 mr-1" />
           Add New
         </Button>
       </div>
 
       {/* Table */}
-      <div className="rounded-lg border border-border">
+      <div className="rounded-lg border border-border overflow-x-auto">
         <Table>
           <TableHeader>
             <TableRow>
@@ -366,7 +366,7 @@ export function CrudTable<T extends { id: string }>({
 
       {/* Create/Edit Dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="max-w-lg max-h-[80vh] overflow-y-auto">
+        <DialogContent className="max-w-[95vw] sm:max-w-lg max-h-[85vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>
               {editItem ? `Edit ${title.replace(/s$/, "")}` : `New ${title.replace(/s$/, "")}`}
