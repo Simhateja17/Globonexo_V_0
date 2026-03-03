@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,7 +10,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Upload, Trash2, Copy, Check, Image as ImageIcon, X, Loader2 } from "lucide-react";
+import { Upload, Trash2, Copy, Check, Image as ImageIcon, X, Loader2, FolderSync } from "lucide-react";
 import { toast } from "sonner";
 import type { Media } from "@/lib/types/cms";
 
@@ -24,15 +24,144 @@ interface MediaLibraryProps {
 export function MediaLibrary({ initialMedia, picker, onSelect }: MediaLibraryProps) {
   const [media, setMedia] = useState<Media[]>(initialMedia);
   const [uploading, setUploading] = useState(false);
+  const [syncing, setSyncing] = useState(false);
+  const [syncProgress, setSyncProgress] = useState("");
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Sync with parent when initialMedia changes (e.g. after async fetch in MediaPicker)
+  useEffect(() => {
+    setMedia(initialMedia);
+  }, [initialMedia]);
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 
   const getPublicUrl = (filePath: string) => {
     return `${supabaseUrl}/storage/v1/object/public/media/${filePath}`;
   };
+
+  const getMimeType = (fileName: string): string => {
+    const ext = fileName.split(".").pop()?.toLowerCase() || "";
+    const mimeMap: Record<string, string> = {
+      png: "image/png",
+      jpg: "image/jpeg",
+      jpeg: "image/jpeg",
+      webp: "image/webp",
+      svg: "image/svg+xml",
+      gif: "image/gif",
+      ico: "image/x-icon",
+    };
+    return mimeMap[ext] || "application/octet-stream";
+  };
+
+  const handleSyncPublicImages = useCallback(async () => {
+    setSyncing(true);
+    setSyncProgress("Fetching image list...");
+
+    try {
+      // 1. Get list of public images from API
+      const res = await fetch("/api/public-images");
+      const { files } = await res.json() as {
+        files: { path: string; name: string; size: number }[];
+      };
+
+      if (!files || files.length === 0) {
+        toast.error("No public images found");
+        setSyncing(false);
+        setSyncProgress("");
+        return;
+      }
+
+      // 2. Filter out files already in the media library (by file_name)
+      const existingNames = new Set(media.map((m) => m.file_name));
+      const toUpload = files.filter((f) => !existingNames.has(f.name));
+
+      if (toUpload.length === 0) {
+        toast.success("All public images are already synced!");
+        setSyncing(false);
+        setSyncProgress("");
+        return;
+      }
+
+      setSyncProgress(`Uploading ${toUpload.length} of ${files.length} images...`);
+
+      const supabase = createClient();
+      const newMedia: Media[] = [];
+      let uploaded = 0;
+
+      for (const file of toUpload) {
+        uploaded++;
+        setSyncProgress(
+          `Uploading ${uploaded}/${toUpload.length}: ${file.name}`
+        );
+
+        try {
+          // Fetch the image from the public folder
+          const imgRes = await fetch(file.path);
+          const blob = await imgRes.blob();
+
+          // Determine storage path: preserve subfolder structure
+          // e.g. /images/services/laptop.png -> public-images/services/laptop.png
+          const relativePath = file.path.replace(/^\/images\//, "");
+          const storagePath = `public-images/${relativePath}`;
+
+          const { error: uploadError } = await supabase.storage
+            .from("media")
+            .upload(storagePath, blob, {
+              contentType: getMimeType(file.name),
+              upsert: false,
+            });
+
+          if (uploadError) {
+            // If file already exists in storage but not in DB, skip silently
+            if (uploadError.message?.includes("already exists")) {
+              continue;
+            }
+            console.error(`Failed to upload ${file.name}:`, uploadError.message);
+            continue;
+          }
+
+          const { data: record, error: dbError } = await supabase
+            .from("media")
+            .insert({
+              file_name: file.name,
+              file_path: storagePath,
+              file_type: getMimeType(file.name),
+              file_size: file.size,
+              alt_text: file.name.replace(/\.[^.]+$/, "").replace(/[-_]/g, " "),
+              bucket: "media",
+            })
+            .select()
+            .single();
+
+          if (dbError) {
+            console.error(`Failed to save record for ${file.name}:`, dbError.message);
+            continue;
+          }
+
+          newMedia.push(record);
+        } catch (err) {
+          console.error(`Error processing ${file.name}:`, err);
+        }
+      }
+
+      if (newMedia.length > 0) {
+        setMedia((prev) => [...newMedia, ...prev]);
+        toast.success(
+          `Synced ${newMedia.length} image${newMedia.length > 1 ? "s" : ""} from public folder`
+        );
+      } else {
+        toast.info("No new images were synced (may already exist in storage)");
+      }
+    } catch (err) {
+      console.error("Sync failed:", err);
+      toast.error("Failed to sync public images");
+    } finally {
+      setSyncing(false);
+      setSyncProgress("");
+    }
+  }, [media]);
 
   const handleUpload = useCallback(
     async (files: FileList | null) => {
@@ -174,6 +303,30 @@ export function MediaLibrary({ initialMedia, picker, onSelect }: MediaLibraryPro
         )}
       </div>
 
+      {/* Sync Public Images button — only in full library mode */}
+      {!picker && (
+        <div className="mb-6">
+          <Button
+            variant="outline"
+            onClick={handleSyncPublicImages}
+            disabled={syncing || uploading}
+            className="w-full sm:w-auto"
+          >
+            {syncing ? (
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+            ) : (
+              <FolderSync className="w-4 h-4 mr-2" />
+            )}
+            {syncing ? syncProgress : "Sync Public Images"}
+          </Button>
+          {!syncing && (
+            <p className="text-xs text-muted-foreground mt-1.5">
+              Upload all images from the public/images folder to the media library.
+            </p>
+          )}
+        </div>
+      )}
+
       {/* Media grid */}
       {media.length === 0 ? (
         <div className="text-center py-16 text-muted-foreground">
@@ -293,26 +446,27 @@ interface MediaPickerProps {
 
 export function MediaPicker({ open, onOpenChange, onSelect }: MediaPickerProps) {
   const [media, setMedia] = useState<Media[]>([]);
-  const [loaded, setLoaded] = useState(false);
 
   const loadMedia = useCallback(async () => {
-    if (loaded) return;
     const supabase = createClient();
     const { data } = await supabase
       .from("media")
       .select("*")
       .order("created_at", { ascending: false });
     if (data) setMedia(data);
-    setLoaded(true);
-  }, [loaded]);
+  }, []);
+
+  // Fetch media every time the dialog opens
+  useEffect(() => {
+    if (open) {
+      loadMedia();
+    }
+  }, [open, loadMedia]);
 
   return (
     <Dialog
       open={open}
-      onOpenChange={(v) => {
-        if (v) loadMedia();
-        onOpenChange(v);
-      }}
+      onOpenChange={onOpenChange}
     >
       <DialogContent className="max-w-[95vw] sm:max-w-4xl max-h-[80vh] overflow-y-auto">
         <DialogHeader>
