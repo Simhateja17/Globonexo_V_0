@@ -1,4 +1,74 @@
+import { Suspense } from "react";
 import { Navbar, HeroSection, ServicesSection, GlobalPresenceSection, FeaturesSection, WhyChooseSection, TestimonialsSection, FaqSection, ContactSection } from "@/components/home";
+import {
+  fetchServices,
+  fetchTestimonials,
+  fetchFAQs,
+  fetchHeroSection,
+  fetchSiteSetting,
+} from "@/lib/queries/cms";
+
+async function HomeContent() {
+  const [
+    heroData,
+    servicesHeader,
+    services,
+    globalPresenceData,
+    featuresData,
+    whyChooseData,
+    testimonialsHeader,
+    testimonials,
+    faqHeader,
+    faqs,
+    contactHeader,
+    companySetting,
+  ] = await Promise.all([
+    fetchHeroSection("home", "hero"),
+    fetchHeroSection("home", "services"),
+    fetchServices(),
+    fetchHeroSection("home", "global-presence"),
+    fetchHeroSection("home", "features"),
+    fetchHeroSection("home", "why-choose"),
+    fetchHeroSection("home", "testimonials"),
+    fetchTestimonials(),
+    fetchHeroSection("home", "faq"),
+    fetchFAQs(),
+    fetchHeroSection("home", "contact"),
+    fetchSiteSetting("company"),
+  ]);
+
+  const companyValue = companySetting?.value as Record<string, string> | undefined;
+
+  return (
+    <>
+      <HeroSection data={heroData} />
+      <ServicesSection services={services} header={servicesHeader} />
+      <GlobalPresenceSection data={globalPresenceData} />
+      <FeaturesSection data={featuresData} />
+      <WhyChooseSection data={whyChooseData} />
+      <TestimonialsSection
+        testimonials={testimonials}
+        heading={testimonialsHeader?.title ?? undefined}
+      />
+      <FaqSection
+        faqs={faqs}
+        heading={faqHeader?.title ?? undefined}
+      />
+      <ContactSection
+        contactInfo={
+          companyValue
+            ? {
+                email: companyValue.email,
+                phone: companyValue.phone,
+                address: companyValue.address,
+              }
+            : undefined
+        }
+        heading={contactHeader?.title ?? undefined}
+      />
+    </>
+  );
+}
 
 export default function Home() {
   return (
@@ -71,14 +141,9 @@ export default function Home() {
       />
 
       <Navbar />
-      <HeroSection />
-      <ServicesSection />
-      <GlobalPresenceSection />
-      <FeaturesSection />
-      <WhyChooseSection />
-      <TestimonialsSection />
-      <FaqSection />
-      <ContactSection />
+      <Suspense>
+        <HomeContent />
+      </Suspense>
     </main>
   );
 }

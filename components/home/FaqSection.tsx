@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import type { FAQ } from "@/lib/types/cms";
 
-const faqs = [
+const defaultFaqs = [
   {
     question: "What services does Globonexo offer?",
     answer:
@@ -55,7 +56,17 @@ function ChevronIcon({ open }: { open: boolean }) {
   );
 }
 
-export function FaqSection() {
+interface FaqSectionProps {
+  faqs?: FAQ[];
+  heading?: string;
+}
+
+export function FaqSection({ faqs, heading }: FaqSectionProps) {
+  const items =
+    faqs && faqs.length > 0
+      ? faqs.map((f) => ({ question: f.question, answer: f.answer }))
+      : defaultFaqs;
+
   const [openIndex, setOpenIndex] = useState(0);
 
   return (
@@ -104,7 +115,7 @@ export function FaqSection() {
             backgroundClip: "text",
           }}
         >
-          Frequently Asked Questions
+          {heading ?? "Frequently Asked Questions"}
         </h2>
 
         {/* Accordion */}
@@ -117,7 +128,7 @@ export function FaqSection() {
             gap: "clamp(12px, 1.5vw, 20px)",
           }}
         >
-          {faqs.map((faq, i) => {
+          {items.map((faq, i) => {
             const isOpen = openIndex === i;
             return (
               <div

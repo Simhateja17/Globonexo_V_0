@@ -1,40 +1,14 @@
 import Image from "next/image";
-import { ServicesBadge } from "./ServicesBadge";
+import type { Service } from "@/lib/types/cms";
+import type { HeroSection } from "@/lib/types/cms";
 
-const services = [
-  {
-    title: "Outstanding Standing solutions",
-    description:
-      "Expertise in staff augmentation, dedicated teams, EOR (Employer of Record), and PEO (Professional Employer Organization) models.",
-    icon: "/images/services/laptop.png",
-    iconWidth: 97,
-    iconHeight: 95,
-  },
-  {
-    title: "Custom Solutions for Unique Needs",
-    description:
-      "Bespoke IT and software solutions designed to address specific challenges and goals. Emphasis on scalability, innovation, and alignment with business strategies.",
-    icon: "/images/services/bars-chart.png",
-    iconWidth: 156,
-    iconHeight: 173,
-  },
-  {
-    title: "Software Testing Services",
-    description:
-      "Comprehensive QA and testing services to ensure robust, high-performance, and error-free software. Specialized in manual, automated, and performance testing for diverse industries.",
-    icon: "/images/services/building.png",
-    iconWidth: 87,
-    iconHeight: 95,
-  },
-  {
-    title: "Cost Efficiency",
-    description:
-      "Save on recruitment and operational costs without compromising on quality.",
-    icon: "/images/services/terminal.png",
-    iconWidth: 72,
-    iconHeight: 71,
-  },
-];
+// Default icon dimensions per icon path
+const defaultIconDimensions: Record<string, { w: number; h: number }> = {
+  "/images/services/laptop.png": { w: 97, h: 95 },
+  "/images/services/bars-chart.png": { w: 156, h: 173 },
+  "/images/services/building.png": { w: 87, h: 95 },
+  "/images/services/terminal.png": { w: 72, h: 71 },
+};
 
 const borderRadiusValue = "36px";
 
@@ -100,7 +74,61 @@ function ServiceCard({ title, description, icon, iconWidth, iconHeight }: Servic
   );
 }
 
-export function ServicesSection() {
+interface ServicesSectionProps {
+  services?: Service[];
+  header?: HeroSection | null;
+}
+
+export function ServicesSection({ services, header }: ServicesSectionProps) {
+  const heading = header?.title ?? "What are we offering?";
+  const subtitle =
+    header?.subtitle ??
+    "At Globonexo, we deliver IT services designed to improve performance, reliability, and scalability. Our consultants collaborate closely with clients to integrate AI where it creates measurable business impact.";
+
+  // Map services to card data, falling back to defaults
+  const cards: ServiceCardProps[] =
+    services && services.length > 0
+      ? services.map((s) => {
+          const dims = defaultIconDimensions[s.icon ?? ""] ?? { w: 80, h: 80 };
+          return {
+            title: s.title,
+            description: s.description ?? "",
+            icon: s.icon ?? "/images/services/laptop.png",
+            iconWidth: dims.w,
+            iconHeight: dims.h,
+          };
+        })
+      : [
+          {
+            title: "Outstanding Standing solutions",
+            description: "Expertise in staff augmentation, dedicated teams, EOR (Employer of Record), and PEO (Professional Employer Organization) models.",
+            icon: "/images/services/laptop.png",
+            iconWidth: 97,
+            iconHeight: 95,
+          },
+          {
+            title: "Custom Solutions for Unique Needs",
+            description: "Bespoke IT and software solutions designed to address specific challenges and goals. Emphasis on scalability, innovation, and alignment with business strategies.",
+            icon: "/images/services/bars-chart.png",
+            iconWidth: 156,
+            iconHeight: 173,
+          },
+          {
+            title: "Software Testing Services",
+            description: "Comprehensive QA and testing services to ensure robust, high-performance, and error-free software. Specialized in manual, automated, and performance testing for diverse industries.",
+            icon: "/images/services/building.png",
+            iconWidth: 87,
+            iconHeight: 95,
+          },
+          {
+            title: "Cost Efficiency",
+            description: "Save on recruitment and operational costs without compromising on quality.",
+            icon: "/images/services/terminal.png",
+            iconWidth: 72,
+            iconHeight: 71,
+          },
+        ];
+
   return (
     <section
       className="relative"
@@ -114,7 +142,7 @@ export function ServicesSection() {
         className="relative z-10 mx-auto px-4 sm:px-6"
         style={{ maxWidth: "min(1300px, 96vw)" }}
       >
-        {/* Header: badge → title → subtitle (top-to-bottom) */}
+        {/* Header: title → subtitle */}
         <h2
           className="text-center mb-4"
           style={{
@@ -130,7 +158,7 @@ export function ServicesSection() {
             backgroundClip: "text",
           }}
         >
-          What are we offering?
+          {heading}
         </h2>
 
         <p
@@ -145,28 +173,26 @@ export function ServicesSection() {
             letterSpacing: "-0.01em",
           }}
         >
-          At Globonexo, we deliver IT services designed to improve performance,
-          reliability, and scalability. Our consultants collaborate closely with
-          clients to integrate AI where it creates measurable business impact.
+          {subtitle}
         </p>
 
-        {/* Bento grid — Row 1: [~32% laptop] [~59% bars chart] */}
+        {/* Bento grid — Row 1: [~32%] [~59%] */}
         <div className="flex flex-col md:flex-row gap-6 mb-6">
           <div style={{ flex: "32 0 0%" }}>
-            <ServiceCard {...services[0]} />
+            {cards[0] && <ServiceCard {...cards[0]} />}
           </div>
           <div style={{ flex: "59 0 0%" }}>
-            <ServiceCard {...services[1]} />
+            {cards[1] && <ServiceCard {...cards[1]} />}
           </div>
         </div>
 
-        {/* Bento grid — Row 2: [~65% building] [~32% terminal] */}
+        {/* Bento grid — Row 2: [~65%] [~32%] */}
         <div className="flex flex-col md:flex-row gap-6">
           <div style={{ flex: "65 0 0%" }}>
-            <ServiceCard {...services[2]} />
+            {cards[2] && <ServiceCard {...cards[2]} />}
           </div>
           <div style={{ flex: "32 0 0%" }}>
-            <ServiceCard {...services[3]} />
+            {cards[3] && <ServiceCard {...cards[3]} />}
           </div>
         </div>
       </div>

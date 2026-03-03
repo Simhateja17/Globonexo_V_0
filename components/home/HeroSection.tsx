@@ -1,6 +1,21 @@
 import Link from "next/link";
+import type { HeroSection as HeroSectionType } from "@/lib/types/cms";
 
-export function HeroSection() {
+interface HeroSectionProps {
+  data?: HeroSectionType | null;
+}
+
+export function HeroSection({ data }: HeroSectionProps) {
+  const title = data?.title ?? "International IT & AI Expert Hub For Your Universal Success";
+  const description =
+    data?.description ??
+    "Globonexo is an international IT consulting company that helps European businesses grow through AI-driven technologies and strong engineering expertise. We partner closely with organisations to build intelligent, efficient, and future-ready systems, using AI, automation, and modern IT practices to drive real business results and long-term growth.";
+  const ctaText = data?.cta_text ?? "Join Us";
+  const ctaLink = data?.cta_link ?? "/join";
+  const extra = data?.extra_data as Record<string, string> | null;
+  const cta2Text = extra?.cta2_text ?? "Schedule a Consultation";
+  const cta2Link = extra?.cta2_link ?? "/consultation";
+
   return (
     <section
       className="relative min-h-screen flex items-center justify-center"
@@ -30,9 +45,15 @@ export function HeroSection() {
               letterSpacing: "-0.05em",
             }}
           >
-            International IT &amp; AI Expert Hub For{" "}
-            <br className="hidden sm:block" />
-            Your Universal Success
+            {title.includes("For") ? (
+              <>
+                {title.split("For")[0]}For{" "}
+                <br className="hidden sm:block" />
+                {title.split("For").slice(1).join("For")}
+              </>
+            ) : (
+              title
+            )}
           </h1>
 
           <p
@@ -48,11 +69,7 @@ export function HeroSection() {
               color: "#FFFFFF",
             }}
           >
-            Globonexo is an international IT consulting company that helps European
-            businesses grow through AI-driven technologies and strong engineering expertise.
-            We partner closely with organisations to build intelligent, efficient, and
-            future-ready systems, using AI, automation, and modern IT practices to drive
-            real business results and long-term growth.
+            {description}
           </p>
 
           <div
@@ -69,7 +86,7 @@ export function HeroSection() {
               }}
             >
               <Link
-                href="/join"
+                href={ctaLink}
                 className="relative flex items-center justify-center overflow-hidden px-6"
                 style={{
                   minWidth: "clamp(110px, 10vw, 160px)",
@@ -96,12 +113,12 @@ export function HeroSection() {
                     background: "radial-gradient(ellipse at 30% 0%, rgba(255,255,255,0.15) 0%, transparent 50%)",
                   }}
                 />
-                <span className="relative z-10">Join Us</span>
+                <span className="relative z-10">{ctaText}</span>
               </Link>
             </div>
 
             <Link
-              href="/consultation"
+              href={cta2Link}
               className="flex items-center justify-center px-5"
               style={{
                 minWidth: "clamp(160px, 14vw, 230px)",
@@ -119,7 +136,7 @@ export function HeroSection() {
                 whiteSpace: "nowrap",
               }}
             >
-              Schedule a Consultation
+              {cta2Text}
             </Link>
           </div>
 

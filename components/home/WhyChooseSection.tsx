@@ -1,4 +1,10 @@
-const cards = [
+import type { HeroSection } from "@/lib/types/cms";
+
+interface WhyChooseSectionProps {
+  data?: HeroSection | null;
+}
+
+const defaultCards = [
   {
     title: "Proven Technical Expertise",
     description:
@@ -78,7 +84,14 @@ function WhyCard({ title, description }: { title: string; description: string })
   );
 }
 
-export function WhyChooseSection() {
+export function WhyChooseSection({ data }: WhyChooseSectionProps) {
+  const heading = data?.title ?? "Why our clients choose Globonexo";
+  const subtitle =
+    data?.subtitle ??
+    "We enable seamless collaboration by applying AI-driven tools, intelligent automation, and modern IT architectures. Our focus on quality, innovation, and long-term value helps businesses achieve faster decision-making, improved efficiency, and stronger competitive positioning.";
+  const extra = data?.extra_data as Record<string, unknown> | null;
+  const cards = (extra?.cards as Array<{ title: string; description: string }>) ?? defaultCards;
+
   return (
     <section
       className="relative"
@@ -127,7 +140,7 @@ export function WhyChooseSection() {
             backgroundClip: "text",
           }}
         >
-          Why our clients choose Globonexo
+          {heading}
         </h2>
 
         {/* Subtitle */}
@@ -143,13 +156,10 @@ export function WhyChooseSection() {
             marginBottom: "clamp(32px, 4vw, 56px)",
           }}
         >
-          We enable seamless collaboration by applying AI-driven tools, intelligent
-          automation, and modern IT architectures. Our focus on quality, innovation,
-          and long-term value helps businesses achieve faster decision-making,
-          improved efficiency, and stronger competitive positioning.
+          {subtitle}
         </p>
 
-        {/* 2×2 grid for first 4 cards */}
+        {/* 2x2 grid for first 4 cards */}
         <div
           className="grid grid-cols-1 sm:grid-cols-2"
           style={{
@@ -163,16 +173,18 @@ export function WhyChooseSection() {
         </div>
 
         {/* 5th card centered */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
-          <div style={{ width: "min(100%, 588px)" }}>
-            <WhyCard title={cards[4].title} description={cards[4].description} />
+        {cards[4] && (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <div style={{ width: "min(100%, 588px)" }}>
+              <WhyCard title={cards[4].title} description={cards[4].description} />
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </section>
   );

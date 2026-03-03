@@ -1,12 +1,18 @@
 "use client";
 
 import { useState } from "react";
+import { submitContactForm } from "@/lib/actions/cms";
 
-const contactInfo = [
-  { text: "conatct.global@globonexo.com" },
-  { text: "+49 711 123456" },
-  { text: "Headquarters: Koenigstr. 10c, 70173 Stuttgart, Germany" },
-];
+interface ContactInfo {
+  email?: string;
+  phone?: string;
+  address?: string;
+}
+
+interface ContactSectionProps {
+  contactInfo?: ContactInfo;
+  heading?: string;
+}
 
 const inputStyle: React.CSSProperties = {
   width: "100%",
@@ -22,8 +28,6 @@ const inputStyle: React.CSSProperties = {
   color: "white",
   outline: "none",
 };
-
-const placeholderId = "contact-placeholder-styles";
 
 function ChevronDouble() {
   return (
@@ -41,8 +45,40 @@ function ChevronDouble() {
   );
 }
 
-export function ContactSection() {
+export function ContactSection({ contactInfo, heading }: ContactSectionProps) {
+  const email = contactInfo?.email ?? "contact.global@globonexo.com";
+  const phone = contactInfo?.phone ?? "+49 711 123456";
+  const address = contactInfo?.address ?? "Headquarters: Koenigstr. 10c, 70173 Stuttgart, Germany";
+
+  const infoItems = [
+    { text: email },
+    { text: phone },
+    { text: address },
+  ];
+
   const [form, setForm] = useState({ name: "", subject: "", email: "", message: "" });
+  const [sending, setSending] = useState(false);
+  const [sent, setSent] = useState(false);
+
+  const handleSubmit = async () => {
+    if (!form.name || !form.email || !form.message) return;
+    setSending(true);
+    try {
+      await submitContactForm({
+        name: form.name,
+        email: form.email,
+        phone: form.subject,
+        message: form.message,
+      });
+      setSent(true);
+      setForm({ name: "", subject: "", email: "", message: "" });
+      setTimeout(() => setSent(false), 5000);
+    } catch {
+      // Silently fail if table doesn't exist yet
+    } finally {
+      setSending(false);
+    }
+  };
 
   return (
     <section
@@ -123,7 +159,7 @@ export function ContactSection() {
             marginBottom: "clamp(32px, 4vw, 56px)",
           }}
         >
-          Contact Us for any questions
+          {heading ?? "Contact Us for any questions"}
         </h2>
 
         {/* Content: 3-column layout — info | inputs | message */}
@@ -139,7 +175,7 @@ export function ContactSection() {
               gap: "clamp(16px, 2vw, 24px)",
             }}
           >
-            {contactInfo.map((item, i) => (
+            {infoItems.map((item, i) => (
               <div key={i} className="flex items-start" style={{ gap: "12px" }}>
                 <ChevronDouble />
                 <span
@@ -220,6 +256,8 @@ export function ContactSection() {
             <div className="flex justify-end" style={{ padding: "0 16px 12px" }}>
               <button
                 type="button"
+                onClick={handleSubmit}
+                disabled={sending || !form.name || !form.email || !form.message}
                 style={{
                   fontFamily: "Inter, sans-serif",
                   fontWeight: 500,
@@ -227,14 +265,16 @@ export function ContactSection() {
                   lineHeight: "31px",
                   letterSpacing: "-0.1515px",
                   color: "black",
-                  background: "white",
+                  background: sent ? "#95DE64" : "white",
                   border: "none",
                   borderRadius: "8px",
                   padding: "5px 15px",
-                  cursor: "pointer",
+                  cursor: sending ? "not-allowed" : "pointer",
+                  opacity: sending ? 0.7 : 1,
+                  transition: "background 0.3s ease",
                 }}
               >
-                Send
+                {sending ? "Sending..." : sent ? "Sent!" : "Send"}
               </button>
             </div>
           </div>

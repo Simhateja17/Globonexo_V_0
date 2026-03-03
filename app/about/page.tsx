@@ -1,5 +1,13 @@
+import { Suspense } from "react";
 import Image from "next/image";
 import { Navbar, FaqSection, ContactSection } from "@/components/home";
+import {
+  fetchTeamMembers,
+  fetchFAQs,
+  fetchHeroSections,
+  fetchSiteSetting,
+} from "@/lib/queries/cms";
+import type { HeroSection, TeamMember } from "@/lib/types/cms";
 
 /* ─── gradient heading helper ──────────────────────────────────────────── */
 const gradientHeadingStyle: React.CSSProperties = {
@@ -19,7 +27,19 @@ const gradientHeadingStyle: React.CSSProperties = {
 /* ═══════════════════════════════════════════════════════════════════════════
    Section 1 – About Hero
    ═══════════════════════════════════════════════════════════════════════ */
-function AboutHero() {
+function AboutHero({ data }: { data?: HeroSection | null }) {
+  const title = data?.title ?? "About us";
+  const description =
+    data?.description ??
+    "Although, final stages of the internal network gives a complete experience of The Parameter of Speculative Environment";
+  const subtitle = data?.subtitle ?? "The best IT solution since 2015";
+  const extra = data?.extra_data as Record<string, string> | null;
+  const body2 =
+    extra?.body2 ??
+    "At Globonexo, we implement innovative IT solutions focused on the evolution, adaptation, and growth of your business. From outstaffing and product development to AI-driven automation, we deliver custom technology that scales with your ambitions.";
+  const illustration = extra?.illustration ?? "/images/about-illustration.webp";
+  const ctaText = data?.cta_text ?? "Join Now";
+
   return (
     <section
       className="relative flex justify-center"
@@ -70,7 +90,7 @@ function AboutHero() {
                 backgroundClip: "text",
               }}
             >
-              About us
+              {title}
             </h1>
 
             <p
@@ -83,8 +103,7 @@ function AboutHero() {
                 color: "#FFFFFF",
               }}
             >
-              Although, final stages of the internal network gives a complete
-              experience of The Parameter of Speculative Environment
+              {description}
             </p>
 
             <h2
@@ -97,7 +116,7 @@ function AboutHero() {
                 color: "#F0F0F0",
               }}
             >
-              The best IT solution since 2015
+              {subtitle}
             </h2>
 
             <p
@@ -110,10 +129,7 @@ function AboutHero() {
                 color: "#FFFFFF",
               }}
             >
-              At Globonexo, we implement innovative IT solutions focused on the
-              evolution, adaptation, and growth of your business. From outstaffing
-              and product development to AI-driven automation, we deliver custom
-              technology that scales with your ambitions.
+              {body2}
             </p>
 
             <div style={{ marginTop: "clamp(24px, 3vw, 40px)" }}>
@@ -132,7 +148,7 @@ function AboutHero() {
                   boxShadow: "0px 16px 64px rgba(57,125,79,0.5)",
                 }}
               >
-                Join Now
+                {ctaText}
               </button>
             </div>
           </div>
@@ -143,7 +159,7 @@ function AboutHero() {
             style={{ flex: "1 1 40%", maxWidth: "323px", marginTop: "clamp(40px, 15vw, 200px)" }}
           >
             <Image
-              src="/images/about-illustration.webp"
+              src={illustration}
               alt="IT solutions illustration"
               width={800}
               height={1038}
@@ -161,7 +177,17 @@ function AboutHero() {
 /* ═══════════════════════════════════════════════════════════════════════════
    Section 2 – Journey & Background
    ═══════════════════════════════════════════════════════════════════════ */
-function JourneySection() {
+function JourneySection({ data }: { data?: HeroSection | null }) {
+  const heading = data?.title ?? "The journey and Background of the Company";
+  const extra = data?.extra_data as Record<string, unknown> | null;
+  const paragraphs = (extra?.paragraphs as string[]) ?? [
+    "Globonexo was born out of a shared vision between two passionate entrepreneurs in Warsaw, Poland. After countless discussions, deep research, and leveraging our international experience and expertise, we recognised a growing need \u2013 businesses across Europe and the U.S. required skilled IT talent to drive innovation, but access to top developers was often limited by local availability and high costs.",
+    "This insight prompted us to start Globonexo: a company that unites businesses with global IT talent through strategic outstaffing solutions. From its very beginning, our goal was to bridge the gap between companies and talented engineers with the help of the development services from our Indian, Polish, Ukrainian, and Moldovan centres with high-quality service providers.",
+    "Starting as an idea over brainstorming sessions in Warsaw, the company has grown into a firm serving clients from various industries such as automotive, fintech, healthcare, and manufacturing.",
+    "Our story at Globonexo is that of collaboration, growth, and global connectivity. We believe that innovation knows no borders, and by empowering companies with the right talent, we help them unlock new possibilities and scale to greater heights.",
+    "This is just the beginning \u2013 and we\u2019re excited to grow alongside our clients, partners, and dedicated team of developers worldwide.",
+  ];
+
   return (
     <section
       className="relative"
@@ -176,7 +202,7 @@ function JourneySection() {
         style={{ maxWidth: "min(1300px, 96vw)" }}
       >
         <h2 style={{ ...gradientHeadingStyle, marginBottom: "clamp(32px, 4vw, 56px)" }}>
-          The journey and Background of the Company
+          {heading}
         </h2>
 
         <div
@@ -194,38 +220,11 @@ function JourneySection() {
             gap: "24px",
           }}
         >
-          <p style={{ margin: 0 }}>
-            Globonexo was born out of a shared vision between two passionate
-            entrepreneurs in Warsaw, Poland. After countless discussions, deep
-            research, and leveraging our international experience and expertise, we
-            recognised a growing need &ndash; businesses across Europe and the U.S.
-            required skilled IT talent to drive innovation, but access to top
-            developers was often limited by local availability and high costs.
-          </p>
-          <p style={{ margin: 0 }}>
-            This insight prompted us to start Globonexo: a company that unites
-            businesses with global IT talent through strategic outstaffing
-            solutions. From its very beginning, our goal was to bridge the gap
-            between companies and talented engineers with the help of the
-            development services from our Indian, Polish, Ukrainian, and Moldovan
-            centres with high-quality service providers.
-          </p>
-          <p style={{ margin: 0 }}>
-            Starting as an idea over brainstorming sessions in Warsaw, the company
-            has grown into a firm serving clients from various industries such as
-            automotive, fintech, healthcare, and manufacturing.
-          </p>
-          <p style={{ margin: 0 }}>
-            Our story at Globonexo is that of collaboration, growth, and global
-            connectivity. We believe that innovation knows no borders, and by
-            empowering companies with the right talent, we help them unlock new
-            possibilities and scale to greater heights.
-          </p>
-          <p style={{ margin: 0 }}>
-            This is just the beginning &ndash; and we&rsquo;re excited to grow
-            alongside our clients, partners, and dedicated team of developers
-            worldwide.
-          </p>
+          {paragraphs.map((p, i) => (
+            <p key={i} style={{ margin: 0 }}>
+              {p}
+            </p>
+          ))}
         </div>
       </div>
     </section>
@@ -235,13 +234,31 @@ function JourneySection() {
 /* ═══════════════════════════════════════════════════════════════════════════
    Section 3 – Executives
    ═══════════════════════════════════════════════════════════════════════ */
-const executives = [
-  { name: "Talia Taylor", title: "Digital Marketing Director @ Quantum" },
-  { name: "Talia Taylor", title: "Digital Marketing Director @ Quantum" },
-  { name: "Talia Taylor", title: "Digital Marketing Director @ Quantum" },
-];
+function ExecutivesSection({
+  data,
+  teamMembers,
+}: {
+  data?: HeroSection | null;
+  teamMembers: TeamMember[];
+}) {
+  const heading = data?.title ?? "Bios and photos of key executives and managers";
+  const subtitle =
+    data?.subtitle ??
+    "Meet the talented individuals who drive our company forward with their expertise and dedication.";
 
-function ExecutivesSection() {
+  const executives =
+    teamMembers.length > 0
+      ? teamMembers.map((m) => ({
+          name: m.name,
+          title: m.role ?? "",
+          photo: m.photo_url ?? "/images/bodhi-dymas.webp",
+        }))
+      : [
+          { name: "Talia Taylor", title: "Digital Marketing Director @ Quantum", photo: "/images/bodhi-dymas.webp" },
+          { name: "Talia Taylor", title: "Digital Marketing Director @ Quantum", photo: "/images/bodhi-dymas.webp" },
+          { name: "Talia Taylor", title: "Digital Marketing Director @ Quantum", photo: "/images/bodhi-dymas.webp" },
+        ];
+
   return (
     <section
       className="relative"
@@ -272,7 +289,7 @@ function ExecutivesSection() {
         style={{ maxWidth: "min(1300px, 96vw)" }}
       >
         <h2 style={{ ...gradientHeadingStyle, marginBottom: "16px" }}>
-          Bios and photos of key executives and managers
+          {heading}
         </h2>
 
         <p
@@ -288,8 +305,7 @@ function ExecutivesSection() {
             marginBottom: "clamp(32px, 4vw, 56px)",
           }}
         >
-          Meet the talented individuals who drive our company forward with their
-          expertise and dedication.
+          {subtitle}
         </p>
 
         {/* Bordered container with inner glow */}
@@ -352,7 +368,7 @@ function ExecutivesSection() {
                     }}
                   />
                   <Image
-                    src="/images/bodhi-dymas.webp"
+                    src={exec.photo}
                     alt={exec.name}
                     width={600}
                     height={762}
@@ -397,6 +413,44 @@ function ExecutivesSection() {
         </div>
       </div>
     </section>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Async data-fetching component wrapped in Suspense
+   ═══════════════════════════════════════════════════════════════════════ */
+async function AboutContent() {
+  const [heroSections, teamMembers, faqs, companySetting] = await Promise.all([
+    fetchHeroSections("about"),
+    fetchTeamMembers(),
+    fetchFAQs(),
+    fetchSiteSetting("company"),
+  ]);
+
+  const heroData = heroSections.find((s) => s.section_key === "hero") ?? null;
+  const journeyData = heroSections.find((s) => s.section_key === "journey") ?? null;
+  const executivesData = heroSections.find((s) => s.section_key === "executives") ?? null;
+
+  const companyValue = companySetting?.value as Record<string, string> | undefined;
+
+  return (
+    <>
+      <AboutHero data={heroData} />
+      <JourneySection data={journeyData} />
+      <ExecutivesSection data={executivesData} teamMembers={teamMembers} />
+      <FaqSection faqs={faqs} />
+      <ContactSection
+        contactInfo={
+          companyValue
+            ? {
+                email: companyValue.email,
+                phone: companyValue.phone,
+                address: companyValue.address,
+              }
+            : undefined
+        }
+      />
+    </>
   );
 }
 
@@ -455,11 +509,9 @@ export default function AboutPage() {
       />
 
       <Navbar />
-      <AboutHero />
-      <JourneySection />
-      <ExecutivesSection />
-      <FaqSection />
-      <ContactSection />
+      <Suspense>
+        <AboutContent />
+      </Suspense>
     </main>
   );
 }

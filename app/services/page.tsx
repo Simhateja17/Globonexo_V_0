@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Image from "next/image";
 import {
   Navbar,
@@ -6,6 +7,13 @@ import {
   FaqSection,
   ContactSection,
 } from "@/components/home";
+import {
+  fetchTestimonials,
+  fetchFAQs,
+  fetchHeroSections,
+  fetchSiteSetting,
+} from "@/lib/queries/cms";
+import type { HeroSection } from "@/lib/types/cms";
 
 /* ─── gradient heading helper ──────────────────────────────────────────── */
 const gradientHeadingStyle: React.CSSProperties = {
@@ -49,7 +57,12 @@ const greenButtonStyle: React.CSSProperties = {
 /* ═══════════════════════════════════════════════════════════════════════════
    Section 1 – Hero
    ═══════════════════════════════════════════════════════════════════════ */
-function HeroSection() {
+function HeroSection({ data }: { data?: HeroSection | null }) {
+  const title = data?.title ?? "Software Testing";
+  const description =
+    data?.description ??
+    "Ensure flawless performance with our comprehensive software testing solutions.";
+
   return (
     <section
       className="relative flex justify-center"
@@ -93,7 +106,7 @@ function HeroSection() {
               backgroundClip: "text",
             }}
           >
-            Software Testing
+            {title}
           </h1>
 
           <p
@@ -102,8 +115,7 @@ function HeroSection() {
               marginTop: "clamp(12px, 1.5vw, 20px)",
             }}
           >
-            Ensure flawless performance with our comprehensive software testing
-            solutions.
+            {description}
           </p>
         </div>
       </div>
@@ -114,7 +126,18 @@ function HeroSection() {
 /* ═══════════════════════════════════════════════════════════════════════════
    Section 2 – End-to-End Software Testing Solutions
    ═══════════════════════════════════════════════════════════════════════ */
-function EndToEndSection() {
+function EndToEndSection({ data }: { data?: HeroSection | null }) {
+  const title = data?.title ?? "End-to-End Software Testing Solutions";
+  const description =
+    data?.description ??
+    "Our comprehensive testing services cover every aspect of your software development lifecycle. From unit testing to integration testing, we ensure your applications perform flawlessly under all conditions.";
+  const extra = data?.extra_data as Record<string, string> | null;
+  const body2 =
+    extra?.body2 ??
+    "We employ industry-leading methodologies and tools to identify and eliminate bugs before they reach your users, saving you time and resources while maintaining the highest quality standards.";
+  const illustration = extra?.illustration ?? "/images/first_illustration.webp";
+  const ctaText = data?.cta_text ?? "Get Started";
+
   return (
     <section
       className="relative"
@@ -140,24 +163,19 @@ function EndToEndSection() {
                 textAlign: "left",
               }}
             >
-              End-to-End Software Testing Solutions
+              {title}
             </h2>
 
             <p style={{ ...bodyTextStyle, marginTop: "clamp(16px, 2vw, 28px)" }}>
-              Our comprehensive testing services cover every aspect of your
-              software development lifecycle. From unit testing to integration
-              testing, we ensure your applications perform flawlessly under all
-              conditions.
+              {description}
             </p>
 
             <p style={{ ...bodyTextStyle, marginTop: "16px" }}>
-              We employ industry-leading methodologies and tools to identify and
-              eliminate bugs before they reach your users, saving you time and
-              resources while maintaining the highest quality standards.
+              {body2}
             </p>
 
             <div style={{ marginTop: "clamp(24px, 3vw, 40px)" }}>
-              <button style={greenButtonStyle}>Get Started</button>
+              <button style={greenButtonStyle}>{ctaText}</button>
             </div>
           </div>
 
@@ -167,7 +185,7 @@ function EndToEndSection() {
             style={{ flex: "1 1 40%", maxWidth: "407px" }}
           >
             <Image
-              src="/images/first_illustration.webp"
+              src={illustration}
               alt="End-to-end software testing illustration"
               width={1000}
               height={885}
@@ -185,7 +203,18 @@ function EndToEndSection() {
 /* ═══════════════════════════════════════════════════════════════════════════
    Section 3 – Automated Testing (illustration left, text right)
    ═══════════════════════════════════════════════════════════════════════ */
-function AutomatedSectionLeft() {
+function AutomatedSectionLeft({ data }: { data?: HeroSection | null }) {
+  const title = data?.title ?? "Automated Testing for Continuous Delivery";
+  const description =
+    data?.description ??
+    "Our comprehensive testing services cover every aspect of your software development lifecycle. From unit testing to integration testing, we ensure your applications perform flawlessly under all conditions.";
+  const extra = data?.extra_data as Record<string, string> | null;
+  const body2 =
+    extra?.body2 ??
+    "We employ industry-leading methodologies and tools to identify and eliminate bugs before they reach your users, saving you time and resources while maintaining the highest quality standards.";
+  const illustration = extra?.illustration ?? "/images/second_illustration.webp";
+  const ctaText = data?.cta_text ?? "Learn Now";
+
   return (
     <section
       className="relative"
@@ -206,7 +235,7 @@ function AutomatedSectionLeft() {
             marginBottom: "clamp(32px, 4vw, 56px)",
           }}
         >
-          Automated Testing for Continuous Delivery
+          {title}
         </h2>
 
         <div
@@ -219,7 +248,7 @@ function AutomatedSectionLeft() {
             style={{ flex: "1 1 40%", maxWidth: "407px" }}
           >
             <Image
-              src="/images/second_illustration.webp"
+              src={illustration}
               alt="Automated testing illustration"
               width={1000}
               height={944}
@@ -235,16 +264,11 @@ function AutomatedSectionLeft() {
             style={{ flex: "1 1 60%" }}
           >
             <p style={{ ...bodyTextStyle, marginTop: 0 }}>
-              Our comprehensive testing services cover every aspect of your
-              software development lifecycle. From unit testing to integration
-              testing, we ensure your applications perform flawlessly under all
-              conditions.
+              {description}
             </p>
 
             <p style={{ ...bodyTextStyle, marginTop: "16px" }}>
-              We employ industry-leading methodologies and tools to identify and
-              eliminate bugs before they reach your users, saving you time and
-              resources while maintaining the highest quality standards.
+              {body2}
             </p>
 
             <div
@@ -254,7 +278,7 @@ function AutomatedSectionLeft() {
                 justifyContent: "flex-end",
               }}
             >
-              <button style={greenButtonStyle}>Learn Now</button>
+              <button style={greenButtonStyle}>{ctaText}</button>
             </div>
           </div>
         </div>
@@ -266,7 +290,18 @@ function AutomatedSectionLeft() {
 /* ═══════════════════════════════════════════════════════════════════════════
    Section 4 – Automated Testing (text left, illustration right)
    ═══════════════════════════════════════════════════════════════════════ */
-function AutomatedSectionRight() {
+function AutomatedSectionRight({ data }: { data?: HeroSection | null }) {
+  const title = data?.title ?? "Automated Testing for Continuous Delivery";
+  const description =
+    data?.description ??
+    "Accelerate your release cycles with our automated testing solutions. We build robust test suites that integrate seamlessly with your CI/CD pipeline, enabling faster and more reliable deployments.";
+  const extra = data?.extra_data as Record<string, string> | null;
+  const body2 =
+    extra?.body2 ??
+    "Our automation experts work with leading frameworks like Selenium, Cypress, and Playwright to create maintainable and scalable test automation that grows with your application.";
+  const illustration = extra?.illustration ?? "/images/third_illustration.webp";
+  const ctaText = data?.cta_text ?? "Learn Now";
+
   return (
     <section
       className="relative"
@@ -292,24 +327,19 @@ function AutomatedSectionRight() {
                 textAlign: "left",
               }}
             >
-              Automated Testing for Continuous Delivery
+              {title}
             </h2>
 
             <p style={{ ...bodyTextStyle, marginTop: "clamp(16px, 2vw, 28px)" }}>
-              Accelerate your release cycles with our automated testing
-              solutions. We build robust test suites that integrate seamlessly
-              with your CI/CD pipeline, enabling faster and more reliable
-              deployments.
+              {description}
             </p>
 
             <p style={{ ...bodyTextStyle, marginTop: "16px" }}>
-              Our automation experts work with leading frameworks like Selenium,
-              Cypress, and Playwright to create maintainable and scalable test
-              automation that grows with your application.
+              {body2}
             </p>
 
             <div style={{ marginTop: "clamp(24px, 3vw, 40px)" }}>
-              <button style={greenButtonStyle}>Learn Now</button>
+              <button style={greenButtonStyle}>{ctaText}</button>
             </div>
           </div>
 
@@ -319,7 +349,7 @@ function AutomatedSectionRight() {
             style={{ flex: "1 1 40%", maxWidth: "407px" }}
           >
             <Image
-              src="/images/third_illustration.webp"
+              src={illustration}
               alt="Continuous delivery illustration"
               width={1000}
               height={1062}
@@ -331,6 +361,50 @@ function AutomatedSectionRight() {
         </div>
       </div>
     </section>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Async data-fetching component wrapped in Suspense
+   ═══════════════════════════════════════════════════════════════════════ */
+async function ServicesContent() {
+  const [heroSections, testimonials, faqs, whyChooseData, companySetting] =
+    await Promise.all([
+      fetchHeroSections("services"),
+      fetchTestimonials(),
+      fetchFAQs(),
+      (await import("@/lib/queries/cms")).fetchHeroSection("home", "why-choose"),
+      fetchSiteSetting("company"),
+    ]);
+
+  const heroData = heroSections.find((s) => s.section_key === "hero") ?? null;
+  const endToEndData = heroSections.find((s) => s.section_key === "end-to-end") ?? null;
+  const automatedLeftData = heroSections.find((s) => s.section_key === "automated-left") ?? null;
+  const automatedRightData = heroSections.find((s) => s.section_key === "automated-right") ?? null;
+
+  const companyValue = companySetting?.value as Record<string, string> | undefined;
+
+  return (
+    <>
+      <HeroSection data={heroData} />
+      <EndToEndSection data={endToEndData} />
+      <AutomatedSectionLeft data={automatedLeftData} />
+      <AutomatedSectionRight data={automatedRightData} />
+      <WhyChooseSection data={whyChooseData} />
+      <TestimonialsSection testimonials={testimonials} />
+      <FaqSection faqs={faqs} />
+      <ContactSection
+        contactInfo={
+          companyValue
+            ? {
+                email: companyValue.email,
+                phone: companyValue.phone,
+                address: companyValue.address,
+              }
+            : undefined
+        }
+      />
+    </>
   );
 }
 
@@ -389,14 +463,9 @@ export default function ServicesPage() {
       />
 
       <Navbar />
-      <HeroSection />
-      <EndToEndSection />
-      <AutomatedSectionLeft />
-      <AutomatedSectionRight />
-      <WhyChooseSection />
-      <TestimonialsSection />
-      <FaqSection />
-      <ContactSection />
+      <Suspense>
+        <ServicesContent />
+      </Suspense>
     </main>
   );
 }

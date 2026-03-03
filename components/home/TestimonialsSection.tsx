@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import type { Testimonial } from "@/lib/types/cms";
 
-const testimonials = [
+const defaultTestimonials = [
   {
     quote:
       "Globonexo transformed our digital strategy completely. Their team delivered a scalable platform that increased our conversion rates by 40% within the first quarter. The collaboration was seamless from day one.",
@@ -23,9 +24,23 @@ const testimonials = [
   },
 ];
 
-export function TestimonialsSection() {
+interface TestimonialsSectionProps {
+  testimonials?: Testimonial[];
+  heading?: string;
+}
+
+export function TestimonialsSection({ testimonials, heading }: TestimonialsSectionProps) {
+  const items =
+    testimonials && testimonials.length > 0
+      ? testimonials.map((t) => ({
+          quote: t.content,
+          name: t.author_name,
+          title: [t.author_role, t.author_company].filter(Boolean).join(" @ "),
+        }))
+      : defaultTestimonials;
+
   const [active, setActive] = useState(0);
-  const t = testimonials[active];
+  const t = items[active];
 
   return (
     <section
@@ -57,7 +72,7 @@ export function TestimonialsSection() {
             backgroundClip: "text",
           }}
         >
-          Customer Testimonials
+          {heading ?? "Customer Testimonials"}
         </h2>
 
         {/* Testimonial card */}
@@ -146,7 +161,7 @@ export function TestimonialsSection() {
           {/* Left arrow */}
           <button
             onClick={() =>
-              setActive((prev) => (prev - 1 + testimonials.length) % testimonials.length)
+              setActive((prev) => (prev - 1 + items.length) % items.length)
             }
             aria-label="Previous testimonial"
             style={{
@@ -169,7 +184,7 @@ export function TestimonialsSection() {
 
           {/* Dots */}
           <div className="flex" style={{ gap: "10px" }}>
-            {testimonials.map((_, i) => (
+            {items.map((_, i) => (
               <button
                 key={i}
                 onClick={() => setActive(i)}
@@ -191,7 +206,7 @@ export function TestimonialsSection() {
           {/* Right arrow */}
           <button
             onClick={() =>
-              setActive((prev) => (prev + 1) % testimonials.length)
+              setActive((prev) => (prev + 1) % items.length)
             }
             aria-label="Next testimonial"
             style={{

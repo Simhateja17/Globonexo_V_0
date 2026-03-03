@@ -1,6 +1,15 @@
 import Image from "next/image";
+import type { HeroSection } from "@/lib/types/cms";
 
-export function GlobalPresenceSection() {
+interface GlobalPresenceSectionProps {
+  data?: HeroSection | null;
+}
+
+export function GlobalPresenceSection({ data }: GlobalPresenceSectionProps) {
+  const heading = data?.title ?? "Global Presence";
+  const extra = data?.extra_data as Record<string, string> | null;
+  const mapImage = extra?.map_image ?? "/images/map.webp";
+
   return (
     <section
       className="relative"
@@ -28,7 +37,7 @@ export function GlobalPresenceSection() {
             backgroundClip: "text",
           }}
         >
-          Global Presence
+          {heading}
         </h2>
 
         {/* Map container */}
@@ -50,7 +59,7 @@ export function GlobalPresenceSection() {
           />
 
           <Image
-            src="/images/map.webp"
+            src={mapImage}
             alt="World map showing global presence"
             width={2400}
             height={1312}

@@ -1,0 +1,163 @@
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Plus, Pencil, Trash2, Search } from "lucide-react";
+import { deleteBlogPost } from "@/lib/actions/cms";
+import { toast } from "sonner";
+import type { BlogPost } from "@/lib/types/cms";
+
+interface BlogListClientProps {
+  posts: BlogPost[];
+}
+
+export function BlogListClient({ posts: initialPosts }: BlogListClientProps) {
+  const [posts, setPosts] = useState(initialPosts);
+  const [search, setSearch] = useState("");
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+
+  const filtered = posts.filter(
+    (p) =>
+      p.title.toLowerCase().includes(search.toLowerCase()) ||
+      p.slug.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const handleDelete = async () => {
+    if (!deleteId) return;
+    try {
+      await deleteBlogPost(deleteId);
+      setPosts((prev) => prev.filter((p) => p.id !== deleteId));
+      toast.success("Post deleted");
+    } catch {
+      toast.error("Failed to delete post");
+    }
+    setDeleteId(null);
+  };
+
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h1 className="text-2xl font-bold">Blog Posts</h1>
+          <p className="text-muted-foreground mt-1">
+            {posts.length} post{posts.length !== 1 && "s"} total
+          </p>
+        </div>
+        <Link href="/admin/blog/new">
+          <Button>
+            <Plus className="w-4 h-4 mr-1" />
+            New Post
+          </Button>
+        </Link>
+      </div>
+
+      {/* Search */}
+      <div className="relative mb-4">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+        <Input
+          placeholder="Search posts..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="pl-9"
+        />
+      </div>
+
+      {/* Table */}
+      <div className="rounded-lg border border-border">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Title</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Date</TableHead>
+              <TableHead className="w-[100px]">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {filtered.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={4} className="text-center py-8 text-muted-foreground">
+                  {search ? "No posts match your search" : "No blog posts yet. Create your first one!"}
+                </TableCell>
+              </TableRow>
+            ) : (
+              filtered.map((post) => (
+                <TableRow key={post.id}>
+                  <TableCell>
+                    <div>
+                      <p className="font-medium">{post.title}</p>
+                      <p className="text-xs text-muted-foreground">/blogs/{post.slug}</p>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <span
+                      className={`text-xs px-2 py-0.5 rounded-full ${
+                        post.status === "published"
+                          ? "bg-emerald-500/10 text-emerald-500"
+                          : "bg-amber-500/10 text-amber-500"
+                      }`}
+                    >
+                      {post.status}
+                    </span>
+                  </TableCell>
+                  <TableCell className="text-sm text-muted-foreground">
+                    {new Date(post.created_at).toLocaleDateString()}
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-1">
+                      <Link href={`/admin/blog/${post.id}`}>
+                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                          <Pencil className="w-3.5 h-3.5" />
+                        </Button>
+                      </Link>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-8 w-8 p-0 text-destructive hover:text-destructive"
+                        onClick={() => setDeleteId(post.id)}
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
+          </TableBody>
+        </Table>
+      </div>
+
+      {/* Delete Dialog */}
+      <Dialog open={!!deleteId} onOpenChange={() => setDeleteId(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Delete Post</DialogTitle>
+          </DialogHeader>
+          <p className="text-sm text-muted-foreground">
+            Are you sure you want to delete this post? This action cannot be undone.
+          </p>
+          <div className="flex justify-end gap-3 mt-4">
+            <Button variant="outline" onClick={() => setDeleteId(null)}>Cancel</Button>
+            <Button variant="destructive" onClick={handleDelete}>Delete</Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+}

@@ -1,4 +1,8 @@
 import { Navbar } from "@/components/home";
+import Link from "next/link";
+import { getBlogPosts } from "@/lib/actions/cms";
+import type { BlogPost } from "@/lib/types/cms";
+import { Suspense } from "react";
 
 /* ─── shared card style (glass) ───────────────────────────────────────── */
 const cardStyle: React.CSSProperties = {
@@ -24,6 +28,11 @@ const cardHeadingStyle: React.CSSProperties = {
   WebkitBackgroundClip: "text",
   WebkitTextFillColor: "transparent",
   backgroundClip: "text",
+};
+
+const smallCardHeadingStyle: React.CSSProperties = {
+  ...cardHeadingStyle,
+  fontSize: "clamp(20px, 2.5vw, 36px)",
 };
 
 /* ─── card body text ──────────────────────────────────────────────────── */
@@ -107,74 +116,80 @@ function HeroSection() {
 /* ═══════════════════════════════════════════════════════════════════════════
    Featured Blog Card (full-width, two-column)
    ═══════════════════════════════════════════════════════════════════════ */
-function FeaturedBlogCard() {
+function FeaturedBlogCard({ post }: { post: BlogPost }) {
   return (
     <section className="relative z-10 mx-auto px-5 sm:px-6 md:px-8 lg:px-10"
       style={{ maxWidth: "min(1400px, 96vw)" }}
     >
-      <div
-        className="flex flex-col md:flex-row"
-        style={{ ...cardStyle, padding: "0" }}
-      >
-        {/* Left placeholder image */}
+      <Link href={`/blogs/${post.slug}`}>
         <div
-          style={{
-            flex: "1 1 50%",
-            minHeight: "300px",
-            background: "rgba(255, 255, 255, 0.03)",
-          }}
-        />
-
-        {/* Right text content */}
-        <div
-          className="flex flex-col justify-center"
-          style={{
-            flex: "1 1 50%",
-            padding: "clamp(24px, 3vw, 48px)",
-          }}
+          className="flex flex-col md:flex-row hover:border-white/20 transition-colors cursor-pointer"
+          style={{ ...cardStyle, padding: "0" }}
         >
-          <h2 style={cardHeadingStyle}>
-            What is digital marketing and why is important?
-          </h2>
-
+          {/* Left image */}
           <div
             style={{
-              ...cardBodyStyle,
-              marginTop: "clamp(16px, 2vw, 24px)",
-              display: "flex",
-              flexDirection: "column",
-              gap: "14px",
+              flex: "1 1 50%",
+              minHeight: "300px",
+              background: post.cover_image
+                ? `url(${post.cover_image}) center/cover no-repeat`
+                : "rgba(255, 255, 255, 0.03)",
+            }}
+          />
+
+          {/* Right text content */}
+          <div
+            className="flex flex-col justify-center"
+            style={{
+              flex: "1 1 50%",
+              padding: "clamp(24px, 3vw, 48px)",
             }}
           >
-            <p style={{ margin: 0 }}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-              ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-              aliquip ex ea commodo consequat.
-            </p>
-            <p style={{ margin: 0 }}>
-              Duis aute irure dolor in reprehenderit in voluptate velit esse
-              cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-              cupidatat non proident, sunt in culpa qui officia deserunt mollit
-              anim id est laborum.
-            </p>
-            <p style={{ margin: 0 }}>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-              accusantium doloremque laudantium, totam rem aperiam, eaque ipsa
-              quae ab illo inventore veritatis et quasi architecto beatae vitae
-              dicta sunt explicabo.
-            </p>
+            <h2 style={cardHeadingStyle}>{post.title}</h2>
+
+            <div
+              style={{
+                ...cardBodyStyle,
+                marginTop: "clamp(16px, 2vw, 24px)",
+                display: "flex",
+                flexDirection: "column",
+                gap: "14px",
+              }}
+            >
+              <p style={{ margin: 0 }}>
+                {post.excerpt || "Read more about this topic..."}
+              </p>
+            </div>
+
+            <div style={{ marginTop: "clamp(16px, 2vw, 24px)" }}>
+              <span
+                style={{
+                  fontSize: "13px",
+                  color: "rgba(255,255,255,0.5)",
+                }}
+              >
+                {post.published_at
+                  ? new Date(post.published_at).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })
+                  : ""}
+              </span>
+            </div>
           </div>
         </div>
-      </div>
+      </Link>
     </section>
   );
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   Two Smaller Blog Cards (side by side)
+   Blog Cards Grid
    ═══════════════════════════════════════════════════════════════════════ */
-function SmallBlogCards() {
+function BlogCards({ posts }: { posts: BlogPost[] }) {
+  if (posts.length === 0) return null;
+
   return (
     <section
       className="relative z-10 mx-auto px-5 sm:px-6 md:px-8 lg:px-10"
@@ -188,41 +203,124 @@ function SmallBlogCards() {
         className="grid grid-cols-1 md:grid-cols-2"
         style={{ gap: "clamp(20px, 2.5vw, 40px)" }}
       >
-        {[0, 1].map((i) => (
-          <div key={i} style={cardStyle}>
-            {/* Placeholder image area */}
-            <div
-              style={{
-                width: "100%",
-                aspectRatio: "16 / 10",
-                background:
-                  "linear-gradient(135deg, rgba(57,125,79,0.3) 0%, rgba(20,20,20,0.8) 100%)",
-              }}
-            />
-
-            {/* Text content */}
-            <div style={{ padding: "clamp(20px, 2.5vw, 32px)" }}>
-              <h3 style={cardHeadingStyle}>
-                What is digital marketing and why is important?
-              </h3>
-
-              <p
+        {posts.map((post) => (
+          <Link key={post.id} href={`/blogs/${post.slug}`}>
+            <div style={cardStyle} className="hover:border-white/20 transition-colors cursor-pointer h-full">
+              {/* Image area */}
+              <div
                 style={{
-                  ...cardBodyStyle,
-                  marginTop: "clamp(12px, 1.5vw, 20px)",
-                  margin: 0,
-                  marginBlockStart: "clamp(12px, 1.5vw, 20px)",
+                  width: "100%",
+                  aspectRatio: "16 / 10",
+                  background: post.cover_image
+                    ? `url(${post.cover_image}) center/cover no-repeat`
+                    : "linear-gradient(135deg, rgba(57,125,79,0.3) 0%, rgba(20,20,20,0.8) 100%)",
                 }}
-              >
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris.
-              </p>
+              />
+
+              {/* Text content */}
+              <div style={{ padding: "clamp(20px, 2.5vw, 32px)" }}>
+                <h3 style={smallCardHeadingStyle}>{post.title}</h3>
+
+                <p
+                  style={{
+                    ...cardBodyStyle,
+                    marginTop: "clamp(12px, 1.5vw, 20px)",
+                    margin: 0,
+                    marginBlockStart: "clamp(12px, 1.5vw, 20px)",
+                  }}
+                >
+                  {post.excerpt ||
+                    "Click to read more about this topic..."}
+                </p>
+
+                <span
+                  style={{
+                    display: "block",
+                    marginTop: "12px",
+                    fontSize: "13px",
+                    color: "rgba(255,255,255,0.4)",
+                  }}
+                >
+                  {post.published_at
+                    ? new Date(post.published_at).toLocaleDateString()
+                    : ""}
+                </span>
+              </div>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </section>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Empty State
+   ═══════════════════════════════════════════════════════════════════════ */
+function EmptyState() {
+  return (
+    <section
+      className="relative z-10 mx-auto px-5 sm:px-6 md:px-8 lg:px-10"
+      style={{
+        maxWidth: "min(1400px, 96vw)",
+        paddingBottom: "clamp(60px, 8vw, 120px)",
+      }}
+    >
+      <div
+        className="text-center"
+        style={{
+          ...cardStyle,
+          padding: "clamp(40px, 5vw, 80px)",
+        }}
+      >
+        <h2
+          style={{
+            ...cardHeadingStyle,
+            fontSize: "clamp(24px, 2.5vw, 36px)",
+          }}
+        >
+          Coming Soon
+        </h2>
+        <p
+          style={{
+            ...cardBodyStyle,
+            marginTop: "16px",
+            color: "rgba(255,255,255,0.6)",
+          }}
+        >
+          We are working on publishing exciting new content. Stay tuned!
+        </p>
+      </div>
+    </section>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Blog Content (async, fetches data)
+   ═══════════════════════════════════════════════════════════════════════ */
+async function BlogContent() {
+  let posts: BlogPost[] = [];
+  try {
+    const result = await getBlogPosts(false); // published only
+    posts = result as BlogPost[];
+  } catch {
+    // Tables may not exist yet — show empty state
+  }
+
+  const featured = posts[0];
+  const rest = posts.slice(1);
+
+  return (
+    <>
+      {posts.length === 0 ? (
+        <EmptyState />
+      ) : (
+        <>
+          {featured && <FeaturedBlogCard post={featured} />}
+          {rest.length > 0 && <BlogCards posts={rest} />}
+        </>
+      )}
+    </>
   );
 }
 
@@ -282,8 +380,13 @@ export default function BlogsPage() {
 
       <Navbar />
       <HeroSection />
-      <FeaturedBlogCard />
-      <SmallBlogCards />
+      <Suspense fallback={
+        <section className="relative z-10 mx-auto px-5 sm:px-6 md:px-8 lg:px-10" style={{ maxWidth: "min(1400px, 96vw)", paddingBottom: "clamp(60px, 8vw, 120px)" }}>
+          <div className="text-center py-20 text-white/50">Loading posts...</div>
+        </section>
+      }>
+        <BlogContent />
+      </Suspense>
     </main>
   );
 }

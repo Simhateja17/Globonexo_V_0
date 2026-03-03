@@ -1,32 +1,31 @@
-const stats = [
-  { value: "9", label: "Countries" },
-  { value: "3", label: "Continents" },
-  { value: "320", label: "IT talents in our pool" },
-  { value: "15", label: "Industries" },
-];
+import type { HeroSection } from "@/lib/types/cms";
 
-const conicBorder: React.CSSProperties = {
-  background:
-    "conic-gradient(from 179.78deg at 50% 50%, rgba(255,255,255,0.07) -54.98deg, #397D4F 52.13deg, rgba(255,255,255,0.04) 125.06deg, #FFFFFF 235.09deg, rgba(255,255,255,0.07) 305.02deg, #397D4F 412.13deg)",
-  borderRadius: "36px",
-  padding: "1px",
-  aspectRatio: "1 / 1",
-};
-
-const statCardInner: React.CSSProperties = {
-  background: "rgba(6, 10, 6, 1)",
-  borderRadius: "36px",
-  boxShadow: "0px 16px 64px 0px rgba(57,125,79,0.5)",
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  justifyContent: "center",
-  width: "100%",
-  height: "100%",
-  padding: "clamp(12px, 1.5vw, 24px)",
-};
+interface FeaturesSectionProps {
+  data?: HeroSection | null;
+}
 
 function StatCard({ value, label }: { value: string; label: string }) {
+  const conicBorder: React.CSSProperties = {
+    background:
+      "conic-gradient(from 179.78deg at 50% 50%, rgba(255,255,255,0.07) -54.98deg, #397D4F 52.13deg, rgba(255,255,255,0.04) 125.06deg, #FFFFFF 235.09deg, rgba(255,255,255,0.07) 305.02deg, #397D4F 412.13deg)",
+    borderRadius: "36px",
+    padding: "1px",
+    aspectRatio: "1 / 1",
+  };
+
+  const statCardInner: React.CSSProperties = {
+    background: "rgba(6, 10, 6, 1)",
+    borderRadius: "36px",
+    boxShadow: "0px 16px 64px 0px rgba(57,125,79,0.5)",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    height: "100%",
+    padding: "clamp(12px, 1.5vw, 24px)",
+  };
+
   return (
     <div style={conicBorder}>
       <div style={statCardInner}>
@@ -60,7 +59,26 @@ function StatCard({ value, label }: { value: string; label: string }) {
   );
 }
 
-export function FeaturesSection() {
+const defaultStats = [
+  { value: "9", label: "Countries" },
+  { value: "3", label: "Continents" },
+  { value: "320", label: "IT talents in our pool" },
+  { value: "15", label: "Industries" },
+];
+
+export function FeaturesSection({ data }: FeaturesSectionProps) {
+  const heading = data?.title ?? "The Best IT Solutions Since 2015";
+  const body1 =
+    data?.description ??
+    "At Globonexo, we implement innovative IT solutions focused on the evolution, adaptation, and growth of your business.";
+  const extra = data?.extra_data as Record<string, unknown> | null;
+  const body2 =
+    (extra?.body2 as string) ??
+    "Our emphasis on quality, efficiency, and long-term partnerships ensures that every project delivers tangible results and lasting success.";
+  const stats = (extra?.stats as Array<{ value: string; label: string }>) ?? defaultStats;
+  const ctaText = data?.cta_text ?? "Join Now";
+  const ctaLink = data?.cta_link ?? "#";
+
   return (
     <section
       className="relative"
@@ -120,7 +138,7 @@ export function FeaturesSection() {
             backgroundClip: "text",
           }}
         >
-          The Best IT Solutions Since 2015
+          {heading}
         </h2>
 
         {/* Two-column layout: text left, stats right */}
@@ -144,8 +162,7 @@ export function FeaturesSection() {
                 marginBottom: "1.2em",
               }}
             >
-              At Globonexo, we implement innovative IT solutions focused on the
-              evolution, adaptation, and growth of your business.
+              {body1}
             </p>
             <p
               style={{
@@ -157,13 +174,11 @@ export function FeaturesSection() {
                 marginBottom: "clamp(28px, 3vw, 48px)",
               }}
             >
-              Our emphasis on quality, efficiency, and long-term partnerships
-              ensures that every project delivers tangible results and lasting
-              success.
+              {body2}
             </p>
 
             <a
-              href="#"
+              href={ctaLink}
               style={{
                 display: "inline-block",
                 fontFamily: "Inter, sans-serif",
@@ -179,11 +194,11 @@ export function FeaturesSection() {
                 cursor: "pointer",
               }}
             >
-              Join Now
+              {ctaText}
             </a>
           </div>
 
-          {/* Right column — 2×2 stat cards */}
+          {/* Right column — 2x2 stat cards */}
           <div
             style={{
               flex: "0 1 clamp(300px, 30vw, 440px)",
