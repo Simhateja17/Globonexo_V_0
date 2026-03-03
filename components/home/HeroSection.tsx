@@ -1,19 +1,20 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
+import { getTranslations } from "next-intl/server";
 import type { HeroSection as HeroSectionType } from "@/lib/types/cms";
 
 interface HeroSectionProps {
   data?: HeroSectionType | null;
 }
 
-export function HeroSection({ data }: HeroSectionProps) {
-  const title = data?.title ?? "International IT & AI Expert Hub For Your Universal Success";
-  const description =
-    data?.description ??
-    "Globonexo is an international IT consulting company that helps European businesses grow through AI-driven technologies and strong engineering expertise. We partner closely with organisations to build intelligent, efficient, and future-ready systems, using AI, automation, and modern IT practices to drive real business results and long-term growth.";
-  const ctaText = data?.cta_text ?? "Join Us";
+export async function HeroSection({ data }: HeroSectionProps) {
+  const t = await getTranslations("hero");
+
+  const title = data?.title ?? t("defaultTitle");
+  const description = data?.description ?? t("defaultDescription");
+  const ctaText = data?.cta_text ?? t("joinUs");
   const ctaLink = data?.cta_link ?? "/join";
   const extra = data?.extra_data as Record<string, string> | null;
-  const cta2Text = extra?.cta2_text ?? "Schedule a Consultation";
+  const cta2Text = extra?.cta2_text ?? t("scheduleConsultation");
   const cta2Link = extra?.cta2_link ?? "/consultation";
 
   return (

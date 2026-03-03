@@ -4,6 +4,7 @@ import { AdminSidebar } from "@/components/admin/sidebar";
 import { Toaster } from "@/components/ui/sonner";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { ThemeProvider } from "next-themes";
 
 function PageLoader() {
   return (
@@ -55,8 +56,15 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <Suspense fallback={<PageLoader />}>
-      <AuthenticatedAdmin>{children}</AuthenticatedAdmin>
-    </Suspense>
+    <ThemeProvider
+      attribute="class"
+      defaultTheme="dark"
+      enableSystem={false}
+      disableTransitionOnChange
+    >
+      <Suspense fallback={<PageLoader />}>
+        <AuthenticatedAdmin>{children}</AuthenticatedAdmin>
+      </Suspense>
+    </ThemeProvider>
   );
 }

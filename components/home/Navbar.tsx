@@ -1,21 +1,28 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { ChevronDown, Menu, X } from "lucide-react";
-
-const navLinks = [
-  { label: "Home", href: "/", hasDropdown: true },
-  { label: "Services", href: "/services", hasDropdown: true },
-  { label: "About Us", href: "/about" },
-  { label: "Global Presence", href: "/global-presence" },
-  { label: "Blogs", href: "/blogs" },
-];
+import { ChevronDown, Menu, X, Globe } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { Link, usePathname, useRouter } from "@/i18n/navigation";
+import { useLocale } from "next-intl";
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [visible, setVisible] = useState(true);
+  const t = useTranslations("nav");
+  const tLang = useTranslations("language");
+  const locale = useLocale();
+  const pathname = usePathname();
+  const router = useRouter();
+
+  const navLinks = [
+    { label: t("home"), href: "/" as const, hasDropdown: true },
+    { label: t("services"), href: "/services" as const, hasDropdown: true },
+    { label: t("aboutUs"), href: "/about" as const },
+    { label: t("globalPresence"), href: "/global-presence" as const },
+    { label: t("blogs"), href: "/blogs" as const },
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -24,6 +31,11 @@ export function Navbar() {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const switchLocale = () => {
+    const nextLocale = locale === "en" ? "de" : "en";
+    router.replace(pathname, { locale: nextLocale });
+  };
 
   return (
     <nav
@@ -35,10 +47,6 @@ export function Navbar() {
         transition: "opacity 0.3s ease",
       }}
     >
-      {/*
-        Matches hero content width: min(1280px, 96vw)
-        Fluid height and padding for all desktop sizes
-      */}
       <div
         className="w-full flex items-center justify-between relative"
         style={{
@@ -53,7 +61,7 @@ export function Navbar() {
           borderRadius: "clamp(12px, 1.5vw, 20px)",
         }}
       >
-        {/* Logo — Layer 1 SVG, 189.15×29.22, at x:40 y:18 */}
+        {/* Logo */}
         <div className="flex items-center">
           <Link href="/" className="flex items-center">
             <Image
@@ -66,7 +74,7 @@ export function Navbar() {
           </Link>
         </div>
 
-        {/* Centre nav pill — fluid width, matches hero content scale */}
+        {/* Centre nav pill */}
         <div
           className="hidden lg:flex items-center absolute left-1/2 -translate-x-1/2"
           style={{
@@ -84,7 +92,7 @@ export function Navbar() {
             className="flex items-center gap-[3px] text-white/60 hover:text-white transition-colors whitespace-nowrap"
             style={{ fontSize: "clamp(13px, 1vw, 15px)", lineHeight: 1.5 }}
           >
-            Home
+            {t("home")}
             <ChevronDown className="w-3.5 h-3.5 opacity-60" />
           </Link>
 
@@ -94,7 +102,7 @@ export function Navbar() {
             className="text-white/60 hover:text-white transition-colors whitespace-nowrap"
             style={{ fontSize: "clamp(13px, 1vw, 15px)", lineHeight: 1.5 }}
           >
-            About Us
+            {t("aboutUs")}
           </Link>
 
           {/* Services with caret */}
@@ -103,7 +111,7 @@ export function Navbar() {
             className="flex items-center gap-[3px] text-white/60 hover:text-white transition-colors whitespace-nowrap"
             style={{ fontSize: "clamp(13px, 1vw, 15px)", lineHeight: 1.5 }}
           >
-            Services
+            {t("services")}
             <ChevronDown className="w-3.5 h-3.5 opacity-60" />
           </Link>
 
@@ -113,7 +121,7 @@ export function Navbar() {
             className="text-white/60 hover:text-white transition-colors whitespace-nowrap"
             style={{ fontSize: "clamp(13px, 1vw, 15px)", lineHeight: 1.5 }}
           >
-            Global Presence
+            {t("globalPresence")}
           </Link>
 
           {/* Blogs */}
@@ -122,24 +130,24 @@ export function Navbar() {
             className="text-white/60 hover:text-white transition-colors whitespace-nowrap"
             style={{ fontSize: "clamp(13px, 1vw, 15px)", lineHeight: 1.5 }}
           >
-            Blogs
+            {t("blogs")}
           </Link>
         </div>
 
-        {/* Right side: Learn More + CTA button */}
+        {/* Right side: Language switcher + CTA button */}
         <div className="hidden lg:flex items-center gap-3 sm:gap-4">
-          <Link
-            href="/learn-more"
-            className="text-white/60 hover:text-white transition-colors whitespace-nowrap"
+          {/* Language switcher */}
+          <button
+            onClick={switchLocale}
+            className="flex items-center gap-1.5 text-white/60 hover:text-white transition-colors whitespace-nowrap"
             style={{ fontSize: "clamp(13px, 1vw, 15px)", lineHeight: 1.5 }}
+            title={tLang("switchTo")}
           >
-            Learn More
-          </Link>
+            <Globe className="w-4 h-4" />
+            {tLang("current")}
+          </button>
 
-          {/*
-            CTA button — fluid sizing for all desktop sizes
-            background: #35BC47
-          */}
+          {/* CTA button */}
           <div
             style={{
               padding: "clamp(4px, 0.5vw, 6px)",
@@ -163,7 +171,7 @@ export function Navbar() {
                 backdropFilter: "blur(14px)",
               }}
             >
-              Join waitlist
+              {t("joinWaitlist")}
             </button>
           </div>
         </div>
@@ -190,7 +198,7 @@ export function Navbar() {
           <div className="flex flex-col gap-1">
             {navLinks.map((item) => (
               <Link
-                key={item.label}
+                key={item.href}
                 href={item.href}
                 className="flex items-center justify-between px-4 py-3 text-[13px] text-white/60 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
                 onClick={() => setMobileMenuOpen(false)}
@@ -199,12 +207,25 @@ export function Navbar() {
                 {item.hasDropdown && <ChevronDown className="w-4 h-4 opacity-60" />}
               </Link>
             ))}
+
+            {/* Mobile language switcher */}
+            <button
+              onClick={() => {
+                switchLocale();
+                setMobileMenuOpen(false);
+              }}
+              className="flex items-center gap-2 px-4 py-3 text-[13px] text-white/60 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
+            >
+              <Globe className="w-4 h-4" />
+              {tLang("switchTo")}
+            </button>
+
             <hr className="border-white/10 my-2" />
             <button
               className="mt-1 text-white text-sm font-normal text-center py-2 rounded-lg"
               style={{ background: "#35BC47" }}
             >
-              Join waitlist
+              {t("joinWaitlist")}
             </button>
           </div>
         </div>

@@ -1,15 +1,17 @@
 import { Suspense } from "react";
 import Image from "next/image";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 import { Navbar } from "@/components/home";
 import { fetchHeroSection } from "@/lib/queries/cms";
+import type { Locale } from "@/lib/types/cms";
 
-async function GlobalPresenceContent() {
-  const data = await fetchHeroSection("global-presence", "hero");
+async function GlobalPresenceContent({ locale }: { locale: Locale }) {
+  const t = await getTranslations("globalPresence");
+  const data = await fetchHeroSection("global-presence", "hero", locale);
 
-  const title = data?.title ?? "Global Presence";
+  const title = data?.title ?? t("defaultTitle");
   const description =
-    data?.description ??
-    "Explore our international footprint across Europe, India, and North America.";
+    data?.description ?? t("defaultDescription");
   const extra = data?.extra_data as Record<string, string> | null;
   const mapImage = extra?.map_image ?? "/images/map.webp";
 
@@ -73,7 +75,7 @@ async function GlobalPresenceContent() {
         <div style={{ marginTop: "clamp(40px, 5vw, 80px)" }}>
           <Image
             src={mapImage}
-            alt="Globonexo world map showing presence across Europe, India, and North America"
+            alt={t("mapAlt")}
             width={2400}
             height={1312}
             sizes="(max-width: 768px) 96vw, min(1400px, 96vw)"
@@ -86,7 +88,15 @@ async function GlobalPresenceContent() {
   );
 }
 
-export default function GlobalPresencePage() {
+export default async function GlobalPresencePage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const cmsLocale = locale as Locale;
+
   return (
     <main
       className="relative min-h-screen bg-[#000000]"
@@ -121,7 +131,7 @@ export default function GlobalPresencePage() {
 
       <Navbar />
       <Suspense>
-        <GlobalPresenceContent />
+        <GlobalPresenceContent locale={cmsLocale} />
       </Suspense>
     </main>
   );

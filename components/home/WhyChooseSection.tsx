@@ -1,36 +1,34 @@
+import { getTranslations } from "next-intl/server";
 import type { HeroSection } from "@/lib/types/cms";
 
 interface WhyChooseSectionProps {
   data?: HeroSection | null;
 }
 
-const defaultCards = [
-  {
-    title: "Proven Technical Expertise",
-    description:
-      "Our team brings strong engineering foundations and hands-on experience across consulting, product development, and team augmentation. We focus on building solutions that work in real business environments.",
-  },
-  {
-    title: "Global Talent, Local Alignment",
-    description:
-      "We provide access to skilled professionals from India and Eastern Europe who work in sync with your business context, ensuring smooth collaboration, clear communication, and reliable execution.",
-  },
-  {
-    title: "Cost - Effective Delivery",
-    description:
-      "Our delivery models help optimize costs without compromising on quality, security, or timelines, giving you predictable outcomes and better control over IT spend.",
-  },
-  {
-    title: "Flexibility and Scalability",
-    description:
-      "Scale teams and services based on your project needs, whether short-term support or long-term collaboration, with full transparency and control.",
-  },
-  {
-    title: "Practical Use of Automation & AI",
-    description:
-      "We apply automation and AI selectively where they improve efficiency, accuracy, or decision-making, focusing on measurable impact rather than experimentation.",
-  },
-];
+function getDefaultCards(t: (key: string) => string) {
+  return [
+    {
+      title: t("card1Title"),
+      description: t("card1Desc"),
+    },
+    {
+      title: t("card2Title"),
+      description: t("card2Desc"),
+    },
+    {
+      title: t("card3Title"),
+      description: t("card3Desc"),
+    },
+    {
+      title: t("card4Title"),
+      description: t("card4Desc"),
+    },
+    {
+      title: t("card5Title"),
+      description: t("card5Desc"),
+    },
+  ];
+}
 
 const conicBorder: React.CSSProperties = {
   borderRadius: "36px",
@@ -84,13 +82,13 @@ function WhyCard({ title, description }: { title: string; description: string })
   );
 }
 
-export function WhyChooseSection({ data }: WhyChooseSectionProps) {
-  const heading = data?.title ?? "Why our clients choose Globonexo";
-  const subtitle =
-    data?.subtitle ??
-    "We enable seamless collaboration by applying AI-driven tools, intelligent automation, and modern IT architectures. Our focus on quality, innovation, and long-term value helps businesses achieve faster decision-making, improved efficiency, and stronger competitive positioning.";
+export async function WhyChooseSection({ data }: WhyChooseSectionProps) {
+  const t = await getTranslations("whyChoose");
+
+  const heading = data?.title ?? t("defaultHeading");
+  const subtitle = data?.subtitle ?? t("defaultSubtitle");
   const extra = data?.extra_data as Record<string, unknown> | null;
-  const cards = (extra?.cards as Array<{ title: string; description: string }>) ?? defaultCards;
+  const cards = (extra?.cards as Array<{ title: string; description: string }>) ?? getDefaultCards(t);
 
   return (
     <section

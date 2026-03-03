@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import Image from "next/image";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 import { Navbar, FaqSection, ContactSection } from "@/components/home";
 import {
   fetchTeamMembers,
@@ -7,7 +8,7 @@ import {
   fetchHeroSections,
   fetchSiteSetting,
 } from "@/lib/queries/cms";
-import type { HeroSection, TeamMember } from "@/lib/types/cms";
+import type { HeroSection, TeamMember, Locale } from "@/lib/types/cms";
 
 /* ─── gradient heading helper ──────────────────────────────────────────── */
 const gradientHeadingStyle: React.CSSProperties = {
@@ -27,18 +28,16 @@ const gradientHeadingStyle: React.CSSProperties = {
 /* ═══════════════════════════════════════════════════════════════════════════
    Section 1 – About Hero
    ═══════════════════════════════════════════════════════════════════════ */
-function AboutHero({ data }: { data?: HeroSection | null }) {
-  const title = data?.title ?? "About us";
+async function AboutHero({ data }: { data?: HeroSection | null }) {
+  const t = await getTranslations("about");
+  const title = data?.title ?? t("defaultTitle");
   const description =
-    data?.description ??
-    "Although, final stages of the internal network gives a complete experience of The Parameter of Speculative Environment";
-  const subtitle = data?.subtitle ?? "The best IT solution since 2015";
+    data?.description ?? t("defaultDescription");
+  const subtitle = data?.subtitle ?? t("defaultSubtitle");
   const extra = data?.extra_data as Record<string, string> | null;
-  const body2 =
-    extra?.body2 ??
-    "At Globonexo, we implement innovative IT solutions focused on the evolution, adaptation, and growth of your business. From outstaffing and product development to AI-driven automation, we deliver custom technology that scales with your ambitions.";
+  const body2 = extra?.body2 ?? t("defaultBody2");
   const illustration = extra?.illustration ?? "/images/about-illustration.webp";
-  const ctaText = data?.cta_text ?? "Join Now";
+  const ctaText = data?.cta_text ?? t("joinNow");
 
   return (
     <section
@@ -160,7 +159,7 @@ function AboutHero({ data }: { data?: HeroSection | null }) {
           >
             <Image
               src={illustration}
-              alt="IT solutions illustration"
+              alt={t("illustrationAlt")}
               width={800}
               height={1038}
               sizes="(max-width: 768px) 80vw, 323px"
@@ -177,15 +176,16 @@ function AboutHero({ data }: { data?: HeroSection | null }) {
 /* ═══════════════════════════════════════════════════════════════════════════
    Section 2 – Journey & Background
    ═══════════════════════════════════════════════════════════════════════ */
-function JourneySection({ data }: { data?: HeroSection | null }) {
-  const heading = data?.title ?? "The journey and Background of the Company";
+async function JourneySection({ data }: { data?: HeroSection | null }) {
+  const t = await getTranslations("about");
+  const heading = data?.title ?? t("journeyHeading");
   const extra = data?.extra_data as Record<string, unknown> | null;
   const paragraphs = (extra?.paragraphs as string[]) ?? [
-    "Globonexo was born out of a shared vision between two passionate entrepreneurs in Warsaw, Poland. After countless discussions, deep research, and leveraging our international experience and expertise, we recognised a growing need \u2013 businesses across Europe and the U.S. required skilled IT talent to drive innovation, but access to top developers was often limited by local availability and high costs.",
-    "This insight prompted us to start Globonexo: a company that unites businesses with global IT talent through strategic outstaffing solutions. From its very beginning, our goal was to bridge the gap between companies and talented engineers with the help of the development services from our Indian, Polish, Ukrainian, and Moldovan centres with high-quality service providers.",
-    "Starting as an idea over brainstorming sessions in Warsaw, the company has grown into a firm serving clients from various industries such as automotive, fintech, healthcare, and manufacturing.",
-    "Our story at Globonexo is that of collaboration, growth, and global connectivity. We believe that innovation knows no borders, and by empowering companies with the right talent, we help them unlock new possibilities and scale to greater heights.",
-    "This is just the beginning \u2013 and we\u2019re excited to grow alongside our clients, partners, and dedicated team of developers worldwide.",
+    t("journeyP1"),
+    t("journeyP2"),
+    t("journeyP3"),
+    t("journeyP4"),
+    t("journeyP5"),
   ];
 
   return (
@@ -234,17 +234,17 @@ function JourneySection({ data }: { data?: HeroSection | null }) {
 /* ═══════════════════════════════════════════════════════════════════════════
    Section 3 – Executives
    ═══════════════════════════════════════════════════════════════════════ */
-function ExecutivesSection({
+async function ExecutivesSection({
   data,
   teamMembers,
 }: {
   data?: HeroSection | null;
   teamMembers: TeamMember[];
 }) {
-  const heading = data?.title ?? "Bios and photos of key executives and managers";
+  const t = await getTranslations("about");
+  const heading = data?.title ?? t("executivesHeading");
   const subtitle =
-    data?.subtitle ??
-    "Meet the talented individuals who drive our company forward with their expertise and dedication.";
+    data?.subtitle ?? t("executivesSubtitle");
 
   const executives =
     teamMembers.length > 0
@@ -254,9 +254,9 @@ function ExecutivesSection({
           photo: m.photo_url ?? "/images/bodhi-dymas.webp",
         }))
       : [
-          { name: "Talia Taylor", title: "Digital Marketing Director @ Quantum", photo: "/images/bodhi-dymas.webp" },
-          { name: "Talia Taylor", title: "Digital Marketing Director @ Quantum", photo: "/images/bodhi-dymas.webp" },
-          { name: "Talia Taylor", title: "Digital Marketing Director @ Quantum", photo: "/images/bodhi-dymas.webp" },
+          { name: t("defaultExecName"), title: t("defaultExecTitle"), photo: "/images/bodhi-dymas.webp" },
+          { name: t("defaultExecName"), title: t("defaultExecTitle"), photo: "/images/bodhi-dymas.webp" },
+          { name: t("defaultExecName"), title: t("defaultExecTitle"), photo: "/images/bodhi-dymas.webp" },
         ];
 
   return (
@@ -419,11 +419,11 @@ function ExecutivesSection({
 /* ═══════════════════════════════════════════════════════════════════════════
    Async data-fetching component wrapped in Suspense
    ═══════════════════════════════════════════════════════════════════════ */
-async function AboutContent() {
+async function AboutContent({ locale }: { locale: Locale }) {
   const [heroSections, teamMembers, faqs, companySetting] = await Promise.all([
-    fetchHeroSections("about"),
-    fetchTeamMembers(),
-    fetchFAQs(),
+    fetchHeroSections("about", locale),
+    fetchTeamMembers(locale),
+    fetchFAQs(locale),
     fetchSiteSetting("company"),
   ]);
 
@@ -457,7 +457,15 @@ async function AboutContent() {
 /* ═══════════════════════════════════════════════════════════════════════════
    Page
    ═══════════════════════════════════════════════════════════════════════ */
-export default function AboutPage() {
+export default async function AboutPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const cmsLocale = locale as Locale;
+
   return (
     <main
       className="relative min-h-screen bg-[#000000]"
@@ -510,7 +518,7 @@ export default function AboutPage() {
 
       <Navbar />
       <Suspense>
-        <AboutContent />
+        <AboutContent locale={cmsLocale} />
       </Suspense>
     </main>
   );

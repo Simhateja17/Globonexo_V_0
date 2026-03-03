@@ -12,7 +12,9 @@ import { createBlogPost, updateBlogPost } from "@/lib/actions/cms";
 import { toast } from "sonner";
 import { ArrowLeft, Save, Eye, Image as ImageIcon } from "lucide-react";
 import Link from "next/link";
-import type { BlogPost } from "@/lib/types/cms";
+import type { BlogPost, Locale } from "@/lib/types/cms";
+
+const LOCALE_OPTIONS: Locale[] = ["en", "de"];
 
 interface BlogPostFormProps {
   post?: BlogPost;
@@ -44,6 +46,7 @@ export function BlogPostForm({ post }: BlogPostFormProps) {
   const [status, setStatus] = useState<"draft" | "published">(
     post?.status || "draft"
   );
+  const [locale, setLocale] = useState<Locale>(post?.locale || "en");
   const [slugManuallyEdited, setSlugManuallyEdited] = useState(false);
 
   const handleTitleChange = (value: string) => {
@@ -76,6 +79,7 @@ export function BlogPostForm({ post }: BlogPostFormProps) {
         meta_title: metaTitle || null,
         meta_description: metaDescription || null,
         status: saveStatus,
+        locale,
         published_at:
           saveStatus === "published" && !post?.published_at
             ? new Date().toISOString()
@@ -196,6 +200,22 @@ export function BlogPostForm({ post }: BlogPostFormProps) {
 
         {/* Sidebar */}
         <div className="space-y-6">
+          {/* Locale selector */}
+          <div className="rounded-lg border border-border p-4">
+            <Label>Locale</Label>
+            <select
+              className="mt-1.5 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+              value={locale}
+              onChange={(e) => setLocale(e.target.value as Locale)}
+            >
+              {LOCALE_OPTIONS.map((loc) => (
+                <option key={loc} value={loc}>
+                  {loc === "en" ? "English" : "German"} ({loc.toUpperCase()})
+                </option>
+              ))}
+            </select>
+          </div>
+
           {/* Cover Image */}
           <div className="rounded-lg border border-border p-4">
             <Label>Cover Image</Label>

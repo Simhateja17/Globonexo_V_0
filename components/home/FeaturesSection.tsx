@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import type { HeroSection } from "@/lib/types/cms";
 
 interface FeaturesSectionProps {
@@ -59,24 +60,22 @@ function StatCard({ value, label }: { value: string; label: string }) {
   );
 }
 
-const defaultStats = [
-  { value: "9", label: "Countries" },
-  { value: "3", label: "Continents" },
-  { value: "320", label: "IT talents in our pool" },
-  { value: "15", label: "Industries" },
-];
+export async function FeaturesSection({ data }: FeaturesSectionProps) {
+  const t = await getTranslations("features");
 
-export function FeaturesSection({ data }: FeaturesSectionProps) {
-  const heading = data?.title ?? "The Best IT Solutions Since 2015";
-  const body1 =
-    data?.description ??
-    "At Globonexo, we implement innovative IT solutions focused on the evolution, adaptation, and growth of your business.";
+  const defaultStats = [
+    { value: "9", label: t("countries") },
+    { value: "3", label: t("continents") },
+    { value: "320", label: t("itTalents") },
+    { value: "15", label: t("industries") },
+  ];
+
+  const heading = data?.title ?? t("defaultHeading");
+  const body1 = data?.description ?? t("defaultDescription");
   const extra = data?.extra_data as Record<string, unknown> | null;
-  const body2 =
-    (extra?.body2 as string) ??
-    "Our emphasis on quality, efficiency, and long-term partnerships ensures that every project delivers tangible results and lasting success.";
+  const body2 = (extra?.body2 as string) ?? t("defaultBody2");
   const stats = (extra?.stats as Array<{ value: string; label: string }>) ?? defaultStats;
-  const ctaText = data?.cta_text ?? "Join Now";
+  const ctaText = data?.cta_text ?? t("joinNow");
   const ctaLink = data?.cta_link ?? "#";
 
   return (

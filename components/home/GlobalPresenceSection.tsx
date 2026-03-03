@@ -1,12 +1,15 @@
 import Image from "next/image";
+import { getTranslations } from "next-intl/server";
 import type { HeroSection } from "@/lib/types/cms";
 
 interface GlobalPresenceSectionProps {
   data?: HeroSection | null;
 }
 
-export function GlobalPresenceSection({ data }: GlobalPresenceSectionProps) {
-  const heading = data?.title ?? "Global Presence";
+export async function GlobalPresenceSection({ data }: GlobalPresenceSectionProps) {
+  const t = await getTranslations("globalPresence");
+
+  const heading = data?.title ?? t("defaultTitle");
   const extra = data?.extra_data as Record<string, string> | null;
   const mapImage = extra?.map_image ?? "/images/map.webp";
 
@@ -60,7 +63,7 @@ export function GlobalPresenceSection({ data }: GlobalPresenceSectionProps) {
 
           <Image
             src={mapImage}
-            alt="World map showing global presence"
+            alt={t("mapAlt")}
             width={2400}
             height={1312}
             sizes="(max-width: 768px) 96vw, min(1300px, 96vw)"

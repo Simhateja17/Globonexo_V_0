@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import Image from "next/image";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 import {
   Navbar,
   WhyChooseSection,
@@ -11,9 +12,10 @@ import {
   fetchTestimonials,
   fetchFAQs,
   fetchHeroSections,
+  fetchHeroSection,
   fetchSiteSetting,
 } from "@/lib/queries/cms";
-import type { HeroSection } from "@/lib/types/cms";
+import type { HeroSection, Locale } from "@/lib/types/cms";
 
 /* ─── gradient heading helper ──────────────────────────────────────────── */
 const gradientHeadingStyle: React.CSSProperties = {
@@ -57,11 +59,11 @@ const greenButtonStyle: React.CSSProperties = {
 /* ═══════════════════════════════════════════════════════════════════════════
    Section 1 – Hero
    ═══════════════════════════════════════════════════════════════════════ */
-function HeroSection({ data }: { data?: HeroSection | null }) {
-  const title = data?.title ?? "Software Testing";
+async function ServicesHeroSection({ data }: { data?: HeroSection | null }) {
+  const t = await getTranslations("servicesPage");
+  const title = data?.title ?? t("heroTitle");
   const description =
-    data?.description ??
-    "Ensure flawless performance with our comprehensive software testing solutions.";
+    data?.description ?? t("heroDescription");
 
   return (
     <section
@@ -126,17 +128,15 @@ function HeroSection({ data }: { data?: HeroSection | null }) {
 /* ═══════════════════════════════════════════════════════════════════════════
    Section 2 – End-to-End Software Testing Solutions
    ═══════════════════════════════════════════════════════════════════════ */
-function EndToEndSection({ data }: { data?: HeroSection | null }) {
-  const title = data?.title ?? "End-to-End Software Testing Solutions";
+async function EndToEndSection({ data }: { data?: HeroSection | null }) {
+  const t = await getTranslations("servicesPage");
+  const title = data?.title ?? t("endToEndTitle");
   const description =
-    data?.description ??
-    "Our comprehensive testing services cover every aspect of your software development lifecycle. From unit testing to integration testing, we ensure your applications perform flawlessly under all conditions.";
+    data?.description ?? t("endToEndDesc");
   const extra = data?.extra_data as Record<string, string> | null;
-  const body2 =
-    extra?.body2 ??
-    "We employ industry-leading methodologies and tools to identify and eliminate bugs before they reach your users, saving you time and resources while maintaining the highest quality standards.";
+  const body2 = extra?.body2 ?? t("endToEndBody2");
   const illustration = extra?.illustration ?? "/images/first_illustration.webp";
-  const ctaText = data?.cta_text ?? "Get Started";
+  const ctaText = data?.cta_text ?? t("getStarted");
 
   return (
     <section
@@ -186,7 +186,7 @@ function EndToEndSection({ data }: { data?: HeroSection | null }) {
           >
             <Image
               src={illustration}
-              alt="End-to-end software testing illustration"
+              alt={t("endToEndIllAlt")}
               width={1000}
               height={885}
               sizes="(max-width: 768px) 96vw, 40vw"
@@ -203,17 +203,15 @@ function EndToEndSection({ data }: { data?: HeroSection | null }) {
 /* ═══════════════════════════════════════════════════════════════════════════
    Section 3 – Automated Testing (illustration left, text right)
    ═══════════════════════════════════════════════════════════════════════ */
-function AutomatedSectionLeft({ data }: { data?: HeroSection | null }) {
-  const title = data?.title ?? "Automated Testing for Continuous Delivery";
+async function AutomatedSectionLeft({ data }: { data?: HeroSection | null }) {
+  const t = await getTranslations("servicesPage");
+  const title = data?.title ?? t("automatedLeftTitle");
   const description =
-    data?.description ??
-    "Our comprehensive testing services cover every aspect of your software development lifecycle. From unit testing to integration testing, we ensure your applications perform flawlessly under all conditions.";
+    data?.description ?? t("automatedLeftDesc");
   const extra = data?.extra_data as Record<string, string> | null;
-  const body2 =
-    extra?.body2 ??
-    "We employ industry-leading methodologies and tools to identify and eliminate bugs before they reach your users, saving you time and resources while maintaining the highest quality standards.";
+  const body2 = extra?.body2 ?? t("automatedLeftBody2");
   const illustration = extra?.illustration ?? "/images/second_illustration.webp";
-  const ctaText = data?.cta_text ?? "Learn Now";
+  const ctaText = data?.cta_text ?? t("learnNow");
 
   return (
     <section
@@ -249,7 +247,7 @@ function AutomatedSectionLeft({ data }: { data?: HeroSection | null }) {
           >
             <Image
               src={illustration}
-              alt="Automated testing illustration"
+              alt={t("automatedLeftIllAlt")}
               width={1000}
               height={944}
               sizes="(max-width: 768px) 96vw, 40vw"
@@ -290,17 +288,15 @@ function AutomatedSectionLeft({ data }: { data?: HeroSection | null }) {
 /* ═══════════════════════════════════════════════════════════════════════════
    Section 4 – Automated Testing (text left, illustration right)
    ═══════════════════════════════════════════════════════════════════════ */
-function AutomatedSectionRight({ data }: { data?: HeroSection | null }) {
-  const title = data?.title ?? "Automated Testing for Continuous Delivery";
+async function AutomatedSectionRight({ data }: { data?: HeroSection | null }) {
+  const t = await getTranslations("servicesPage");
+  const title = data?.title ?? t("automatedRightTitle");
   const description =
-    data?.description ??
-    "Accelerate your release cycles with our automated testing solutions. We build robust test suites that integrate seamlessly with your CI/CD pipeline, enabling faster and more reliable deployments.";
+    data?.description ?? t("automatedRightDesc");
   const extra = data?.extra_data as Record<string, string> | null;
-  const body2 =
-    extra?.body2 ??
-    "Our automation experts work with leading frameworks like Selenium, Cypress, and Playwright to create maintainable and scalable test automation that grows with your application.";
+  const body2 = extra?.body2 ?? t("automatedRightBody2");
   const illustration = extra?.illustration ?? "/images/third_illustration.webp";
-  const ctaText = data?.cta_text ?? "Learn Now";
+  const ctaText = data?.cta_text ?? t("learnNow");
 
   return (
     <section
@@ -350,7 +346,7 @@ function AutomatedSectionRight({ data }: { data?: HeroSection | null }) {
           >
             <Image
               src={illustration}
-              alt="Continuous delivery illustration"
+              alt={t("automatedRightIllAlt")}
               width={1000}
               height={1062}
               sizes="(max-width: 768px) 96vw, 40vw"
@@ -367,13 +363,13 @@ function AutomatedSectionRight({ data }: { data?: HeroSection | null }) {
 /* ═══════════════════════════════════════════════════════════════════════════
    Async data-fetching component wrapped in Suspense
    ═══════════════════════════════════════════════════════════════════════ */
-async function ServicesContent() {
+async function ServicesContent({ locale }: { locale: Locale }) {
   const [heroSections, testimonials, faqs, whyChooseData, companySetting] =
     await Promise.all([
-      fetchHeroSections("services"),
-      fetchTestimonials(),
-      fetchFAQs(),
-      (await import("@/lib/queries/cms")).fetchHeroSection("home", "why-choose"),
+      fetchHeroSections("services", locale),
+      fetchTestimonials(locale),
+      fetchFAQs(locale),
+      fetchHeroSection("home", "why-choose", locale),
       fetchSiteSetting("company"),
     ]);
 
@@ -386,7 +382,7 @@ async function ServicesContent() {
 
   return (
     <>
-      <HeroSection data={heroData} />
+      <ServicesHeroSection data={heroData} />
       <EndToEndSection data={endToEndData} />
       <AutomatedSectionLeft data={automatedLeftData} />
       <AutomatedSectionRight data={automatedRightData} />
@@ -411,7 +407,15 @@ async function ServicesContent() {
 /* ═══════════════════════════════════════════════════════════════════════════
    Page
    ═══════════════════════════════════════════════════════════════════════ */
-export default function ServicesPage() {
+export default async function ServicesPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const cmsLocale = locale as Locale;
+
   return (
     <main
       className="relative min-h-screen bg-[#000000]"
@@ -464,7 +468,7 @@ export default function ServicesPage() {
 
       <Navbar />
       <Suspense>
-        <ServicesContent />
+        <ServicesContent locale={cmsLocale} />
       </Suspense>
     </main>
   );

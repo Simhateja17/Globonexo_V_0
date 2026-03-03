@@ -1,0 +1,152 @@
+{
+  "nav": {
+    "home": "Startseite",
+    "services": "Dienstleistungen",
+    "aboutUs": "Über uns",
+    "globalPresence": "Globale Präsenz",
+    "blogs": "Blog",
+    "learnMore": "Mehr erfahren",
+    "joinWaitlist": "Warteliste beitreten"
+  },
+  "hero": {
+    "defaultTitle": "Internationaler IT- & KI-Experten-Hub für Ihren universellen Erfolg",
+    "defaultDescription": "Globonexo ist ein internationales IT-Beratungsunternehmen, das europäischen Unternehmen hilft, durch KI-gesteuerte Technologien und starke Engineering-Expertise zu wachsen.",
+    "joinUs": "Mitmachen",
+    "scheduleConsultation": "Beratung vereinbaren"
+  },
+  "services": {
+    "badge": "Unsere Dienstleistungen",
+    "defaultHeading": "Was bieten wir an?",
+    "defaultSubtitle": "Bei Globonexo liefern wir IT-Dienstleistungen, die auf Leistung, Zuverlässigkeit und Skalierbarkeit ausgelegt sind.",
+    "fallbackCard1Title": "Herausragende Bestandslösungen",
+    "fallbackCard1Desc": "Expertise in Personalverstärkung, dedizierten Teams, EOR (Employer of Record) und PEO (Professional Employer Organization) Modellen.",
+    "fallbackCard2Title": "Maßgeschneiderte Lösungen für individuelle Anforderungen",
+    "fallbackCard2Desc": "Maßgeschneiderte IT- und Softwarelösungen zur Bewältigung spezifischer Herausforderungen und Ziele. Schwerpunkt auf Skalierbarkeit, Innovation und Ausrichtung an Geschäftsstrategien.",
+    "fallbackCard3Title": "Software-Testdienstleistungen",
+    "fallbackCard3Desc": "Umfassende QA- und Testdienstleistungen für robuste, leistungsstarke und fehlerfreie Software. Spezialisiert auf manuelle, automatisierte und Performance-Tests für verschiedene Branchen.",
+    "fallbackCard4Title": "Kosteneffizienz",
+    "fallbackCard4Desc": "Sparen Sie bei Rekrutierungs- und Betriebskosten ohne Qualitätseinbußen."
+  },
+  "features": {
+    "defaultHeading": "Die besten IT-Lösungen seit 2015",
+    "defaultDescription": "Bei Globonexo setzen wir innovative IT-Lösungen um, die auf die Evolution, Anpassung und das Wachstum Ihres Unternehmens ausgerichtet sind.",
+    "defaultBody2": "Unser Fokus auf Qualität, Effizienz und langfristige Partnerschaften stellt sicher, dass jedes Projekt greifbare Ergebnisse und nachhaltigen Erfolg liefert.",
+    "joinNow": "Jetzt beitreten",
+    "countries": "Länder",
+    "continents": "Kontinente",
+    "itTalents": "IT-Talente in unserem Pool",
+    "industries": "Branchen"
+  },
+  "whyChoose": {
+    "defaultHeading": "Warum unsere Kunden Globonexo wählen",
+    "defaultSubtitle": "Wir ermöglichen nahtlose Zusammenarbeit durch den Einsatz von KI-gesteuerten Tools, intelligenter Automatisierung und modernen IT-Architekturen.",
+    "card1Title": "Bewährte technische Expertise",
+    "card1Desc": "Unser Team bringt starke technische Grundlagen und praktische Erfahrung in den Bereichen Beratung, Produktentwicklung und Teamverstärkung mit. Wir konzentrieren uns auf den Aufbau von Lösungen, die in realen Geschäftsumgebungen funktionieren.",
+    "card2Title": "Globale Talente, lokale Ausrichtung",
+    "card2Desc": "Wir bieten Zugang zu qualifizierten Fachkräften aus Indien und Osteuropa, die im Einklang mit Ihrem Geschäftskontext arbeiten und eine reibungslose Zusammenarbeit, klare Kommunikation und zuverlässige Umsetzung gewährleisten.",
+    "card3Title": "Kosteneffektive Bereitstellung",
+    "card3Desc": "Unsere Bereitstellungsmodelle helfen, Kosten zu optimieren, ohne bei Qualität, Sicherheit oder Zeitplänen Kompromisse einzugehen – für planbare Ergebnisse und bessere Kontrolle über IT-Ausgaben.",
+    "card4Title": "Flexibilität und Skalierbarkeit",
+    "card4Desc": "Skalieren Sie Teams und Dienstleistungen nach Ihren Projektanforderungen – ob kurzfristige Unterstützung oder langfristige Zusammenarbeit – mit voller Transparenz und Kontrolle.",
+    "card5Title": "Praktischer Einsatz von Automatisierung & KI",
+    "card5Desc": "Wir setzen Automatisierung und KI gezielt dort ein, wo sie Effizienz, Genauigkeit oder Entscheidungsfindung verbessern – mit Fokus auf messbare Wirkung statt Experimente."
+  },
+  "testimonials": {
+    "defaultHeading": "Kundenstimmen",
+    "testimonial1Quote": "Globonexo hat unsere digitale Strategie komplett transformiert. Ihr Team lieferte eine skalierbare Plattform, die unsere Konversionsraten im ersten Quartal um 40% steigerte. Die Zusammenarbeit war von Anfang an nahtlos.",
+    "testimonial1Name": "Talia Taylor",
+    "testimonial1Title": "Direktorin für digitales Marketing @ Quantum",
+    "testimonial2Quote": "Die Zusammenarbeit mit Globonexo war ein Wendepunkt für unser Engineering-Team. Sie stellten erstklassige Talente bereit, die sich perfekt in unsere Arbeitsabläufe integrierten und uns halfen, kritische Features vor dem Zeitplan zu liefern.",
+    "testimonial2Name": "Marcus Chen",
+    "testimonial2Title": "VP Engineering @ Nexora",
+    "testimonial3Quote": "Die KI-gestützten Lösungen von Globonexo reduzierten unsere Betriebskosten um 35%. Ihr praktischer Ansatz zur Automatisierung bedeutete, dass wir echte Ergebnisse ohne unnötige Komplexität sahen.",
+    "testimonial3Name": "Sarah Mitchell",
+    "testimonial3Title": "COO @ Verdant Systems"
+  },
+  "faq": {
+    "defaultHeading": "Häufig gestellte Fragen",
+    "faq1Question": "Welche Dienstleistungen bietet Globonexo an?",
+    "faq1Answer": "Wir bieten IT-Beratung, Produktentwicklung, Teamverstärkung und KI-gesteuerte Automatisierungslösungen. Unsere Dienstleistungen umfassen Web- und Mobile-Entwicklung, Cloud-Architektur und digitale Transformation.",
+    "faq2Question": "Wie stellt Globonexo die Projektqualität sicher?",
+    "faq2Answer": "Wir folgen branchenüblichen Methoden mit rigorosen Code-Reviews, automatisierten Tests und Continuous Integration. Unsere Teams pflegen transparente Kommunikation und regelmäßige Fortschrittsberichte während jedes Engagements.",
+    "faq3Question": "Auf welche Branchen sind Sie spezialisiert?",
+    "faq3Answer": "Wir arbeiten in den Bereichen Fintech, Gesundheitswesen, E-Commerce, SaaS und Unternehmenssektoren. Unsere vielfältige Erfahrung ermöglicht es uns, branchenübergreifende Erkenntnisse und Best Practices in jedes Projekt einzubringen.",
+    "faq4Question": "Wie schnell können Sie ein Entwicklungsteam skalieren?",
+    "faq4Answer": "Wir können qualifizierte Fachkräfte innerhalb von 1-2 Wochen je nach Rollenanforderungen einarbeiten. Unser Talentpool in Indien und Osteuropa stellt sicher, dass wir die richtige Besetzung für Ihre Projektanforderungen finden.",
+    "faq5Question": "Welche Engagement-Modelle bieten Sie an?",
+    "faq5Answer": "Wir bieten flexible Modelle einschließlich dedizierter Teams, Zeit & Material und Festpreisvereinbarungen. Jedes Modell ist darauf ausgelegt, Ihnen volle Transparenz, planbare Kosten und die Möglichkeit zur Skalierung zu bieten."
+  },
+  "contact": {
+    "defaultHeading": "Kontaktieren Sie uns für Fragen",
+    "yourName": "Ihr Name",
+    "subject": "Betreff",
+    "email": "E-Mail",
+    "message": "Nachricht",
+    "sendMessage": "Nachricht senden",
+    "sending": "Wird gesendet...",
+    "successTitle": "Nachricht gesendet!",
+    "successMessage": "Wir melden uns bald bei Ihnen.",
+    "errorTitle": "Fehler",
+    "errorMessage": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.",
+    "headquarters": "Hauptsitz"
+  },
+  "globalPresence": {
+    "defaultTitle": "Globale Präsenz",
+    "defaultDescription": "Entdecken Sie unseren internationalen Fußabdruck in Europa, Indien und Nordamerika.",
+    "mapAlt": "Weltkarte mit globaler Präsenz"
+  },
+  "about": {
+    "defaultTitle": "Über uns",
+    "defaultSubtitle": "Die beste IT-Lösung seit 2015",
+    "defaultDescription": "Die letzten Phasen des internen Netzwerks bieten eine vollständige Erfahrung des Parameters der spekulativen Umgebung",
+    "defaultBody2": "Bei Globonexo setzen wir innovative IT-Lösungen um, die auf die Evolution, Anpassung und das Wachstum Ihres Unternehmens ausgerichtet sind. Von Outstaffing und Produktentwicklung bis hin zu KI-gesteuerter Automatisierung liefern wir maßgeschneiderte Technologie, die mit Ihren Ambitionen skaliert.",
+    "illustrationAlt": "IT-Lösungen Illustration",
+    "joinNow": "Jetzt beitreten",
+    "journeyHeading": "Die Reise und Geschichte des Unternehmens",
+    "journeyP1": "Globonexo wurde aus einer gemeinsamen Vision zweier leidenschaftlicher Unternehmer in Warschau, Polen, geboren. Nach unzähligen Diskussionen, intensiver Recherche und der Nutzung unserer internationalen Erfahrung und Expertise erkannten wir einen wachsenden Bedarf – Unternehmen in ganz Europa und den USA benötigten qualifizierte IT-Talente, um Innovationen voranzutreiben, aber der Zugang zu Top-Entwicklern war oft durch lokale Verfügbarkeit und hohe Kosten begrenzt.",
+    "journeyP2": "Diese Erkenntnis veranlasste uns, Globonexo zu gründen: ein Unternehmen, das Unternehmen mit globalen IT-Talenten durch strategische Outstaffing-Lösungen verbindet. Von Anfang an war unser Ziel, die Lücke zwischen Unternehmen und talentierten Ingenieuren mit Hilfe der Entwicklungsdienstleistungen unserer indischen, polnischen, ukrainischen und moldauischen Zentren mit hochwertigen Dienstleistern zu überbrücken.",
+    "journeyP3": "Was als Idee bei Brainstorming-Sitzungen in Warschau begann, ist zu einem Unternehmen gewachsen, das Kunden aus verschiedenen Branchen wie Automobil, Fintech, Gesundheitswesen und Fertigung bedient.",
+    "journeyP4": "Unsere Geschichte bei Globonexo ist eine Geschichte der Zusammenarbeit, des Wachstums und der globalen Vernetzung. Wir glauben, dass Innovation keine Grenzen kennt, und indem wir Unternehmen mit den richtigen Talenten stärken, helfen wir ihnen, neue Möglichkeiten zu erschließen und zu neuen Höhen aufzusteigen.",
+    "journeyP5": "Dies ist erst der Anfang – und wir freuen uns darauf, gemeinsam mit unseren Kunden, Partnern und unserem engagierten Team von Entwicklern weltweit zu wachsen.",
+    "executivesHeading": "Biographien und Fotos der wichtigsten Führungskräfte",
+    "executivesSubtitle": "Lernen Sie die talentierten Persönlichkeiten kennen, die unser Unternehmen mit ihrer Expertise und Hingabe vorantreiben.",
+    "defaultExecName": "Talia Taylor",
+    "defaultExecTitle": "Direktorin für digitales Marketing @ Quantum"
+  },
+  "servicesPage": {
+    "heroTitle": "Software-Testing",
+    "heroDescription": "Stellen Sie einwandfreie Leistung mit unseren umfassenden Software-Testlösungen sicher.",
+    "endToEndTitle": "End-to-End Software-Testlösungen",
+    "endToEndDesc": "Unsere umfassenden Testdienstleistungen decken jeden Aspekt Ihres Software-Entwicklungszyklus ab. Von Unit-Tests bis zu Integrationstests stellen wir sicher, dass Ihre Anwendungen unter allen Bedingungen einwandfrei funktionieren.",
+    "endToEndBody2": "Wir setzen branchenführende Methoden und Tools ein, um Fehler zu identifizieren und zu beseitigen, bevor sie Ihre Nutzer erreichen – das spart Ihnen Zeit und Ressourcen bei gleichzeitig höchsten Qualitätsstandards.",
+    "endToEndIllAlt": "End-to-End Software-Test Illustration",
+    "automatedLeftTitle": "Automatisiertes Testen für Continuous Delivery",
+    "automatedLeftDesc": "Unsere umfassenden Testdienstleistungen decken jeden Aspekt Ihres Software-Entwicklungszyklus ab. Von Unit-Tests bis zu Integrationstests stellen wir sicher, dass Ihre Anwendungen unter allen Bedingungen einwandfrei funktionieren.",
+    "automatedLeftBody2": "Wir setzen branchenführende Methoden und Tools ein, um Fehler zu identifizieren und zu beseitigen, bevor sie Ihre Nutzer erreichen – das spart Ihnen Zeit und Ressourcen bei gleichzeitig höchsten Qualitätsstandards.",
+    "automatedLeftIllAlt": "Automatisiertes Testen Illustration",
+    "automatedRightTitle": "Automatisiertes Testen für Continuous Delivery",
+    "automatedRightDesc": "Beschleunigen Sie Ihre Release-Zyklen mit unseren automatisierten Testlösungen. Wir erstellen robuste Testsuiten, die sich nahtlos in Ihre CI/CD-Pipeline integrieren und schnellere sowie zuverlässigere Deployments ermöglichen.",
+    "automatedRightBody2": "Unsere Automatisierungsexperten arbeiten mit führenden Frameworks wie Selenium, Cypress und Playwright, um wartbare und skalierbare Testautomatisierung zu erstellen, die mit Ihrer Anwendung wächst.",
+    "automatedRightIllAlt": "Continuous Delivery Illustration",
+    "getStarted": "Loslegen",
+    "learnNow": "Jetzt erfahren"
+  },
+  "blog": {
+    "title": "Blog",
+    "subtitle": "Bleiben Sie auf dem Laufenden mit den neuesten Einblicken, Trends und Nachrichten aus der IT-Branche.",
+    "comingSoon": "Demnächst verfügbar",
+    "comingSoonMessage": "Wir arbeiten an der Veröffentlichung spannender neuer Inhalte. Bleiben Sie dran!",
+    "readMore": "Mehr zu diesem Thema erfahren...",
+    "clickReadMore": "Klicken Sie hier, um mehr zu diesem Thema zu erfahren...",
+    "loadingPosts": "Beiträge werden geladen...",
+    "loadingArticle": "Artikel wird geladen...",
+    "contentError": "Inhalt konnte nicht dargestellt werden."
+  },
+  "footer": {
+    "admin": "Admin"
+  },
+  "language": {
+    "switchTo": "English",
+    "current": "DE"
+  }
+}

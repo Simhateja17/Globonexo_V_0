@@ -10,9 +10,20 @@ export function FAQsClient({ faqs }: { faqs: FAQ[] }) {
       title="FAQs"
       description="Manage frequently asked questions displayed on the homepage."
       items={faqs}
+      enableLocaleFilter
       fields={[
         { key: "question", label: "Question", type: "text", required: true, placeholder: "What is...?" },
         { key: "answer", label: "Answer", type: "textarea", required: true, placeholder: "The answer..." },
+        {
+          key: "locale",
+          label: "Locale",
+          type: "select",
+          required: true,
+          options: [
+            { label: "English", value: "en" },
+            { label: "German", value: "de" },
+          ],
+        },
         { key: "sort_order", label: "Sort Order", type: "number", placeholder: "0" },
         { key: "is_active", label: "Active", type: "switch" },
       ]}
@@ -24,6 +35,15 @@ export function FAQsClient({ faqs }: { faqs: FAQ[] }) {
           render: (item) => (
             <span className="text-sm text-muted-foreground truncate max-w-[400px] block">
               {item.answer.length > 100 ? item.answer.substring(0, 100) + "..." : item.answer}
+            </span>
+          ),
+        },
+        {
+          key: "locale",
+          label: "Locale",
+          render: (item) => (
+            <span className="text-xs px-1.5 py-0.5 rounded bg-primary/10 text-primary font-medium">
+              {(item.locale ?? "en").toUpperCase()}
             </span>
           ),
         },
@@ -41,7 +61,7 @@ export function FAQsClient({ faqs }: { faqs: FAQ[] }) {
       onCreate={async (data) => createFAQ(data as Parameters<typeof createFAQ>[0])}
       onUpdate={async (id, data) => updateFAQ(id, data as Parameters<typeof updateFAQ>[1])}
       onDelete={deleteFAQ}
-      defaultValues={{ sort_order: 0, is_active: true }}
+      defaultValues={{ sort_order: 0, is_active: true, locale: "en" }}
     />
   );
 }

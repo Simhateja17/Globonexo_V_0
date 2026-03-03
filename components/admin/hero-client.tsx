@@ -16,9 +16,11 @@ import { Plus, Pencil, Trash2, Save } from "lucide-react";
 import { upsertHeroSection, deleteHeroSection } from "@/lib/actions/cms";
 import { toast } from "sonner";
 import type { HeroSection } from "@/lib/types/cms";
+import type { Locale } from "@/lib/types/cms";
 import { ImageUploadField } from "@/components/admin/crud-table";
 
 const PAGE_OPTIONS = ["home", "about", "services", "blogs", "global-presence"];
+const LOCALE_OPTIONS: Locale[] = ["en", "de"];
 
 export function HeroClient({ sections: initial }: { sections: HeroSection[] }) {
   const [sections, setSections] = useState(initial);
@@ -26,10 +28,12 @@ export function HeroClient({ sections: initial }: { sections: HeroSection[] }) {
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [editItem, setEditItem] = useState<HeroSection | null>(null);
   const [saving, setSaving] = useState(false);
+  const [filterLocale, setFilterLocale] = useState<Locale | "all">("all");
 
   const [formData, setFormData] = useState({
     page_key: "home",
     section_key: "hero",
+    locale: "en" as Locale,
     title: "",
     subtitle: "",
     description: "",
@@ -45,6 +49,7 @@ export function HeroClient({ sections: initial }: { sections: HeroSection[] }) {
     setFormData({
       page_key: "home",
       section_key: "hero",
+      locale: "en",
       title: "",
       subtitle: "",
       description: "",
@@ -62,6 +67,7 @@ export function HeroClient({ sections: initial }: { sections: HeroSection[] }) {
     setFormData({
       page_key: item.page_key,
       section_key: item.section_key,
+      locale: item.locale,
       title: item.title || "",
       subtitle: item.subtitle || "",
       description: item.description || "",
@@ -84,6 +90,7 @@ export function HeroClient({ sections: initial }: { sections: HeroSection[] }) {
       const result = await upsertHeroSection({
         page_key: formData.page_key,
         section_key: formData.section_key,
+        locale: formData.locale,
         title: formData.title || null,
         subtitle: formData.subtitle || null,
         description: formData.description || null,
@@ -96,7 +103,7 @@ export function HeroClient({ sections: initial }: { sections: HeroSection[] }) {
       });
       setSections((prev) => {
         const existing = prev.findIndex(
-          (s) => s.page_key === result.page_key && s.section_key === result.section_key
+          (s) => s.page_key === result.page_key && s.section_key === result.section_key && s.locale === result.locale
         );
         if (existing >= 0) {
           const copy = [...prev];
@@ -127,8 +134,13 @@ export function HeroClient({ sections: initial }: { sections: HeroSection[] }) {
     setDeleteId(null);
   };
 
+  // Filter sections by locale
+  const filtered = filterLocale === "all"
+    ? sections
+    : sections.filter((s) => (s.locale ?? "en") === filterLocale);
+
   // Group sections by page
-  const grouped = sections.reduce(
+  const grouped = filtered.reduce(
     (acc, s) => {
       if (!acc[s.page_key]) acc[s.page_key] = [];
       acc[s.page_key].push(s);
@@ -150,6 +162,22 @@ export function HeroClient({ sections: initial }: { sections: HeroSection[] }) {
           <Plus className="w-4 h-4 mr-1" />
           Add Section
         </Button>
+      </div>
+
+      {/* Locale filter tabs */}
+      <div className="flex items-center gap-2 mb-4">
+        <span className="text-sm text-muted-foreground mr-1">Locale:</span>
+        {(["all", ...LOCALE_OPTIONS] as const).map((loc) => (
+          <Button
+            key={loc}
+            variant={filterLocale === loc ? "default" : "outline"}
+            size="sm"
+            onClick={() => setFilterLocale(loc)}
+            className="h-7 px-3 text-xs"
+          >
+            {loc === "all" ? "All" : loc.toUpperCase()}
+          </Button>
+        ))}
       </div>
 
       {Object.keys(grouped).length === 0 ? (
@@ -174,6 +202,9 @@ export function HeroClient({ sections: initial }: { sections: HeroSection[] }) {
                         <code className="text-xs px-1.5 py-0.5 rounded bg-muted">
                           {section.section_key}
                         </code>
+                        <span className="text-xs px-1.5 py-0.5 rounded bg-primary/10 text-primary font-medium">
+                          {(section.locale ?? "en").toUpperCase()}
+                        </span>
                         {!section.is_active && (
                           <span className="text-xs text-muted-foreground">(inactive)</span>
                         )}
@@ -220,7 +251,7 @@ export function HeroClient({ sections: initial }: { sections: HeroSection[] }) {
             </DialogTitle>
           </DialogHeader>
           <div className="space-y-4 mt-2">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div>
                 <Label>Page</Label>
                 <select
@@ -241,6 +272,18 @@ export function HeroClient({ sections: initial }: { sections: HeroSection[] }) {
                   placeholder="hero, cta, features_intro..."
                   className="mt-1"
                 />
+              </div>
+              <div>
+                <Label>Locale</Label>
+                <select
+                  className="mt-1 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                  value={formData.locale}
+                  onChange={(e) => setFormData({ ...formData, locale: e.target.value as Locale })}
+                >
+                  {LOCALE_OPTIONS.map((loc) => (
+                    <option key={loc} value={loc}>{loc.toUpperCase()}</option>
+                  ))}
+                </select>
               </div>
             </div>
             <div>

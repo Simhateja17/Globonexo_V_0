@@ -14,12 +14,23 @@ export function TeamClient({ members }: { members: TeamMember[] }) {
       title="Team Members"
       description="Manage your team members displayed on the About page."
       items={members}
+      enableLocaleFilter
       fields={[
         { key: "name", label: "Name", type: "text", required: true, placeholder: "Full name" },
         { key: "role", label: "Role", type: "text", placeholder: "e.g., CEO, CTO, Designer" },
         { key: "bio", label: "Bio", type: "textarea", placeholder: "Short bio..." },
         { key: "photo_url", label: "Photo", type: "image", placeholder: "Upload a photo" },
         { key: "linkedin_url", label: "LinkedIn URL", type: "url", placeholder: "https://linkedin.com/in/..." },
+        {
+          key: "locale",
+          label: "Locale",
+          type: "select",
+          required: true,
+          options: [
+            { label: "English", value: "en" },
+            { label: "German", value: "de" },
+          ],
+        },
         { key: "sort_order", label: "Sort Order", type: "number", placeholder: "0" },
         { key: "is_active", label: "Active", type: "switch" },
       ]}
@@ -42,6 +53,15 @@ export function TeamClient({ members }: { members: TeamMember[] }) {
         },
         { key: "role", label: "Role", render: (item) => <span className="text-sm">{item.role || "—"}</span> },
         {
+          key: "locale",
+          label: "Locale",
+          render: (item) => (
+            <span className="text-xs px-1.5 py-0.5 rounded bg-primary/10 text-primary font-medium">
+              {(item.locale ?? "en").toUpperCase()}
+            </span>
+          ),
+        },
+        {
           key: "is_active",
           label: "Status",
           render: (item) => (
@@ -55,7 +75,7 @@ export function TeamClient({ members }: { members: TeamMember[] }) {
       onCreate={async (data) => createTeamMember(data as Parameters<typeof createTeamMember>[0])}
       onUpdate={async (id, data) => updateTeamMember(id, data as Parameters<typeof updateTeamMember>[1])}
       onDelete={deleteTeamMember}
-      defaultValues={{ sort_order: 0, is_active: true }}
+      defaultValues={{ sort_order: 0, is_active: true, locale: "en" }}
     />
   );
 }

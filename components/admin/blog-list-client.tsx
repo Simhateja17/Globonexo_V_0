@@ -22,6 +22,9 @@ import { Plus, Pencil, Trash2, Search } from "lucide-react";
 import { deleteBlogPost } from "@/lib/actions/cms";
 import { toast } from "sonner";
 import type { BlogPost } from "@/lib/types/cms";
+import type { Locale } from "@/lib/types/cms";
+
+const LOCALE_OPTIONS: Locale[] = ["en", "de"];
 
 interface BlogListClientProps {
   posts: BlogPost[];
@@ -31,12 +34,16 @@ export function BlogListClient({ posts: initialPosts }: BlogListClientProps) {
   const [posts, setPosts] = useState(initialPosts);
   const [search, setSearch] = useState("");
   const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [filterLocale, setFilterLocale] = useState<Locale | "all">("all");
 
-  const filtered = posts.filter(
-    (p) =>
+  const filtered = posts.filter((p) => {
+    const matchesSearch =
       p.title.toLowerCase().includes(search.toLowerCase()) ||
-      p.slug.toLowerCase().includes(search.toLowerCase())
-  );
+      p.slug.toLowerCase().includes(search.toLowerCase());
+    const matchesLocale =
+      filterLocale === "all" || (p.locale ?? "en") === filterLocale;
+    return matchesSearch && matchesLocale;
+  });
 
   const handleDelete = async () => {
     if (!deleteId) return;
@@ -67,6 +74,22 @@ export function BlogListClient({ posts: initialPosts }: BlogListClientProps) {
         </Link>
       </div>
 
+      {/* Locale filter tabs */}
+      <div className="flex items-center gap-2 mb-4">
+        <span className="text-sm text-muted-foreground mr-1">Locale:</span>
+        {(["all", ...LOCALE_OPTIONS] as const).map((loc) => (
+          <Button
+            key={loc}
+            variant={filterLocale === loc ? "default" : "outline"}
+            size="sm"
+            onClick={() => setFilterLocale(loc)}
+            className="h-7 px-3 text-xs"
+          >
+            {loc === "all" ? "All" : loc.toUpperCase()}
+          </Button>
+        ))}
+      </div>
+
       {/* Search */}
       <div className="relative mb-4">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -84,6 +107,7 @@ export function BlogListClient({ posts: initialPosts }: BlogListClientProps) {
           <TableHeader>
             <TableRow>
               <TableHead>Title</TableHead>
+              <TableHead>Locale</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Date</TableHead>
               <TableHead className="w-[100px]">Actions</TableHead>
@@ -92,7 +116,7 @@ export function BlogListClient({ posts: initialPosts }: BlogListClientProps) {
           <TableBody>
             {filtered.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={4} className="text-center py-8 text-muted-foreground">
+                <TableCell colSpan={5} className="text-center py-8 text-muted-foreground">
                   {search ? "No posts match your search" : "No blog posts yet. Create your first one!"}
                 </TableCell>
               </TableRow>
@@ -104,6 +128,11 @@ export function BlogListClient({ posts: initialPosts }: BlogListClientProps) {
                       <p className="font-medium">{post.title}</p>
                       <p className="text-xs text-muted-foreground">/blogs/{post.slug}</p>
                     </div>
+                  </TableCell>
+                  <TableCell>
+                    <span className="text-xs px-1.5 py-0.5 rounded bg-primary/10 text-primary font-medium">
+                      {(post.locale ?? "en").toUpperCase()}
+                    </span>
                   </TableCell>
                   <TableCell>
                     <span

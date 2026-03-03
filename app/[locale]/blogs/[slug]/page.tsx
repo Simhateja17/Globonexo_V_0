@@ -1,14 +1,16 @@
 import { Navbar } from "@/components/home";
-import { getBlogPostBySlug } from "@/lib/actions/cms";
+import { fetchBlogPostBySlug } from "@/lib/queries/cms";
 import { notFound } from "next/navigation";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 import { generateHTML } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import ImageExtension from "@tiptap/extension-image";
 import LinkExtension from "@tiptap/extension-link";
 import { Suspense } from "react";
+import type { Locale } from "@/lib/types/cms";
 
 // Generate HTML from Tiptap JSON content
-function renderContent(content: Record<string, unknown> | null): string {
+async function renderContent(content: Record<string, unknown> | null): Promise<string> {
   if (!content) return "";
   try {
     return generateHTML(content as Parameters<typeof generateHTML>[0], [
@@ -17,20 +19,17 @@ function renderContent(content: Record<string, unknown> | null): string {
       LinkExtension,
     ]);
   } catch {
-    return "<p>Content could not be rendered.</p>";
+    const t = await getTranslations("blog");
+    return `<p>${t("contentError")}</p>`;
   }
 }
 
-async function BlogPostContent({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
-  let post;
-  try {
-    post = await getBlogPostBySlug(slug);
-  } catch {
-    notFound();
-  }
+async function BlogPostContent({ slug, locale }: { slug: string; locale: Locale }) {
+  const post = await fetchBlogPostBySlug(slug, locale);
+  if (!post) notFound();
 
-  const html = renderContent(post.content);
+  const html = await renderContent(post.content);
+  const dateLocale = locale === "de" ? "de-DE" : "en-US";
 
   return (
     <article
@@ -91,7 +90,7 @@ async function BlogPostContent({ params }: { params: Promise<{ slug: string }> }
         }}
       >
         {post.published_at &&
-          new Date(post.published_at).toLocaleDateString("en-US", {
+          new Date(post.published_at).toLocaleDateString(dateLocale, {
             year: "numeric",
             month: "long",
             day: "numeric",
@@ -111,11 +110,15 @@ async function BlogPostContent({ params }: { params: Promise<{ slug: string }> }
   );
 }
 
-export default function BlogPostPage({
+export default async function BlogPostPage({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 }) {
+  const { locale, slug } = await params;
+  setRequestLocale(locale);
+  const cmsLocale = locale as Locale;
+
   return (
     <main
       className="relative min-h-screen bg-[#000000]"
@@ -152,10 +155,9 @@ export default function BlogPostPage({
 
       <Suspense fallback={
         <div className="relative z-10 mx-auto px-5 sm:px-6 md:px-8 lg:px-10 text-center py-20 text-white/50" style={{ maxWidth: "min(800px, 96vw)", paddingTop: "calc(clamp(80px, 10vh, 120px) + 40px)" }}>
-          Loading article...
         </div>
       }>
-        <BlogPostContent params={params} />
+        <BlogPostContent slug={slug} locale={cmsLocale} />
       </Suspense>
     </main>
   );

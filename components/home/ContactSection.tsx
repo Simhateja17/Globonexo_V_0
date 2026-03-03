@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { submitContactForm } from "@/lib/actions/cms";
 
 interface ContactInfo {
@@ -46,9 +47,11 @@ function ChevronDouble() {
 }
 
 export function ContactSection({ contactInfo, heading }: ContactSectionProps) {
+  const t = useTranslations("contact");
+
   const email = contactInfo?.email ?? "contact.global@globonexo.com";
   const phone = contactInfo?.phone ?? "+49 711 123456";
-  const address = contactInfo?.address ?? "Headquarters: Koenigstr. 10c, 70173 Stuttgart, Germany";
+  const address = contactInfo?.address ?? `${t("headquarters")}: Koenigstr. 10c, 70173 Stuttgart, Germany`;
 
   const infoItems = [
     { text: email },
@@ -159,7 +162,7 @@ export function ContactSection({ contactInfo, heading }: ContactSectionProps) {
             marginBottom: "clamp(32px, 4vw, 56px)",
           }}
         >
-          {heading ?? "Contact Us for any questions"}
+          {heading ?? t("defaultHeading")}
         </h2>
 
         {/* Content: 3-column layout — info | inputs | message */}
@@ -205,7 +208,7 @@ export function ContactSection({ contactInfo, heading }: ContactSectionProps) {
             <input
               className="contact-input"
               type="text"
-              placeholder="Your Name"
+              placeholder={t("yourName")}
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
               style={inputStyle}
@@ -213,7 +216,7 @@ export function ContactSection({ contactInfo, heading }: ContactSectionProps) {
             <input
               className="contact-input"
               type="text"
-              placeholder="Subject"
+              placeholder={t("subject")}
               value={form.subject}
               onChange={(e) => setForm({ ...form, subject: e.target.value })}
               style={inputStyle}
@@ -221,7 +224,7 @@ export function ContactSection({ contactInfo, heading }: ContactSectionProps) {
             <input
               className="contact-input"
               type="email"
-              placeholder="Email"
+              placeholder={t("email")}
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
               style={inputStyle}
@@ -242,7 +245,7 @@ export function ContactSection({ contactInfo, heading }: ContactSectionProps) {
           >
             <textarea
               className="contact-input"
-              placeholder="Send message"
+              placeholder={t("sendMessage")}
               value={form.message}
               onChange={(e) => setForm({ ...form, message: e.target.value })}
               style={{
@@ -274,7 +277,7 @@ export function ContactSection({ contactInfo, heading }: ContactSectionProps) {
                   transition: "background 0.3s ease",
                 }}
               >
-                {sending ? "Sending..." : sent ? "Sent!" : "Send"}
+                {sending ? t("sending") : sent ? t("successTitle") : t("sendMessage")}
               </button>
             </div>
           </div>

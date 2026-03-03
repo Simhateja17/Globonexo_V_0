@@ -1,28 +1,28 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import type { Testimonial } from "@/lib/types/cms";
 
-const defaultTestimonials = [
-  {
-    quote:
-      "Globonexo transformed our digital strategy completely. Their team delivered a scalable platform that increased our conversion rates by 40% within the first quarter. The collaboration was seamless from day one.",
-    name: "Talia Taylor",
-    title: "Digital Marketing Director @ Quantum",
-  },
-  {
-    quote:
-      "Working with Globonexo has been a game-changer for our engineering team. They provided top-tier talent that integrated perfectly with our workflows and helped us ship critical features ahead of schedule.",
-    name: "Marcus Chen",
-    title: "VP of Engineering @ Nexora",
-  },
-  {
-    quote:
-      "The AI-driven solutions Globonexo implemented reduced our operational costs by 35%. Their practical approach to automation meant we saw real results without unnecessary complexity.",
-    name: "Sarah Mitchell",
-    title: "COO @ Verdant Systems",
-  },
-];
+function getDefaultTestimonials(t: (key: string) => string) {
+  return [
+    {
+      quote: t("testimonial1Quote"),
+      name: t("testimonial1Name"),
+      title: t("testimonial1Title"),
+    },
+    {
+      quote: t("testimonial2Quote"),
+      name: t("testimonial2Name"),
+      title: t("testimonial2Title"),
+    },
+    {
+      quote: t("testimonial3Quote"),
+      name: t("testimonial3Name"),
+      title: t("testimonial3Title"),
+    },
+  ];
+}
 
 interface TestimonialsSectionProps {
   testimonials?: Testimonial[];
@@ -30,17 +30,19 @@ interface TestimonialsSectionProps {
 }
 
 export function TestimonialsSection({ testimonials, heading }: TestimonialsSectionProps) {
+  const t = useTranslations("testimonials");
+
   const items =
     testimonials && testimonials.length > 0
-      ? testimonials.map((t) => ({
-          quote: t.content,
-          name: t.author_name,
-          title: [t.author_role, t.author_company].filter(Boolean).join(" @ "),
+      ? testimonials.map((tm) => ({
+          quote: tm.content,
+          name: tm.author_name,
+          title: [tm.author_role, tm.author_company].filter(Boolean).join(" @ "),
         }))
-      : defaultTestimonials;
+      : getDefaultTestimonials(t);
 
   const [active, setActive] = useState(0);
-  const t = items[active];
+  const current = items[active];
 
   return (
     <section
@@ -72,7 +74,7 @@ export function TestimonialsSection({ testimonials, heading }: TestimonialsSecti
             backgroundClip: "text",
           }}
         >
-          {heading ?? "Customer Testimonials"}
+          {heading ?? t("defaultHeading")}
         </h2>
 
         {/* Testimonial card */}
@@ -123,7 +125,7 @@ export function TestimonialsSection({ testimonials, heading }: TestimonialsSecti
                   marginBottom: "clamp(16px, 2vw, 24px)",
                 }}
               >
-                &ldquo;{t.quote}&rdquo;
+                &ldquo;{current.quote}&rdquo;
               </p>
               <p
                 style={{
@@ -135,7 +137,7 @@ export function TestimonialsSection({ testimonials, heading }: TestimonialsSecti
                   margin: 0,
                 }}
               >
-                {t.name}
+                {current.name}
               </p>
               <p
                 style={{
@@ -147,7 +149,7 @@ export function TestimonialsSection({ testimonials, heading }: TestimonialsSecti
                   margin: 0,
                 }}
               >
-                {t.title}
+                {current.title}
               </p>
             </div>
           </div>

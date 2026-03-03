@@ -33,9 +33,10 @@ import { MediaPicker } from "@/components/admin/media-library";
 interface FieldConfig {
   key: string;
   label: string;
-  type: "text" | "textarea" | "number" | "url" | "switch" | "image";
+  type: "text" | "textarea" | "number" | "url" | "switch" | "image" | "select";
   placeholder?: string;
   required?: boolean;
+  options?: { label: string; value: string }[];
 }
 
 // ============================================================
@@ -212,6 +213,8 @@ interface CrudTableProps<T extends { id: string }> {
   onUpdate: (id: string, data: Record<string, unknown>) => Promise<T>;
   onDelete: (id: string) => Promise<void>;
   defaultValues?: Record<string, unknown>;
+  /** Enable built-in locale filter tabs (All / EN / DE). Items must have a `locale` field. */
+  enableLocaleFilter?: boolean;
 }
 
 export function CrudTable<T extends { id: string }>({
@@ -224,6 +227,7 @@ export function CrudTable<T extends { id: string }>({
   onUpdate,
   onDelete,
   defaultValues = {},
+  enableLocaleFilter = false,
 }: CrudTableProps<T>) {
   const [items, setItems] = useState<T[]>(initialItems);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -231,6 +235,7 @@ export function CrudTable<T extends { id: string }>({
   const [editItem, setEditItem] = useState<T | null>(null);
   const [formData, setFormData] = useState<Record<string, unknown>>(defaultValues);
   const [saving, setSaving] = useState(false);
+  const [filterLocale, setFilterLocale] = useState<string>("all");
 
   const openCreate = () => {
     setEditItem(null);
@@ -293,6 +298,11 @@ export function CrudTable<T extends { id: string }>({
     setFormData((prev) => ({ ...prev, [key]: value }));
   };
 
+  // Filter items by locale when locale filter is enabled
+  const displayItems = enableLocaleFilter && filterLocale !== "all"
+    ? items.filter((item) => ((item as Record<string, unknown>)["locale"] ?? "en") === filterLocale)
+    : items;
+
   return (
     <div>
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
@@ -306,6 +316,24 @@ export function CrudTable<T extends { id: string }>({
         </Button>
       </div>
 
+      {/* Locale filter tabs */}
+      {enableLocaleFilter && (
+        <div className="flex items-center gap-2 mb-4">
+          <span className="text-sm text-muted-foreground mr-1">Locale:</span>
+          {["all", "en", "de"].map((loc) => (
+            <Button
+              key={loc}
+              variant={filterLocale === loc ? "default" : "outline"}
+              size="sm"
+              onClick={() => setFilterLocale(loc)}
+              className="h-7 px-3 text-xs"
+            >
+              {loc === "all" ? "All" : loc.toUpperCase()}
+            </Button>
+          ))}
+        </div>
+      )}
+
       {/* Table */}
       <div className="rounded-lg border border-border overflow-x-auto">
         <Table>
@@ -318,7 +346,7 @@ export function CrudTable<T extends { id: string }>({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {items.length === 0 ? (
+            {displayItems.length === 0 ? (
               <TableRow>
                 <TableCell
                   colSpan={columns.length + 1}
@@ -328,7 +356,7 @@ export function CrudTable<T extends { id: string }>({
                 </TableCell>
               </TableRow>
             ) : (
-              items.map((item) => (
+              displayItems.map((item) => (
                 <TableRow key={item.id}>
                   {columns.map((col) => (
                     <TableCell key={col.key}>
@@ -384,6 +412,19 @@ export function CrudTable<T extends { id: string }>({
                       label={field.label}
                     />
                   </div>
+                ) : field.type === "select" ? (
+                  <select
+                    id={field.key}
+                    className="mt-1 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                    value={String(formData[field.key] ?? "")}
+                    onChange={(e) => updateField(field.key, e.target.value)}
+                  >
+                    {field.options?.map((opt) => (
+                      <option key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </option>
+                    ))}
+                  </select>
                 ) : field.type === "textarea" ? (
                   <Textarea
                     id={field.key}

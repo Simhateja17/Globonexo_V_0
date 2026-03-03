@@ -1,7 +1,8 @@
 import { Navbar } from "@/components/home";
-import Link from "next/link";
-import { getBlogPosts } from "@/lib/actions/cms";
-import type { BlogPost } from "@/lib/types/cms";
+import { Link } from "@/i18n/navigation";
+import { setRequestLocale, getTranslations } from "next-intl/server";
+import { fetchBlogPosts } from "@/lib/queries/cms";
+import type { BlogPost, Locale } from "@/lib/types/cms";
 import { Suspense } from "react";
 
 /* ─── shared card style (glass) ───────────────────────────────────────── */
@@ -47,7 +48,8 @@ const cardBodyStyle: React.CSSProperties = {
 /* ═══════════════════════════════════════════════════════════════════════════
    Hero Section
    ═══════════════════════════════════════════════════════════════════════ */
-function HeroSection() {
+async function HeroSection() {
+  const t = await getTranslations("blog");
   return (
     <section
       className="relative flex justify-center"
@@ -91,7 +93,7 @@ function HeroSection() {
               backgroundClip: "text",
             }}
           >
-            Blog
+            {t("title")}
           </h1>
 
           <p
@@ -104,8 +106,7 @@ function HeroSection() {
               color: "#FFFFFF",
             }}
           >
-            Stay updated with the latest insights, trends, and news from the IT
-            industry.
+            {t("subtitle")}
           </p>
         </div>
       </div>
@@ -116,7 +117,8 @@ function HeroSection() {
 /* ═══════════════════════════════════════════════════════════════════════════
    Featured Blog Card (full-width, two-column)
    ═══════════════════════════════════════════════════════════════════════ */
-function FeaturedBlogCard({ post }: { post: BlogPost }) {
+async function FeaturedBlogCard({ post, locale }: { post: BlogPost; locale: string }) {
+  const t = await getTranslations("blog");
   return (
     <section className="relative z-10 mx-auto px-5 sm:px-6 md:px-8 lg:px-10"
       style={{ maxWidth: "min(1400px, 96vw)" }}
@@ -157,7 +159,7 @@ function FeaturedBlogCard({ post }: { post: BlogPost }) {
               }}
             >
               <p style={{ margin: 0 }}>
-                {post.excerpt || "Read more about this topic..."}
+                {post.excerpt || t("readMore")}
               </p>
             </div>
 
@@ -169,7 +171,7 @@ function FeaturedBlogCard({ post }: { post: BlogPost }) {
                 }}
               >
                 {post.published_at
-                  ? new Date(post.published_at).toLocaleDateString("en-US", {
+                  ? new Date(post.published_at).toLocaleDateString(locale === "de" ? "de-DE" : "en-US", {
                       year: "numeric",
                       month: "long",
                       day: "numeric",
@@ -187,8 +189,9 @@ function FeaturedBlogCard({ post }: { post: BlogPost }) {
 /* ═══════════════════════════════════════════════════════════════════════════
    Blog Cards Grid
    ═══════════════════════════════════════════════════════════════════════ */
-function BlogCards({ posts }: { posts: BlogPost[] }) {
+async function BlogCards({ posts, locale }: { posts: BlogPost[]; locale: string }) {
   if (posts.length === 0) return null;
+  const t = await getTranslations("blog");
 
   return (
     <section
@@ -230,7 +233,7 @@ function BlogCards({ posts }: { posts: BlogPost[] }) {
                   }}
                 >
                   {post.excerpt ||
-                    "Click to read more about this topic..."}
+                    t("clickReadMore")}
                 </p>
 
                 <span
@@ -242,7 +245,7 @@ function BlogCards({ posts }: { posts: BlogPost[] }) {
                   }}
                 >
                   {post.published_at
-                    ? new Date(post.published_at).toLocaleDateString()
+                    ? new Date(post.published_at).toLocaleDateString(locale === "de" ? "de-DE" : "en-US")
                     : ""}
                 </span>
               </div>
@@ -257,7 +260,8 @@ function BlogCards({ posts }: { posts: BlogPost[] }) {
 /* ═══════════════════════════════════════════════════════════════════════════
    Empty State
    ═══════════════════════════════════════════════════════════════════════ */
-function EmptyState() {
+async function EmptyState() {
+  const t = await getTranslations("blog");
   return (
     <section
       className="relative z-10 mx-auto px-5 sm:px-6 md:px-8 lg:px-10"
@@ -279,7 +283,7 @@ function EmptyState() {
             fontSize: "clamp(24px, 2.5vw, 36px)",
           }}
         >
-          Coming Soon
+          {t("comingSoon")}
         </h2>
         <p
           style={{
@@ -288,7 +292,7 @@ function EmptyState() {
             color: "rgba(255,255,255,0.6)",
           }}
         >
-          We are working on publishing exciting new content. Stay tuned!
+          {t("comingSoonMessage")}
         </p>
       </div>
     </section>
@@ -298,10 +302,10 @@ function EmptyState() {
 /* ═══════════════════════════════════════════════════════════════════════════
    Blog Content (async, fetches data)
    ═══════════════════════════════════════════════════════════════════════ */
-async function BlogContent() {
+async function BlogContent({ locale }: { locale: Locale }) {
   let posts: BlogPost[] = [];
   try {
-    const result = await getBlogPosts(false); // published only
+    const result = await fetchBlogPosts(locale);
     posts = result as BlogPost[];
   } catch {
     // Tables may not exist yet — show empty state
@@ -316,8 +320,8 @@ async function BlogContent() {
         <EmptyState />
       ) : (
         <>
-          {featured && <FeaturedBlogCard post={featured} />}
-          {rest.length > 0 && <BlogCards posts={rest} />}
+          {featured && <FeaturedBlogCard post={featured} locale={locale} />}
+          {rest.length > 0 && <BlogCards posts={rest} locale={locale} />}
         </>
       )}
     </>
@@ -327,7 +331,15 @@ async function BlogContent() {
 /* ═══════════════════════════════════════════════════════════════════════════
    Page
    ═══════════════════════════════════════════════════════════════════════ */
-export default function BlogsPage() {
+export default async function BlogsPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const cmsLocale = locale as Locale;
+
   return (
     <main
       className="relative min-h-screen bg-[#000000]"
@@ -382,10 +394,10 @@ export default function BlogsPage() {
       <HeroSection />
       <Suspense fallback={
         <section className="relative z-10 mx-auto px-5 sm:px-6 md:px-8 lg:px-10" style={{ maxWidth: "min(1400px, 96vw)", paddingBottom: "clamp(60px, 8vw, 120px)" }}>
-          <div className="text-center py-20 text-white/50">Loading posts...</div>
+          <div className="text-center py-20 text-white/50" />
         </section>
       }>
-        <BlogContent />
+        <BlogContent locale={cmsLocale} />
       </Suspense>
     </main>
   );

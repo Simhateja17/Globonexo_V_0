@@ -1,5 +1,8 @@
 // Database types for the Globonexo CMS
 // These types match the Supabase tables defined in migrations/001_cms_schema.sql
+// Updated with locale support (003_add_locale_support.sql)
+
+export type Locale = "en" | "de";
 
 export interface BlogPost {
   id: string;
@@ -13,6 +16,7 @@ export interface BlogPost {
   status: "draft" | "published";
   published_at: string | null;
   author_id: string | null;
+  locale: Locale;
   created_at: string;
   updated_at: string;
 }
@@ -24,6 +28,7 @@ export interface Service {
   icon: string | null;
   sort_order: number;
   is_active: boolean;
+  locale: Locale;
   created_at: string;
   updated_at: string;
 }
@@ -37,6 +42,7 @@ export interface TeamMember {
   linkedin_url: string | null;
   sort_order: number;
   is_active: boolean;
+  locale: Locale;
   created_at: string;
   updated_at: string;
 }
@@ -51,6 +57,7 @@ export interface Testimonial {
   rating: number | null;
   sort_order: number;
   is_active: boolean;
+  locale: Locale;
   created_at: string;
   updated_at: string;
 }
@@ -61,6 +68,7 @@ export interface FAQ {
   answer: string;
   sort_order: number;
   is_active: boolean;
+  locale: Locale;
   created_at: string;
   updated_at: string;
 }
@@ -88,6 +96,7 @@ export interface HeroSection {
   extra_data: Record<string, unknown> | null;
   is_active: boolean;
   sort_order: number;
+  locale: Locale;
   created_at: string;
   updated_at: string;
 }

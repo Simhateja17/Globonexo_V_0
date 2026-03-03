@@ -1,35 +1,18 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import type { FAQ } from "@/lib/types/cms";
 
-const defaultFaqs = [
-  {
-    question: "What services does Globonexo offer?",
-    answer:
-      "We provide IT consulting, product development, team augmentation, and AI-driven automation solutions. Our services span across web and mobile development, cloud architecture, and digital transformation.",
-  },
-  {
-    question: "How does Globonexo ensure project quality?",
-    answer:
-      "We follow industry-standard methodologies with rigorous code reviews, automated testing, and continuous integration. Our teams maintain transparent communication and regular progress updates throughout every engagement.",
-  },
-  {
-    question: "What industries do you specialize in?",
-    answer:
-      "We work across fintech, healthcare, e-commerce, SaaS, and enterprise sectors. Our diverse experience allows us to bring cross-industry insights and best practices to every project.",
-  },
-  {
-    question: "How quickly can you scale a development team?",
-    answer:
-      "We can onboard skilled professionals within 1-2 weeks depending on the role requirements. Our talent pool across India and Eastern Europe ensures we find the right fit for your project needs.",
-  },
-  {
-    question: "What engagement models do you offer?",
-    answer:
-      "We offer flexible models including dedicated teams, time & materials, and fixed-price engagements. Each model is designed to give you full transparency, predictable costs, and the ability to scale as needed.",
-  },
-];
+function getDefaultFaqs(t: (key: string) => string) {
+  return [
+    { question: t("faq1Question"), answer: t("faq1Answer") },
+    { question: t("faq2Question"), answer: t("faq2Answer") },
+    { question: t("faq3Question"), answer: t("faq3Answer") },
+    { question: t("faq4Question"), answer: t("faq4Answer") },
+    { question: t("faq5Question"), answer: t("faq5Answer") },
+  ];
+}
 
 function ChevronIcon({ open }: { open: boolean }) {
   return (
@@ -62,10 +45,12 @@ interface FaqSectionProps {
 }
 
 export function FaqSection({ faqs, heading }: FaqSectionProps) {
+  const t = useTranslations("faq");
+
   const items =
     faqs && faqs.length > 0
       ? faqs.map((f) => ({ question: f.question, answer: f.answer }))
-      : defaultFaqs;
+      : getDefaultFaqs(t);
 
   const [openIndex, setOpenIndex] = useState(0);
 
@@ -115,7 +100,7 @@ export function FaqSection({ faqs, heading }: FaqSectionProps) {
             backgroundClip: "text",
           }}
         >
-          {heading ?? "Frequently Asked Questions"}
+          {heading ?? t("defaultHeading")}
         </h2>
 
         {/* Accordion */}

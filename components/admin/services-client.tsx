@@ -14,10 +14,21 @@ export function ServicesClient({ services }: { services: Service[] }) {
       title="Services"
       description="Manage the services displayed on your website."
       items={services}
+      enableLocaleFilter
       fields={[
         { key: "title", label: "Title", type: "text", required: true, placeholder: "Service name" },
         { key: "description", label: "Description", type: "textarea", placeholder: "Describe the service..." },
         { key: "icon", label: "Icon", type: "image", placeholder: "Upload an icon image" },
+        {
+          key: "locale",
+          label: "Locale",
+          type: "select",
+          required: true,
+          options: [
+            { label: "English", value: "en" },
+            { label: "German", value: "de" },
+          ],
+        },
         { key: "sort_order", label: "Sort Order", type: "number", placeholder: "0" },
         { key: "is_active", label: "Active", type: "switch" },
       ]}
@@ -29,6 +40,15 @@ export function ServicesClient({ services }: { services: Service[] }) {
           render: (item) => (
             <span className="text-sm text-muted-foreground truncate max-w-[300px] block">
               {item.description || "—"}
+            </span>
+          ),
+        },
+        {
+          key: "locale",
+          label: "Locale",
+          render: (item) => (
+            <span className="text-xs px-1.5 py-0.5 rounded bg-primary/10 text-primary font-medium">
+              {(item.locale ?? "en").toUpperCase()}
             </span>
           ),
         },
@@ -46,7 +66,7 @@ export function ServicesClient({ services }: { services: Service[] }) {
       onCreate={async (data) => createService(data as Parameters<typeof createService>[0])}
       onUpdate={async (id, data) => updateService(id, data as Parameters<typeof updateService>[1])}
       onDelete={deleteService}
-      defaultValues={{ sort_order: 0, is_active: true }}
+      defaultValues={{ sort_order: 0, is_active: true, locale: "en" }}
     />
   );
 }

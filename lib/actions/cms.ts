@@ -18,15 +18,19 @@ import type {
   HeroSectionUpdate,
   SiteSettingUpdate,
   MediaInsert,
+  Locale,
 } from "@/lib/types/cms";
 
 // ======================== BLOG POSTS ========================
 
-export async function getBlogPosts(includeAll = false) {
+export async function getBlogPosts(includeAll = false, locale?: Locale) {
   const supabase = await createClient();
   let query = supabase.from("blog_posts").select("*").order("created_at", { ascending: false });
   if (!includeAll) {
     query = query.eq("status", "published");
+  }
+  if (locale) {
+    query = query.eq("locale", locale);
   }
   const { data, error } = await query;
   if (error) throw error;
@@ -57,7 +61,8 @@ export async function createBlogPost(post: BlogPostInsert) {
   const { data, error } = await supabase.from("blog_posts").insert(post).select().single();
   if (error) throw error;
   revalidatePath("/admin/blog");
-  revalidatePath("/blogs");
+  revalidatePath("/en/blogs");
+  revalidatePath("/de/blogs");
   return data;
 }
 
@@ -66,7 +71,8 @@ export async function updateBlogPost(id: string, post: BlogPostUpdate) {
   const { data, error } = await supabase.from("blog_posts").update(post).eq("id", id).select().single();
   if (error) throw error;
   revalidatePath("/admin/blog");
-  revalidatePath("/blogs");
+  revalidatePath("/en/blogs");
+  revalidatePath("/de/blogs");
   revalidatePath(`/admin/blog/${id}`);
   return data;
 }
@@ -76,16 +82,20 @@ export async function deleteBlogPost(id: string) {
   const { error } = await supabase.from("blog_posts").delete().eq("id", id);
   if (error) throw error;
   revalidatePath("/admin/blog");
-  revalidatePath("/blogs");
+  revalidatePath("/en/blogs");
+  revalidatePath("/de/blogs");
 }
 
 // ======================== SERVICES ========================
 
-export async function getServices(includeAll = false) {
+export async function getServices(includeAll = false, locale?: Locale) {
   const supabase = await createClient();
   let query = supabase.from("services").select("*").order("sort_order", { ascending: true });
   if (!includeAll) {
     query = query.eq("is_active", true);
+  }
+  if (locale) {
+    query = query.eq("locale", locale);
   }
   const { data, error } = await query;
   if (error) throw error;
@@ -97,8 +107,10 @@ export async function createService(service: ServiceInsert) {
   const { data, error } = await supabase.from("services").insert(service).select().single();
   if (error) throw error;
   revalidatePath("/admin/services");
-  revalidatePath("/services");
-  revalidatePath("/");
+  revalidatePath("/en/services");
+  revalidatePath("/de/services");
+  revalidatePath("/en");
+  revalidatePath("/de");
   return data;
 }
 
@@ -107,8 +119,10 @@ export async function updateService(id: string, service: ServiceUpdate) {
   const { data, error } = await supabase.from("services").update(service).eq("id", id).select().single();
   if (error) throw error;
   revalidatePath("/admin/services");
-  revalidatePath("/services");
-  revalidatePath("/");
+  revalidatePath("/en/services");
+  revalidatePath("/de/services");
+  revalidatePath("/en");
+  revalidatePath("/de");
   return data;
 }
 
@@ -117,17 +131,22 @@ export async function deleteService(id: string) {
   const { error } = await supabase.from("services").delete().eq("id", id);
   if (error) throw error;
   revalidatePath("/admin/services");
-  revalidatePath("/services");
-  revalidatePath("/");
+  revalidatePath("/en/services");
+  revalidatePath("/de/services");
+  revalidatePath("/en");
+  revalidatePath("/de");
 }
 
 // ======================== TEAM MEMBERS ========================
 
-export async function getTeamMembers(includeAll = false) {
+export async function getTeamMembers(includeAll = false, locale?: Locale) {
   const supabase = await createClient();
   let query = supabase.from("team_members").select("*").order("sort_order", { ascending: true });
   if (!includeAll) {
     query = query.eq("is_active", true);
+  }
+  if (locale) {
+    query = query.eq("locale", locale);
   }
   const { data, error } = await query;
   if (error) throw error;
@@ -139,7 +158,8 @@ export async function createTeamMember(member: TeamMemberInsert) {
   const { data, error } = await supabase.from("team_members").insert(member).select().single();
   if (error) throw error;
   revalidatePath("/admin/team");
-  revalidatePath("/about");
+  revalidatePath("/en/about");
+  revalidatePath("/de/about");
   return data;
 }
 
@@ -148,7 +168,8 @@ export async function updateTeamMember(id: string, member: TeamMemberUpdate) {
   const { data, error } = await supabase.from("team_members").update(member).eq("id", id).select().single();
   if (error) throw error;
   revalidatePath("/admin/team");
-  revalidatePath("/about");
+  revalidatePath("/en/about");
+  revalidatePath("/de/about");
   return data;
 }
 
@@ -157,16 +178,20 @@ export async function deleteTeamMember(id: string) {
   const { error } = await supabase.from("team_members").delete().eq("id", id);
   if (error) throw error;
   revalidatePath("/admin/team");
-  revalidatePath("/about");
+  revalidatePath("/en/about");
+  revalidatePath("/de/about");
 }
 
 // ======================== TESTIMONIALS ========================
 
-export async function getTestimonials(includeAll = false) {
+export async function getTestimonials(includeAll = false, locale?: Locale) {
   const supabase = await createClient();
   let query = supabase.from("testimonials").select("*").order("sort_order", { ascending: true });
   if (!includeAll) {
     query = query.eq("is_active", true);
+  }
+  if (locale) {
+    query = query.eq("locale", locale);
   }
   const { data, error } = await query;
   if (error) throw error;
@@ -178,7 +203,8 @@ export async function createTestimonial(testimonial: TestimonialInsert) {
   const { data, error } = await supabase.from("testimonials").insert(testimonial).select().single();
   if (error) throw error;
   revalidatePath("/admin/testimonials");
-  revalidatePath("/");
+  revalidatePath("/en");
+  revalidatePath("/de");
   return data;
 }
 
@@ -187,7 +213,8 @@ export async function updateTestimonial(id: string, testimonial: TestimonialUpda
   const { data, error } = await supabase.from("testimonials").update(testimonial).eq("id", id).select().single();
   if (error) throw error;
   revalidatePath("/admin/testimonials");
-  revalidatePath("/");
+  revalidatePath("/en");
+  revalidatePath("/de");
   return data;
 }
 
@@ -196,16 +223,20 @@ export async function deleteTestimonial(id: string) {
   const { error } = await supabase.from("testimonials").delete().eq("id", id);
   if (error) throw error;
   revalidatePath("/admin/testimonials");
-  revalidatePath("/");
+  revalidatePath("/en");
+  revalidatePath("/de");
 }
 
 // ======================== FAQS ========================
 
-export async function getFAQs(includeAll = false) {
+export async function getFAQs(includeAll = false, locale?: Locale) {
   const supabase = await createClient();
   let query = supabase.from("faqs").select("*").order("sort_order", { ascending: true });
   if (!includeAll) {
     query = query.eq("is_active", true);
+  }
+  if (locale) {
+    query = query.eq("locale", locale);
   }
   const { data, error } = await query;
   if (error) throw error;
@@ -217,7 +248,8 @@ export async function createFAQ(faq: FAQInsert) {
   const { data, error } = await supabase.from("faqs").insert(faq).select().single();
   if (error) throw error;
   revalidatePath("/admin/faqs");
-  revalidatePath("/");
+  revalidatePath("/en");
+  revalidatePath("/de");
   return data;
 }
 
@@ -226,7 +258,8 @@ export async function updateFAQ(id: string, faq: FAQUpdate) {
   const { data, error } = await supabase.from("faqs").update(faq).eq("id", id).select().single();
   if (error) throw error;
   revalidatePath("/admin/faqs");
-  revalidatePath("/");
+  revalidatePath("/en");
+  revalidatePath("/de");
   return data;
 }
 
@@ -235,7 +268,8 @@ export async function deleteFAQ(id: string) {
   const { error } = await supabase.from("faqs").delete().eq("id", id);
   if (error) throw error;
   revalidatePath("/admin/faqs");
-  revalidatePath("/");
+  revalidatePath("/en");
+  revalidatePath("/de");
 }
 
 // ======================== CONTACT SUBMISSIONS ========================
@@ -288,11 +322,14 @@ export async function submitContactForm(formData: {
 
 // ======================== HERO SECTIONS ========================
 
-export async function getHeroSections(pageKey?: string) {
+export async function getHeroSections(pageKey?: string, locale?: Locale) {
   const supabase = await createClient();
   let query = supabase.from("hero_sections").select("*").order("sort_order", { ascending: true });
   if (pageKey) {
     query = query.eq("page_key", pageKey);
+  }
+  if (locale) {
+    query = query.eq("locale", locale);
   }
   const { data, error } = await query;
   if (error) throw error;
@@ -303,12 +340,13 @@ export async function upsertHeroSection(section: HeroSectionInsert) {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("hero_sections")
-    .upsert(section, { onConflict: "page_key,section_key" })
+    .upsert(section, { onConflict: "page_key,section_key,locale" })
     .select()
     .single();
   if (error) throw error;
   revalidatePath("/admin/hero");
-  revalidatePath("/");
+  revalidatePath("/en");
+  revalidatePath("/de");
   return data;
 }
 
@@ -317,7 +355,8 @@ export async function deleteHeroSection(id: string) {
   const { error } = await supabase.from("hero_sections").delete().eq("id", id);
   if (error) throw error;
   revalidatePath("/admin/hero");
-  revalidatePath("/");
+  revalidatePath("/en");
+  revalidatePath("/de");
 }
 
 // ======================== SITE SETTINGS ========================
@@ -339,7 +378,8 @@ export async function updateSiteSetting(key: string, update: SiteSettingUpdate) 
     .single();
   if (error) throw error;
   revalidatePath("/admin/settings");
-  revalidatePath("/");
+  revalidatePath("/en");
+  revalidatePath("/de");
   return data;
 }
 

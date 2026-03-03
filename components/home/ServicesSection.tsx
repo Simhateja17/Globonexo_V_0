@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { getTranslations } from "next-intl/server";
 import type { Service } from "@/lib/types/cms";
 import type { HeroSection } from "@/lib/types/cms";
 
@@ -79,13 +80,13 @@ interface ServicesSectionProps {
   header?: HeroSection | null;
 }
 
-export function ServicesSection({ services, header }: ServicesSectionProps) {
-  const heading = header?.title ?? "What are we offering?";
-  const subtitle =
-    header?.subtitle ??
-    "At Globonexo, we deliver IT services designed to improve performance, reliability, and scalability. Our consultants collaborate closely with clients to integrate AI where it creates measurable business impact.";
+export async function ServicesSection({ services, header }: ServicesSectionProps) {
+  const t = await getTranslations("services");
 
-  // Map services to card data, falling back to defaults
+  const heading = header?.title ?? t("defaultHeading");
+  const subtitle = header?.subtitle ?? t("defaultSubtitle");
+
+  // Map services to card data, falling back to translated defaults
   const cards: ServiceCardProps[] =
     services && services.length > 0
       ? services.map((s) => {
@@ -100,29 +101,29 @@ export function ServicesSection({ services, header }: ServicesSectionProps) {
         })
       : [
           {
-            title: "Outstanding Standing solutions",
-            description: "Expertise in staff augmentation, dedicated teams, EOR (Employer of Record), and PEO (Professional Employer Organization) models.",
+            title: t("fallbackCard1Title"),
+            description: t("fallbackCard1Desc"),
             icon: "/images/services/laptop.png",
             iconWidth: 97,
             iconHeight: 95,
           },
           {
-            title: "Custom Solutions for Unique Needs",
-            description: "Bespoke IT and software solutions designed to address specific challenges and goals. Emphasis on scalability, innovation, and alignment with business strategies.",
+            title: t("fallbackCard2Title"),
+            description: t("fallbackCard2Desc"),
             icon: "/images/services/bars-chart.png",
             iconWidth: 156,
             iconHeight: 173,
           },
           {
-            title: "Software Testing Services",
-            description: "Comprehensive QA and testing services to ensure robust, high-performance, and error-free software. Specialized in manual, automated, and performance testing for diverse industries.",
+            title: t("fallbackCard3Title"),
+            description: t("fallbackCard3Desc"),
             icon: "/images/services/building.png",
             iconWidth: 87,
             iconHeight: 95,
           },
           {
-            title: "Cost Efficiency",
-            description: "Save on recruitment and operational costs without compromising on quality.",
+            title: t("fallbackCard4Title"),
+            description: t("fallbackCard4Desc"),
             icon: "/images/services/terminal.png",
             iconWidth: 72,
             iconHeight: 71,
