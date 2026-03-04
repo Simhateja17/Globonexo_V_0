@@ -47,8 +47,8 @@ export function Navbar() {
   };
 
   return (
-    <nav
-      className="fixed top-0 lg:top-2 left-0 right-0 z-50 flex justify-center px-3 sm:px-5 md:px-8 lg:px-10"
+      <nav
+      className="fixed top-2 left-0 right-0 z-50 flex justify-center px-3 sm:px-5 md:px-8 lg:px-10"
       style={{
         opacity: visible ? 1 : 0,
         pointerEvents: visible ? "auto" : "none",
@@ -56,7 +56,7 @@ export function Navbar() {
       }}
     >
       <div
-        className="w-full flex items-center justify-between relative lg:rounded-[clamp(12px,1.5vw,20px)]"
+        className="w-full flex items-center justify-between relative rounded-[clamp(12px,1.5vw,20px)]"
         style={{
           maxWidth: "min(1400px, 96vw)",
           height: "clamp(56px, 5vh, 72px)",
