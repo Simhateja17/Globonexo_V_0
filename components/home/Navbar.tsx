@@ -26,10 +26,19 @@ export function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setVisible(window.scrollY < window.innerHeight * 0.85);
+      // Only hide navbar on scroll for large screens (lg: 1024px+)
+      if (window.innerWidth >= 1024) {
+        setVisible(window.scrollY < window.innerHeight * 0.85);
+      } else {
+        setVisible(true);
+      }
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener("resize", handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
   }, []);
 
   const switchLocale = () => {
@@ -39,26 +48,24 @@ export function Navbar() {
 
   return (
     <nav
-      className="fixed top-2 left-0 right-0 z-50 flex justify-center px-5 sm:px-6 md:px-8 lg:px-10"
+      className="fixed top-0 lg:top-2 left-0 right-0 z-50 flex justify-center px-3 sm:px-5 md:px-8 lg:px-10"
       style={{
-        top: "8px",
         opacity: visible ? 1 : 0,
         pointerEvents: visible ? "auto" : "none",
         transition: "opacity 0.3s ease",
       }}
     >
       <div
-        className="w-full flex items-center justify-between relative"
+        className="w-full flex items-center justify-between relative lg:rounded-[clamp(12px,1.5vw,20px)]"
         style={{
           maxWidth: "min(1400px, 96vw)",
           height: "clamp(56px, 5vh, 72px)",
           paddingLeft: "clamp(1rem, 2vw, 2.5rem)",
           paddingRight: "clamp(1rem, 2vw, 2.5rem)",
           borderBottom: "1px solid rgba(255, 255, 255, 0.15)",
-          background: "rgba(0, 0, 0, 0.6)",
+          background: "rgba(0, 0, 0, 0.85)",
           backdropFilter: "blur(20px)",
           WebkitBackdropFilter: "blur(20px)",
-          borderRadius: "clamp(12px, 1.5vw, 20px)",
         }}
       >
         {/* Logo */}
