@@ -46,13 +46,14 @@ export function Navbar() {
         transition: "opacity 0.3s ease",
       }}
     >
-      {/* Solid strip that fills the gap between the top of the viewport and
-          the pill bar, so page content never shows through above the navbar */}
+      {/* Translucent strip above the pill bar */}
       <div
         className="w-full"
         style={{
           height: "8px",
-          background: "hsl(120,30%,2%)",
+          background: "rgba(0, 0, 0, 0.4)",
+          backdropFilter: "blur(20px)",
+          WebkitBackdropFilter: "blur(20px)",
         }}
       />
 
