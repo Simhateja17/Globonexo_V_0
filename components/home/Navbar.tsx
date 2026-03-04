@@ -26,19 +26,10 @@ export function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      // Only hide navbar on scroll for large screens (lg: 1024px+)
-      if (window.innerWidth >= 1024) {
-        setVisible(window.scrollY < window.innerHeight * 0.85);
-      } else {
-        setVisible(true);
-      }
+      setVisible(window.scrollY < window.innerHeight * 0.85);
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
-    window.addEventListener("resize", handleScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", handleScroll);
-    };
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const switchLocale = () => {
@@ -48,13 +39,24 @@ export function Navbar() {
 
   return (
       <nav
-      className="fixed top-2 left-0 right-0 z-50 flex justify-center px-3 sm:px-5 md:px-8 lg:px-10"
+      className="fixed top-0 left-0 right-0 z-50"
       style={{
         opacity: visible ? 1 : 0,
         pointerEvents: visible ? "auto" : "none",
         transition: "opacity 0.3s ease",
       }}
     >
+      {/* Solid strip that fills the gap between the top of the viewport and
+          the pill bar, so page content never shows through above the navbar */}
+      <div
+        className="w-full"
+        style={{
+          height: "8px",
+          background: "hsl(120,30%,2%)",
+        }}
+      />
+
+      <div className="flex justify-center px-3 sm:px-5 md:px-8 lg:px-10">
       <div
         className="w-full flex items-center justify-between relative rounded-[clamp(12px,1.5vw,20px)]"
         style={{
@@ -237,6 +239,7 @@ export function Navbar() {
           </div>
         </div>
       )}
+      </div>
     </nav>
   );
 }
