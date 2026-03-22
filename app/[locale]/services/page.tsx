@@ -25,7 +25,7 @@ const gradientHeadingStyle: React.CSSProperties = {
   lineHeight: "clamp(40px, 5vw, 65px)",
   letterSpacing: "-0.05em",
   background:
-    "linear-gradient(180deg, #FFF 54%, #95DE64 100%)",
+    "linear-gradient(180deg, var(--gradient-heading-start) 54%, #95DE64 100%)",
   WebkitBackgroundClip: "text",
   WebkitTextFillColor: "transparent",
   backgroundClip: "text",
@@ -37,7 +37,7 @@ const bodyTextStyle: React.CSSProperties = {
   fontWeight: 400,
   fontSize: "clamp(14px, 1.25vw + 0.25rem, 20px)",
   lineHeight: "31px",
-  color: "#FFFFFF",
+  color: "var(--text-primary)",
   letterSpacing: "-0.002px",
 };
 
@@ -53,7 +53,7 @@ const greenButtonStyle: React.CSSProperties = {
   border: "none",
   padding: "10px 32px",
   cursor: "pointer",
-  boxShadow: "0px 16px 64px rgba(57,125,79,0.5)",
+  boxShadow: "0px 16px 64px var(--glow-green)",
 };
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -102,7 +102,7 @@ async function ServicesHeroSection({ data }: { data?: HeroSection | null }) {
               lineHeight: "clamp(40px, 5vw, 65px)",
               letterSpacing: "-0.05em",
               background:
-                "linear-gradient(180deg, #FFF 54%, #95DE64 100%)",
+                "linear-gradient(180deg, var(--gradient-heading-start) 54%, #95DE64 100%)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               backgroundClip: "text",
@@ -191,6 +191,7 @@ async function EndToEndSection({ data }: { data?: HeroSection | null }) {
               height={885}
               sizes="(max-width: 768px) 96vw, 40vw"
               loading="lazy"
+              className="illustration-theme"
               style={{ width: "100%", height: "auto" }}
             />
           </div>
@@ -252,6 +253,7 @@ async function AutomatedSectionLeft({ data }: { data?: HeroSection | null }) {
               height={944}
               sizes="(max-width: 768px) 96vw, 40vw"
               loading="lazy"
+              className="illustration-theme"
               style={{ width: "100%", height: "auto" }}
             />
           </div>
@@ -351,6 +353,7 @@ async function AutomatedSectionRight({ data }: { data?: HeroSection | null }) {
               height={1062}
               sizes="(max-width: 768px) 96vw, 40vw"
               loading="lazy"
+              className="illustration-theme"
               style={{ width: "100%", height: "auto" }}
             />
           </div>
@@ -418,8 +421,8 @@ export default async function ServicesPage({
 
   return (
     <main
-      className="relative min-h-screen bg-[#000000]"
-      style={{ overflowX: "hidden", overflowY: "visible" }}
+      className="relative min-h-screen"
+      style={{ overflowX: "hidden", overflowY: "visible", backgroundColor: "var(--page-bg)" }}
     >
       {/* Page-level green glow (matches homepage pattern) */}
       <div

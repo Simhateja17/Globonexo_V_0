@@ -49,7 +49,7 @@ async function GlobalPresenceContent({ locale }: { locale: Locale }) {
             fontSize: "clamp(32px, 3.5vw + 1rem, 55px)",
             lineHeight: "clamp(40px, 5vw, 65px)",
             letterSpacing: "-0.05em",
-            background: "linear-gradient(180deg, #FFF 54%, #95DE64 100%)",
+            background: "linear-gradient(180deg, var(--gradient-heading-start) 54%, #95DE64 100%)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             backgroundClip: "text",
@@ -65,7 +65,7 @@ async function GlobalPresenceContent({ locale }: { locale: Locale }) {
             fontWeight: 400,
             fontSize: "clamp(14px, 1.25vw + 0.25rem, 20px)",
             lineHeight: "31px",
-            color: "#FFFFFF",
+            color: "var(--text-primary)",
           }}
         >
           {description}
@@ -99,8 +99,8 @@ export default async function GlobalPresencePage({
 
   return (
     <main
-      className="relative min-h-screen bg-[#000000]"
-      style={{ overflowX: "hidden", overflowY: "visible" }}
+      className="relative min-h-screen"
+      style={{ overflowX: "hidden", overflowY: "visible", backgroundColor: "var(--page-bg)" }}
     >
       {/* Page-level green glow */}
       <div

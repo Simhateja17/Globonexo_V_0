@@ -111,7 +111,21 @@
     "executivesHeading": "Bios and photos of key executives and managers",
     "executivesSubtitle": "Meet the talented individuals who drive our company forward with their expertise and dedication.",
     "defaultExecName": "Talia Taylor",
-    "defaultExecTitle": "Digital Marketing Director @ Quantum"
+    "defaultExecTitle": "Digital Marketing Director @ Quantum",
+    "processHeading": "Our Working Process",
+    "processSubtitle": "Step-by-Step Guide to Achieving Your Business Goals",
+    "process1Title": "Consultation",
+    "process1Desc": "During the initial consultation, we will discuss your business goals and objectives, target audience, and current marketing efforts. This will allow us to understand your needs and tailor our services to best fit your requirements.",
+    "process2Title": "Research and Strategy Development",
+    "process2Desc": "Our team conducts thorough research and develops a comprehensive strategy tailored to your business objectives, ensuring every decision is backed by data and industry insights.",
+    "process3Title": "Implementation",
+    "process3Desc": "We execute the strategy with precision, deploying the right technologies and talent to bring your vision to life while maintaining the highest standards of quality.",
+    "process4Title": "Monitoring and Optimization",
+    "process4Desc": "We continuously monitor performance metrics and optimize processes to ensure maximum efficiency, making data-driven adjustments to improve outcomes.",
+    "process5Title": "Reporting and Communication",
+    "process5Desc": "Regular reporting and transparent communication keep you informed of progress, challenges, and achievements at every stage of the project.",
+    "process6Title": "Continual Improvement",
+    "process6Desc": "We believe in continuous improvement, regularly reviewing and refining our approaches to deliver increasingly better results for your business."
   },
   "servicesPage": {
     "heroTitle": "Software Testing",

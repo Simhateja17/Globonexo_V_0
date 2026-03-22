@@ -7,8 +7,8 @@ import { Suspense } from "react";
 
 /* ─── shared card style (glass) ───────────────────────────────────────── */
 const cardStyle: React.CSSProperties = {
-  background: "rgba(255, 255, 255, 0.05)",
-  border: "1px solid rgba(255, 255, 255, 0.1)",
+  background: "var(--surface-card)",
+  border: "1px solid var(--border-card)",
   backdropFilter: "blur(10px)",
   WebkitBackdropFilter: "blur(10px)",
   borderRadius: "20px",
@@ -23,7 +23,7 @@ const cardHeadingStyle: React.CSSProperties = {
   lineHeight: "1.3em",
   letterSpacing: "-0.0506em",
   background:
-    "linear-gradient(180deg, rgba(255,255,255,1) 12%, rgba(37,93,0,1) 100%)",
+    "linear-gradient(180deg, var(--gradient-heading-start) 12%, var(--gradient-heading-end) 100%)",
   backgroundSize: "100% 1.3em",
   backgroundRepeat: "repeat",
   WebkitBackgroundClip: "text",
@@ -42,7 +42,7 @@ const cardBodyStyle: React.CSSProperties = {
   fontWeight: 500,
   fontSize: "14px",
   lineHeight: "22px",
-  color: "#FFFFFF",
+  color: "var(--text-primary)",
 };
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -87,7 +87,7 @@ async function HeroSection() {
               lineHeight: "clamp(40px, 5vw, 65px)",
               letterSpacing: "-0.05em",
               background:
-                "linear-gradient(180deg, #FFF 54%, #95DE64 100%)",
+                "linear-gradient(180deg, var(--gradient-heading-start) 54%, #95DE64 100%)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               backgroundClip: "text",
@@ -103,7 +103,7 @@ async function HeroSection() {
               fontWeight: 400,
               fontSize: "clamp(14px, 1.25vw + 0.25rem, 20px)",
               lineHeight: "31px",
-              color: "#FFFFFF",
+              color: "var(--text-primary)",
             }}
           >
             {t("subtitle")}
@@ -167,7 +167,7 @@ async function FeaturedBlogCard({ post, locale }: { post: BlogPost; locale: stri
               <span
                 style={{
                   fontSize: "13px",
-                  color: "rgba(255,255,255,0.5)",
+                  color: "var(--text-secondary)",
                 }}
               >
                 {post.published_at
@@ -241,7 +241,7 @@ async function BlogCards({ posts, locale }: { posts: BlogPost[]; locale: string 
                     display: "block",
                     marginTop: "12px",
                     fontSize: "13px",
-                    color: "rgba(255,255,255,0.4)",
+                    color: "var(--text-secondary)",
                   }}
                 >
                   {post.published_at
@@ -289,7 +289,7 @@ async function EmptyState() {
           style={{
             ...cardBodyStyle,
             marginTop: "16px",
-            color: "rgba(255,255,255,0.6)",
+            color: "var(--text-secondary)",
           }}
         >
           {t("comingSoonMessage")}
@@ -342,8 +342,8 @@ export default async function BlogsPage({
 
   return (
     <main
-      className="relative min-h-screen bg-[#000000]"
-      style={{ overflowX: "hidden", overflowY: "visible" }}
+      className="relative min-h-screen"
+      style={{ overflowX: "hidden", overflowY: "visible", backgroundColor: "var(--page-bg)" }}
     >
       {/* Page-level green glow */}
       <div

@@ -111,7 +111,21 @@
     "executivesHeading": "Biographien und Fotos der wichtigsten Führungskräfte",
     "executivesSubtitle": "Lernen Sie die talentierten Persönlichkeiten kennen, die unser Unternehmen mit ihrer Expertise und Hingabe vorantreiben.",
     "defaultExecName": "Talia Taylor",
-    "defaultExecTitle": "Direktorin für digitales Marketing @ Quantum"
+    "defaultExecTitle": "Direktorin für digitales Marketing @ Quantum",
+    "processHeading": "Unser Arbeitsprozess",
+    "processSubtitle": "Schritt-für-Schritt-Anleitung zur Erreichung Ihrer Geschäftsziele",
+    "process1Title": "Beratung",
+    "process1Desc": "Während der ersten Beratung besprechen wir Ihre Geschäftsziele, Ihre Zielgruppe und Ihre aktuellen Marketingmaßnahmen. So können wir Ihre Bedürfnisse verstehen und unsere Dienstleistungen optimal auf Ihre Anforderungen zuschneiden.",
+    "process2Title": "Recherche und Strategieentwicklung",
+    "process2Desc": "Unser Team führt gründliche Recherchen durch und entwickelt eine umfassende Strategie, die auf Ihre Geschäftsziele zugeschnitten ist und sicherstellt, dass jede Entscheidung auf Daten und Branchenkenntnissen basiert.",
+    "process3Title": "Umsetzung",
+    "process3Desc": "Wir setzen die Strategie präzise um und setzen die richtigen Technologien und Talente ein, um Ihre Vision zum Leben zu erwecken und dabei höchste Qualitätsstandards einzuhalten.",
+    "process4Title": "Überwachung und Optimierung",
+    "process4Desc": "Wir überwachen kontinuierlich Leistungskennzahlen und optimieren Prozesse, um maximale Effizienz zu gewährleisten, und nehmen datengesteuerte Anpassungen zur Verbesserung der Ergebnisse vor.",
+    "process5Title": "Berichterstattung und Kommunikation",
+    "process5Desc": "Regelmäßige Berichterstattung und transparente Kommunikation halten Sie über Fortschritte, Herausforderungen und Erfolge in jeder Phase des Projekts auf dem Laufenden.",
+    "process6Title": "Kontinuierliche Verbesserung",
+    "process6Desc": "Wir glauben an kontinuierliche Verbesserung und überprüfen und verfeinern regelmäßig unsere Ansätze, um immer bessere Ergebnisse für Ihr Unternehmen zu liefern."
   },
   "servicesPage": {
     "heroTitle": "Software-Testing",

@@ -159,6 +159,19 @@
   box-shadow: 0px 16px 64px 0px var(--glow-green);
 }
 
+/*
+ * Theme-aware illustrations.
+ * Current illustrations are white-on-transparent (designed for dark mode).
+ * In light mode we invert + hue-rotate so they render dark-on-light and
+ * the green accents remain green.
+ */
+:root .illustration-theme {
+  filter: invert(1) hue-rotate(180deg);
+}
+.dark .illustration-theme {
+  filter: none;
+}
+
 /* Star background animation */
 @keyframes twinkle {
   0%, 100% { opacity: 0.3; }

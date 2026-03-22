@@ -67,7 +67,7 @@ export async function GlobalPresenceSection({ data }: GlobalPresenceSectionProps
             width={2400}
             height={1312}
             sizes="(max-width: 768px) 96vw, min(1300px, 96vw)"
-            className="relative w-full h-auto"
+            className="relative w-full h-auto illustration-theme"
             style={{ zIndex: 1 }}
           />
 

@@ -71,7 +71,7 @@ async function BlogPostContent({ slug, locale }: { slug: string; locale: Locale 
           fontSize: "clamp(28px, 3.5vw + 0.5rem, 48px)",
           lineHeight: 1.2,
           letterSpacing: "-0.03em",
-          background: "linear-gradient(180deg, #FFF 54%, #95DE64 100%)",
+          background: "linear-gradient(180deg, var(--gradient-heading-start) 54%, #95DE64 100%)",
           WebkitBackgroundClip: "text",
           WebkitTextFillColor: "transparent",
           backgroundClip: "text",
@@ -86,7 +86,7 @@ async function BlogPostContent({ slug, locale }: { slug: string; locale: Locale 
           marginTop: "16px",
           marginBottom: "clamp(24px, 3vw, 40px)",
           fontSize: "14px",
-          color: "rgba(255,255,255,0.5)",
+          color: "var(--text-secondary)",
         }}
       >
         {post.published_at &&
@@ -101,7 +101,7 @@ async function BlogPostContent({ slug, locale }: { slug: string; locale: Locale 
       <div
         className="prose prose-invert prose-lg max-w-none"
         style={{
-          color: "#FFFFFF",
+          color: "var(--text-primary)",
           fontFamily: "Inter, sans-serif",
         }}
         dangerouslySetInnerHTML={{ __html: html }}
@@ -121,8 +121,8 @@ export default async function BlogPostPage({
 
   return (
     <main
-      className="relative min-h-screen bg-[#000000]"
-      style={{ overflowX: "hidden", overflowY: "visible" }}
+      className="relative min-h-screen"
+      style={{ overflowX: "hidden", overflowY: "visible", backgroundColor: "var(--page-bg)" }}
     >
       {/* Page-level green glow */}
       <div

@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import Image from "next/image";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { Navbar, FaqSection, ContactSection } from "@/components/home";
+import { ProcessSection } from "@/components/about/ProcessSection";
 import {
   fetchTeamMembers,
   fetchFAQs,
@@ -18,7 +19,7 @@ const gradientHeadingStyle: React.CSSProperties = {
   lineHeight: "clamp(40px, 5vw, 65px)",
   letterSpacing: "-0.05em",
   background:
-    "linear-gradient(179deg, rgba(255,255,255,1) 23%, rgba(37,93,0,1) 85%)",
+    "linear-gradient(179deg, var(--gradient-heading-start) 23%, var(--gradient-heading-end) 85%)",
   WebkitBackgroundClip: "text",
   WebkitTextFillColor: "transparent",
   backgroundClip: "text",
@@ -83,7 +84,7 @@ async function AboutHero({ data }: { data?: HeroSection | null }) {
                 lineHeight: "clamp(40px, 5vw, 65px)",
                 letterSpacing: "-0.05em",
                 background:
-                  "linear-gradient(179deg, rgba(255,255,255,1) 23%, rgba(37,93,0,1) 85%)",
+                  "linear-gradient(179deg, var(--gradient-heading-start) 23%, var(--gradient-heading-end) 85%)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text",
@@ -99,7 +100,7 @@ async function AboutHero({ data }: { data?: HeroSection | null }) {
                 fontWeight: 400,
                 fontSize: "clamp(14px, 1.25vw + 0.25rem, 20px)",
                 lineHeight: "31px",
-                color: "#FFFFFF",
+                color: "var(--text-primary)",
               }}
             >
               {description}
@@ -112,7 +113,7 @@ async function AboutHero({ data }: { data?: HeroSection | null }) {
                 fontWeight: 500,
                 fontSize: "clamp(28px, 3.5vw + 0.5rem, 55px)",
                 lineHeight: "40px",
-                color: "#F0F0F0",
+                color: "var(--text-primary)",
               }}
             >
               {subtitle}
@@ -125,7 +126,7 @@ async function AboutHero({ data }: { data?: HeroSection | null }) {
                 fontWeight: 400,
                 fontSize: "clamp(14px, 1.25vw + 0.25rem, 20px)",
                 lineHeight: "31px",
-                color: "#FFFFFF",
+                color: "var(--text-primary)",
               }}
             >
               {body2}
@@ -144,7 +145,7 @@ async function AboutHero({ data }: { data?: HeroSection | null }) {
                   border: "none",
                   padding: "10px 32px",
                   cursor: "pointer",
-                  boxShadow: "0px 16px 64px rgba(57,125,79,0.5)",
+                  boxShadow: "0px 16px 64px var(--glow-green)",
                 }}
               >
                 {ctaText}
@@ -163,6 +164,7 @@ async function AboutHero({ data }: { data?: HeroSection | null }) {
               width={800}
               height={1038}
               sizes="(max-width: 768px) 80vw, 323px"
+              className="illustration-theme"
               style={{ width: "100%", height: "auto" }}
               priority
             />
@@ -214,7 +216,7 @@ async function JourneySection({ data }: { data?: HeroSection | null }) {
             fontSize: "clamp(14px, 1.25vw + 0.25rem, 20px)",
             lineHeight: "32px",
             letterSpacing: "-0.008px",
-            color: "#FFFFFF",
+            color: "var(--text-primary)",
             display: "flex",
             flexDirection: "column",
             gap: "24px",
@@ -298,7 +300,7 @@ async function ExecutivesSection({
             fontWeight: 400,
             fontSize: "clamp(14px, 1.1vw + 0.2rem, 18px)",
             lineHeight: "1.6",
-            color: "rgba(255,255,255,0.7)",
+            color: "var(--text-tertiary)",
             textAlign: "center",
             maxWidth: "720px",
             margin: "0 auto",
@@ -312,7 +314,7 @@ async function ExecutivesSection({
         <div
           className="relative"
           style={{
-            border: "1px solid rgba(255,255,255,0.15)",
+            border: "1px solid var(--border-subtle)",
             borderRadius: "10px",
             padding: "clamp(32px, 4vw, 60px) clamp(24px, 3vw, 48px)",
           }}
@@ -390,7 +392,7 @@ async function ExecutivesSection({
                     fontWeight: 400,
                     fontSize: "16px",
                     lineHeight: "1.4",
-                    color: "white",
+                    color: "var(--text-primary)",
                   }}
                 >
                   {exec.name}
@@ -401,7 +403,7 @@ async function ExecutivesSection({
                     fontWeight: 400,
                     fontSize: "14px",
                     lineHeight: "1.4",
-                    color: "rgba(255,255,255,0.7)",
+                    color: "var(--text-tertiary)",
                     marginTop: "4px",
                   }}
                 >
@@ -438,6 +440,7 @@ async function AboutContent({ locale }: { locale: Locale }) {
       <AboutHero data={heroData} />
       <JourneySection data={journeyData} />
       <ExecutivesSection data={executivesData} teamMembers={teamMembers} />
+      <ProcessSection />
       <FaqSection faqs={faqs} />
       <ContactSection
         contactInfo={
@@ -468,8 +471,8 @@ export default async function AboutPage({
 
   return (
     <main
-      className="relative min-h-screen bg-[#000000]"
-      style={{ overflowX: "hidden", overflowY: "visible" }}
+      className="relative min-h-screen"
+      style={{ overflowX: "hidden", overflowY: "visible", backgroundColor: "var(--page-bg)" }}
     >
       {/* Page-level green glow (matches homepage pattern) */}
       <div
