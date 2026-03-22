@@ -18,7 +18,7 @@ interface ContactSectionProps {
 const inputStyle: React.CSSProperties = {
   width: "100%",
   padding: "clamp(14px, 1.5vw, 20px) clamp(14px, 1.2vw, 18px)",
-  border: "1px solid rgba(255,255,255,0.15)",
+  border: "1px solid var(--border-subtle)",
   borderRadius: "8px",
   background: "transparent",
   fontFamily: "Inter, sans-serif",
@@ -26,7 +26,7 @@ const inputStyle: React.CSSProperties = {
   fontSize: "16px",
   lineHeight: "26px",
   letterSpacing: "-0.0016px",
-  color: "white",
+  color: "var(--text-primary)",
   outline: "none",
 };
 
@@ -95,7 +95,7 @@ export function ContactSection({ contactInfo, heading }: ContactSectionProps) {
       {/* Placeholder color style */}
       <style>{`
         .contact-input::placeholder {
-          color: rgba(255,255,255,0.5);
+          color: var(--contact-placeholder);
         }
       `}</style>
 
@@ -105,8 +105,8 @@ export function ContactSection({ contactInfo, heading }: ContactSectionProps) {
         className="absolute inset-0 pointer-events-none"
         style={{
           backgroundImage: [
-            "linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px)",
-            "linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px)",
+            "linear-gradient(to right, var(--grid-line) 1px, transparent 1px)",
+            "linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px)",
           ].join(", "),
           backgroundSize: "20% 120px",
           zIndex: 1,
@@ -136,7 +136,7 @@ export function ContactSection({ contactInfo, heading }: ContactSectionProps) {
         className="absolute inset-0 pointer-events-none"
         style={{
           backgroundImage:
-            "linear-gradient(180deg, rgba(2,1,3,0) 15.6%, rgb(2,1,3) 99.9%)",
+            `linear-gradient(180deg, transparent 15.6%, var(--contact-gradient-end) 99.9%)`,
           zIndex: 2,
         }}
       />
@@ -155,7 +155,7 @@ export function ContactSection({ contactInfo, heading }: ContactSectionProps) {
             lineHeight: "clamp(40px, 5vw, 65px)",
             letterSpacing: "-0.75px",
             background:
-              "linear-gradient(179deg, rgba(255,255,255,1) 23%, rgba(37,93,0,1) 85%)",
+              "linear-gradient(179deg, var(--gradient-heading-start) 23%, var(--gradient-heading-end) 85%)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             backgroundClip: "text",
@@ -188,7 +188,7 @@ export function ContactSection({ contactInfo, heading }: ContactSectionProps) {
                     fontSize: "clamp(14px, 1.2vw, 18px)",
                     lineHeight: "26px",
                     letterSpacing: "-0.0018px",
-                    color: "white",
+                    color: "var(--text-primary)",
                   }}
                 >
                   {item.text}
@@ -236,7 +236,7 @@ export function ContactSection({ contactInfo, heading }: ContactSectionProps) {
             className="relative"
             style={{
               flex: 1,
-              border: "1px solid rgba(255,255,255,0.15)",
+              border: "1px solid var(--border-subtle)",
               borderRadius: "8px",
               minHeight: "200px",
               display: "flex",

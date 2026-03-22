@@ -2,19 +2,22 @@
 
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { ChevronDown, Menu, X, Globe } from "lucide-react";
+import { ChevronDown, Menu, X, Globe, Sun, Moon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { useLocale } from "next-intl";
+import { useTheme } from "next-themes";
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [visible, setVisible] = useState(true);
+  const [mounted, setMounted] = useState(false);
   const t = useTranslations("nav");
   const tLang = useTranslations("language");
   const locale = useLocale();
   const pathname = usePathname();
   const router = useRouter();
+  const { theme, setTheme } = useTheme();
 
   const navLinks = [
     { label: t("home"), href: "/" as const, hasDropdown: true },
@@ -23,6 +26,10 @@ export function Navbar() {
     { label: t("globalPresence"), href: "/global-presence" as const },
     { label: t("blogs"), href: "/blogs" as const },
   ];
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -35,6 +42,10 @@ export function Navbar() {
   const switchLocale = () => {
     const nextLocale = locale === "en" ? "de" : "en";
     router.replace(pathname, { locale: nextLocale });
+  };
+
+  const toggleTheme = () => {
+    setTheme(theme === "dark" ? "light" : "dark");
   };
 
   return (
@@ -51,7 +62,7 @@ export function Navbar() {
         className="w-full"
         style={{
           height: "8px",
-          background: "rgba(0, 0, 0, 0.4)",
+          background: "var(--surface-glass-strip)",
           backdropFilter: "blur(20px)",
           WebkitBackdropFilter: "blur(20px)",
         }}
@@ -65,8 +76,8 @@ export function Navbar() {
           height: "clamp(56px, 5vh, 72px)",
           paddingLeft: "clamp(1rem, 2vw, 2.5rem)",
           paddingRight: "clamp(1rem, 2vw, 2.5rem)",
-          borderBottom: "1px solid rgba(255, 255, 255, 0.15)",
-          background: "rgba(0, 0, 0, 0.85)",
+          borderBottom: "1px solid var(--border-subtle)",
+          background: "var(--surface-glass)",
           backdropFilter: "blur(20px)",
           WebkitBackdropFilter: "blur(20px)",
         }}
@@ -80,6 +91,7 @@ export function Navbar() {
               width={190}
               height={30}
               priority
+              className="dark:brightness-100 brightness-0"
             />
           </Link>
         </div>
@@ -89,7 +101,7 @@ export function Navbar() {
           className="hidden lg:flex items-center absolute left-1/2 -translate-x-1/2"
           style={{
             borderRadius: "clamp(40px, 4vw, 60px)",
-            border: "1px solid rgba(255, 255, 255, 0.15)",
+            border: "1px solid var(--border-subtle)",
             width: "clamp(480px, 48vw, 720px)",
             padding: "clamp(6px, 0.6vw, 12px) clamp(1.5rem, 2.5vw, 2.5rem)",
             gap: "clamp(16px, 2vw, 30px)",
@@ -99,8 +111,8 @@ export function Navbar() {
           {/* Home with caret */}
           <Link
             href="/"
-            className="flex items-center gap-[3px] text-white/60 hover:text-white transition-colors whitespace-nowrap"
-            style={{ fontSize: "clamp(13px, 1vw, 15px)", lineHeight: 1.5 }}
+            className="flex items-center gap-[3px] transition-colors whitespace-nowrap"
+            style={{ fontSize: "clamp(13px, 1vw, 15px)", lineHeight: 1.5, color: "var(--nav-text)" }}
           >
             {t("home")}
             <ChevronDown className="w-3.5 h-3.5 opacity-60" />
@@ -109,8 +121,8 @@ export function Navbar() {
           {/* About Us */}
           <Link
             href="/about"
-            className="text-white/60 hover:text-white transition-colors whitespace-nowrap"
-            style={{ fontSize: "clamp(13px, 1vw, 15px)", lineHeight: 1.5 }}
+            className="transition-colors whitespace-nowrap"
+            style={{ fontSize: "clamp(13px, 1vw, 15px)", lineHeight: 1.5, color: "var(--nav-text)" }}
           >
             {t("aboutUs")}
           </Link>
@@ -118,8 +130,8 @@ export function Navbar() {
           {/* Services with caret */}
           <Link
             href="/services"
-            className="flex items-center gap-[3px] text-white/60 hover:text-white transition-colors whitespace-nowrap"
-            style={{ fontSize: "clamp(13px, 1vw, 15px)", lineHeight: 1.5 }}
+            className="flex items-center gap-[3px] transition-colors whitespace-nowrap"
+            style={{ fontSize: "clamp(13px, 1vw, 15px)", lineHeight: 1.5, color: "var(--nav-text)" }}
           >
             {t("services")}
             <ChevronDown className="w-3.5 h-3.5 opacity-60" />
@@ -128,8 +140,8 @@ export function Navbar() {
           {/* Global Presence */}
           <Link
             href="/global-presence"
-            className="text-white/60 hover:text-white transition-colors whitespace-nowrap"
-            style={{ fontSize: "clamp(13px, 1vw, 15px)", lineHeight: 1.5 }}
+            className="transition-colors whitespace-nowrap"
+            style={{ fontSize: "clamp(13px, 1vw, 15px)", lineHeight: 1.5, color: "var(--nav-text)" }}
           >
             {t("globalPresence")}
           </Link>
@@ -137,32 +149,49 @@ export function Navbar() {
           {/* Blogs */}
           <Link
             href="/blogs"
-            className="text-white/60 hover:text-white transition-colors whitespace-nowrap"
-            style={{ fontSize: "clamp(13px, 1vw, 15px)", lineHeight: 1.5 }}
+            className="transition-colors whitespace-nowrap"
+            style={{ fontSize: "clamp(13px, 1vw, 15px)", lineHeight: 1.5, color: "var(--nav-text)" }}
           >
             {t("blogs")}
           </Link>
         </div>
 
-        {/* Right side: Language switcher + CTA button */}
+        {/* Right side: Language switcher + Theme toggle + CTA button */}
         <div className="hidden lg:flex items-center gap-3 sm:gap-4">
           {/* Language switcher */}
           <button
             onClick={switchLocale}
-            className="flex items-center gap-1.5 text-white/60 hover:text-white transition-colors whitespace-nowrap"
-            style={{ fontSize: "clamp(13px, 1vw, 15px)", lineHeight: 1.5 }}
+            className="flex items-center gap-1.5 transition-colors whitespace-nowrap"
+            style={{ fontSize: "clamp(13px, 1vw, 15px)", lineHeight: 1.5, color: "var(--nav-text)" }}
             title={tLang("switchTo")}
           >
             <Globe className="w-4 h-4" />
             {tLang("current")}
           </button>
 
+          {/* Theme toggle */}
+          {mounted && (
+            <button
+              onClick={toggleTheme}
+              className="flex items-center justify-center rounded-full transition-colors"
+              style={{
+                width: "36px",
+                height: "36px",
+                color: "var(--nav-text)",
+                border: "1px solid var(--border-subtle)",
+              }}
+              aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+            >
+              {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+            </button>
+          )}
+
           {/* CTA button */}
           <div
             style={{
               padding: "clamp(4px, 0.5vw, 6px)",
               borderRadius: "clamp(8px, 1vw, 12px)",
-              border: "1px solid rgba(255, 255, 255, 0.15)",
+              border: "1px solid var(--border-subtle)",
             }}
           >
             <button
@@ -188,7 +217,8 @@ export function Navbar() {
 
         {/* Mobile menu toggle */}
         <button
-          className="lg:hidden text-white"
+          className="lg:hidden"
+          style={{ color: "var(--text-primary)" }}
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
         >
           {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -200,8 +230,8 @@ export function Navbar() {
         <div
           className="lg:hidden absolute top-full mt-2 left-4 right-4 rounded-2xl p-4"
           style={{
-            background: "rgba(5, 2, 8, 0.95)",
-            border: "1px solid rgba(255,255,255,0.1)",
+            background: "var(--mobile-menu-bg)",
+            border: "1px solid var(--border-card)",
             backdropFilter: "blur(12px)",
           }}
         >
@@ -210,7 +240,8 @@ export function Navbar() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="flex items-center justify-between px-4 py-3 text-[13px] text-white/60 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
+                className="flex items-center justify-between px-4 py-3 text-[13px] rounded-lg transition-colors"
+                style={{ color: "var(--nav-text)" }}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {item.label}
@@ -224,13 +255,29 @@ export function Navbar() {
                 switchLocale();
                 setMobileMenuOpen(false);
               }}
-              className="flex items-center gap-2 px-4 py-3 text-[13px] text-white/60 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
+              className="flex items-center gap-2 px-4 py-3 text-[13px] rounded-lg transition-colors"
+              style={{ color: "var(--nav-text)" }}
             >
               <Globe className="w-4 h-4" />
               {tLang("switchTo")}
             </button>
 
-            <hr className="border-white/10 my-2" />
+            {/* Mobile theme toggle */}
+            {mounted && (
+              <button
+                onClick={() => {
+                  toggleTheme();
+                  setMobileMenuOpen(false);
+                }}
+                className="flex items-center gap-2 px-4 py-3 text-[13px] rounded-lg transition-colors"
+                style={{ color: "var(--nav-text)" }}
+              >
+                {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+                {theme === "dark" ? "Light Mode" : "Dark Mode"}
+              </button>
+            )}
+
+            <hr style={{ borderColor: "var(--border-card)" }} className="my-2" />
             <button
               className="mt-1 text-white text-sm font-normal text-center py-2 rounded-lg"
               style={{ background: "#35BC47" }}

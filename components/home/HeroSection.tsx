@@ -67,7 +67,7 @@ export async function HeroSection({ data }: HeroSectionProps) {
               fontSize: "clamp(14px, 1.25vw + 0.5rem, 20px)",
               lineHeight: "1.55",
               letterSpacing: "-0.01em",
-              color: "#FFFFFF",
+              color: "var(--text-primary)",
             }}
           >
             {description}
@@ -96,14 +96,14 @@ export async function HeroSection({ data }: HeroSectionProps) {
                   paddingRight: "clamp(16px, 1.5vw, 24px)",
                   borderRadius: "clamp(22px, 2.2vw, 35px)",
                   background: "rgba(255, 255, 255, 0.05)",
-                  border: "1px solid rgba(255, 255, 255, 0.1)",
+                  border: "1px solid var(--border-card)",
                   backdropFilter: "blur(10px)",
                   WebkitBackdropFilter: "blur(10px)",
                   fontFamily: "Inter, sans-serif",
                   fontWeight: 500,
                   fontSize: "clamp(13px, 1.1vw, 17px)",
                   letterSpacing: "-0.01em",
-                  color: "#FFFFFF",
+                  color: "var(--text-primary)",
                   textDecoration: "none",
                 }}
               >

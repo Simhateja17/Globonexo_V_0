@@ -30,7 +30,7 @@ function ChevronIcon({ open }: { open: boolean }) {
     >
       <path
         d="M1 1L11 11L21 1"
-        stroke="white"
+        stroke="var(--chevron-stroke)"
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -94,7 +94,7 @@ export function FaqSection({ faqs, heading }: FaqSectionProps) {
             letterSpacing: "-0.05em",
             marginBottom: "clamp(32px, 4vw, 56px)",
             background:
-              "linear-gradient(179deg, rgba(255,255,255,1) 23%, rgba(37,93,0,1) 85%)",
+              "linear-gradient(179deg, var(--gradient-heading-start) 23%, var(--gradient-heading-end) 85%)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             backgroundClip: "text",
@@ -120,7 +120,7 @@ export function FaqSection({ faqs, heading }: FaqSectionProps) {
                 key={i}
                 style={{
                   borderRadius: "10px",
-                  background: isOpen ? "#397D4F" : "rgba(66,66,66,0.5)",
+                  background: isOpen ? "#397D4F" : "var(--faq-closed-bg)",
                   backdropFilter: "blur(14px)",
                   boxShadow: isOpen
                     ? "0px 3px 20px 5px rgba(57,125,79,0.2)"
@@ -146,7 +146,7 @@ export function FaqSection({ faqs, heading }: FaqSectionProps) {
                       fontWeight: 600,
                       fontSize: "clamp(16px, 1.5vw, 24px)",
                       lineHeight: "normal",
-                      color: "white",
+                      color: "var(--text-primary)",
                       flex: 1,
                     }}
                   >
@@ -173,7 +173,7 @@ export function FaqSection({ faqs, heading }: FaqSectionProps) {
                       fontWeight: 400,
                       fontSize: "clamp(14px, 1.3vw, 20px)",
                       lineHeight: "normal",
-                      color: "white",
+                      color: "var(--text-primary)",
                       margin: 0,
                     }}
                   >

@@ -40,9 +40,9 @@ const conicBorder: React.CSSProperties = {
 };
 
 const cardInner: React.CSSProperties = {
-  background: "rgba(6, 10, 6, 1)",
+  background: "var(--surface-card)",
   borderRadius: "36px",
-  boxShadow: "0px 16px 64px 0px rgba(57,125,79,0.5)",
+  boxShadow: "0px 16px 64px 0px var(--glow-green)",
   padding: "clamp(24px, 3vw, 32px)",
   minHeight: "180px",
   flex: 1,
@@ -59,7 +59,7 @@ function WhyCard({ title, description }: { title: string; description: string })
             fontSize: "clamp(20px, 2vw, 30px)",
             lineHeight: 1.03,
             letterSpacing: "-0.003px",
-            color: "white",
+            color: "var(--text-primary)",
             marginBottom: "12px",
           }}
         >
@@ -71,7 +71,7 @@ function WhyCard({ title, description }: { title: string; description: string })
             fontWeight: 400,
             fontSize: "clamp(14px, 1.3vw, 20px)",
             lineHeight: 1.3,
-            color: "rgba(255,255,255,0.7)",
+            color: "var(--text-tertiary)",
             margin: 0,
           }}
         >
@@ -132,7 +132,7 @@ export async function WhyChooseSection({ data }: WhyChooseSectionProps) {
             letterSpacing: "-0.0506em",
             marginBottom: "clamp(16px, 2vw, 24px)",
             background:
-              "linear-gradient(179deg, rgba(255,255,255,1) 23%, rgba(37,93,0,1) 85%)",
+              "linear-gradient(179deg, var(--gradient-heading-start) 23%, var(--gradient-heading-end) 85%)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             backgroundClip: "text",
@@ -149,7 +149,7 @@ export async function WhyChooseSection({ data }: WhyChooseSectionProps) {
             fontWeight: 500,
             fontSize: "clamp(15px, 1.3vw, 20px)",
             lineHeight: 1.6,
-            color: "white",
+            color: "var(--text-primary)",
             maxWidth: "778px",
             marginBottom: "clamp(32px, 4vw, 56px)",
           }}

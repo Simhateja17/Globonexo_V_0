@@ -83,7 +83,7 @@ export default async function Home({
   const cmsLocale = locale as Locale;
 
   return (
-    <main className="relative min-h-screen bg-[#000000]" style={{ overflowX: "hidden", overflowY: "visible" }}>
+    <main className="relative min-h-screen" style={{ overflowX: "hidden", overflowY: "visible", backgroundColor: "var(--page-bg)" }}>
 
       {/* Page-level green glow */}
       <div

@@ -68,7 +68,7 @@ export function TestimonialsSection({ testimonials, heading }: TestimonialsSecti
             letterSpacing: "-0.0506em",
             marginBottom: "clamp(32px, 4vw, 56px)",
             background:
-              "linear-gradient(179deg, rgba(255,255,255,1) 23%, rgba(37,93,0,1) 85%)",
+              "linear-gradient(179deg, var(--gradient-heading-start) 23%, var(--gradient-heading-end) 85%)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             backgroundClip: "text",
@@ -80,7 +80,7 @@ export function TestimonialsSection({ testimonials, heading }: TestimonialsSecti
         {/* Testimonial card */}
         <div
           style={{
-            border: "1px solid rgba(255,255,255,0.15)",
+            border: "1px solid var(--border-subtle)",
             borderRadius: "10px",
             padding: "clamp(24px, 3vw, 48px)",
           }}
@@ -119,7 +119,7 @@ export function TestimonialsSection({ testimonials, heading }: TestimonialsSecti
                   fontWeight: 500,
                   fontSize: "clamp(16px, 1.6vw, 23px)",
                   lineHeight: "clamp(24px, 3vw, 34px)",
-                  color: "white",
+                  color: "var(--text-primary)",
                   letterSpacing: "-0.0023px",
                   margin: 0,
                   marginBottom: "clamp(16px, 2vw, 24px)",
@@ -133,7 +133,7 @@ export function TestimonialsSection({ testimonials, heading }: TestimonialsSecti
                   fontWeight: 400,
                   fontSize: "16px",
                   lineHeight: "26px",
-                  color: "white",
+                  color: "var(--text-primary)",
                   margin: 0,
                 }}
               >
@@ -145,7 +145,7 @@ export function TestimonialsSection({ testimonials, heading }: TestimonialsSecti
                   fontWeight: 400,
                   fontSize: "14px",
                   lineHeight: "26px",
-                  color: "rgba(255,255,255,0.7)",
+                  color: "var(--text-tertiary)",
                   margin: 0,
                 }}
               >
@@ -170,9 +170,9 @@ export function TestimonialsSection({ testimonials, heading }: TestimonialsSecti
               width: "36px",
               height: "36px",
               borderRadius: "50%",
-              border: "1px solid rgba(255,255,255,0.2)",
+              border: "1px solid var(--border-subtle)",
               background: "transparent",
-              color: "white",
+              color: "var(--text-primary)",
               cursor: "pointer",
               display: "flex",
               alignItems: "center",
@@ -198,7 +198,7 @@ export function TestimonialsSection({ testimonials, heading }: TestimonialsSecti
                   border: "none",
                   padding: 0,
                   cursor: "pointer",
-                  background: i === active ? "#397D4F" : "rgba(255,255,255,0.3)",
+                  background: i === active ? "#397D4F" : "var(--text-secondary)",
                   transition: "background 0.2s ease",
                 }}
               />
@@ -215,9 +215,9 @@ export function TestimonialsSection({ testimonials, heading }: TestimonialsSecti
               width: "36px",
               height: "36px",
               borderRadius: "50%",
-              border: "1px solid rgba(255,255,255,0.2)",
+              border: "1px solid var(--border-subtle)",
               background: "transparent",
-              color: "white",
+              color: "var(--text-primary)",
               cursor: "pointer",
               display: "flex",
               alignItems: "center",

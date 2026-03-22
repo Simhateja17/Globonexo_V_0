@@ -36,7 +36,7 @@ export default async function LocaleLayout({ children, params }: Props) {
     >
       <NextIntlClientProvider messages={messages}>
         {children}
-        <footer className="w-full border-t border-white/10 py-4 px-6 flex items-center justify-end bg-black">
+        <footer className="w-full border-t py-4 px-6 flex items-center justify-end" style={{ borderColor: "var(--border-card)", backgroundColor: "var(--page-bg)" }}>
           <NextLink
             href="/admin"
             className="text-xs text-muted-foreground hover:text-white transition-colors"

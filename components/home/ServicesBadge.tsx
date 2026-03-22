@@ -10,7 +10,7 @@ export async function ServicesBadge({ text }: ServicesBadgeProps) {
 
   return (
     <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-500/20 border border-purple-500/30">
-      <span className="text-sm text-white/90">{displayText}</span>
+      <span className="text-sm" style={{ color: "var(--text-primary)" }}>{displayText}</span>
     </div>
   );
 }

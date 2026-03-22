@@ -15,9 +15,9 @@ function StatCard({ value, label }: { value: string; label: string }) {
   };
 
   const statCardInner: React.CSSProperties = {
-    background: "rgba(6, 10, 6, 1)",
+    background: "var(--surface-card)",
     borderRadius: "36px",
-    boxShadow: "0px 16px 64px 0px rgba(57,125,79,0.5)",
+    boxShadow: "0px 16px 64px 0px var(--glow-green)",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -36,7 +36,7 @@ function StatCard({ value, label }: { value: string; label: string }) {
             fontWeight: 600,
             fontSize: "clamp(28px, 3.5vw, 56px)",
             lineHeight: 1.1,
-            color: "white",
+            color: "var(--text-primary)",
             letterSpacing: "-0.02em",
           }}
         >
@@ -48,7 +48,7 @@ function StatCard({ value, label }: { value: string; label: string }) {
             fontWeight: 400,
             fontSize: "clamp(11px, 1vw, 16px)",
             lineHeight: 1.4,
-            color: "rgba(255,255,255,0.6)",
+            color: "var(--text-secondary)",
             marginTop: "8px",
             textAlign: "center",
           }}
@@ -110,7 +110,7 @@ export async function FeaturesSection({ data }: FeaturesSectionProps) {
         className="absolute inset-0 pointer-events-none"
         style={{
           backgroundImage:
-            "linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)",
+            "linear-gradient(var(--grid-line) 1px, transparent 1px), linear-gradient(90deg, var(--grid-line) 1px, transparent 1px)",
           backgroundSize: "60px 60px",
           zIndex: 1,
         }}
@@ -131,7 +131,7 @@ export async function FeaturesSection({ data }: FeaturesSectionProps) {
             letterSpacing: "-0.0506em",
             marginBottom: "clamp(32px, 4vw, 56px)",
             background:
-              "linear-gradient(179deg, rgba(255,255,255,1) 23%, rgba(37,93,0,1) 85%)",
+              "linear-gradient(179deg, var(--gradient-heading-start) 23%, var(--gradient-heading-end) 85%)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             backgroundClip: "text",
@@ -157,7 +157,7 @@ export async function FeaturesSection({ data }: FeaturesSectionProps) {
                 fontWeight: 500,
                 fontSize: "clamp(15px, 1.3vw, 20px)",
                 lineHeight: "1.55em",
-                color: "white",
+                color: "var(--text-primary)",
                 marginBottom: "1.2em",
               }}
             >
@@ -169,7 +169,7 @@ export async function FeaturesSection({ data }: FeaturesSectionProps) {
                 fontWeight: 500,
                 fontSize: "clamp(15px, 1.3vw, 20px)",
                 lineHeight: "1.55em",
-                color: "white",
+                color: "var(--text-primary)",
                 marginBottom: "clamp(28px, 3vw, 48px)",
               }}
             >
@@ -183,13 +183,13 @@ export async function FeaturesSection({ data }: FeaturesSectionProps) {
                 fontFamily: "Inter, sans-serif",
                 fontWeight: 500,
                 fontSize: "clamp(14px, 1.1vw, 18px)",
-                color: "white",
+                color: "var(--text-primary)",
                 background: "#397D4F",
                 border: "1px solid #397D4F",
                 borderRadius: "36px",
                 padding: "14px 40px",
                 textDecoration: "none",
-                boxShadow: "0px 16px 64px 0px rgba(57,125,79,0.5)",
+                boxShadow: "0px 16px 64px 0px var(--glow-green)",
                 cursor: "pointer",
               }}
             >

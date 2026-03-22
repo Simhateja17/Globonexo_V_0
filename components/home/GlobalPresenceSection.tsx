@@ -34,7 +34,7 @@ export async function GlobalPresenceSection({ data }: GlobalPresenceSectionProps
             fontSize: "clamp(28px, 3.2vw, 50px)",
             lineHeight: "1.3em",
             letterSpacing: "-0.0506em",
-            background: "linear-gradient(180deg, #FFFFFF 54.17%, #95DE64 100%)",
+            background: "linear-gradient(180deg, var(--gradient-heading-start) 54.17%, #95DE64 100%)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             backgroundClip: "text",
@@ -80,7 +80,7 @@ export async function GlobalPresenceSection({ data }: GlobalPresenceSectionProps
               left: 0,
               right: 0,
               height: "30%",
-              background: "linear-gradient(to bottom, transparent, rgba(0,0,0,0.8))",
+              background: "linear-gradient(to bottom, transparent, var(--bottom-fade))",
               zIndex: 2,
             }}
           />

@@ -21,8 +21,8 @@ const conicBorder: React.CSSProperties = {
 
 const bentoCardStyle: React.CSSProperties = {
   borderRadius: borderRadiusValue,
-  background: "rgba(6, 10, 6, 1)",
-  boxShadow: "0px 16px 64px 0px rgba(57,125,79,0.5)",
+  background: "var(--surface-card)",
+  boxShadow: "0px 16px 64px 0px var(--glow-green)",
 };
 
 const cardTitleStyle: React.CSSProperties = {
@@ -30,13 +30,13 @@ const cardTitleStyle: React.CSSProperties = {
   fontWeight: 600,
   fontSize: "clamp(14px, 1.1vw, 18px)",
   lineHeight: "1.4em",
-  color: "white",
+  color: "var(--text-primary)",
 };
 
 const cardBodyStyle: React.CSSProperties = {
   fontSize: "clamp(12px, 0.9vw, 14px)",
   lineHeight: "1.6em",
-  color: "rgba(255,255,255,0.6)",
+  color: "var(--text-secondary)",
 };
 
 interface ServiceCardProps {
@@ -153,7 +153,7 @@ export async function ServicesSection({ services, header }: ServicesSectionProps
             lineHeight: "1.3em",
             letterSpacing: "-0.0506em",
             background:
-              "linear-gradient(180deg, rgba(255,255,255,1) 12%, rgba(37,93,0,1) 100%)",
+              "linear-gradient(180deg, var(--gradient-heading-start) 12%, var(--gradient-heading-end) 100%)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             backgroundClip: "text",
@@ -163,7 +163,7 @@ export async function ServicesSection({ services, header }: ServicesSectionProps
         </h2>
 
         <p
-          className="text-center text-white mx-auto"
+          className="text-center mx-auto"
           style={{
             marginBottom: "clamp(32px, 5vw, 64px)",
             maxWidth: "min(780px, 96vw)",
@@ -172,6 +172,7 @@ export async function ServicesSection({ services, header }: ServicesSectionProps
             fontSize: "clamp(14px, 1.1vw, 20px)",
             lineHeight: "1.6em",
             letterSpacing: "-0.01em",
+            color: "var(--text-primary)",
           }}
         >
           {subtitle}
