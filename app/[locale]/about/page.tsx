@@ -11,7 +11,7 @@ import {
 } from "@/lib/queries/cms";
 import type { HeroSection, TeamMember, Locale } from "@/lib/types/cms";
 
-/* ─── gradient heading helper ──────────────────────────────────────────── */
+/* ─── gradient heading  helper ──────────────────────────────────────────── */
 const gradientHeadingStyle: React.CSSProperties = {
   fontFamily: "Inter, sans-serif",
   fontWeight: 500,
