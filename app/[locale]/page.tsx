@@ -14,6 +14,7 @@ import type { Locale } from "@/lib/types/cms";
 async function HomeContent({ locale }: { locale: Locale }) {
   const [
     heroData,
+    cloudPartnersData,
     servicesHeader,
     services,
     globalPresenceData,
@@ -27,6 +28,7 @@ async function HomeContent({ locale }: { locale: Locale }) {
     companySetting,
   ] = await Promise.all([
     fetchHeroSection("home", "hero", locale),
+    fetchHeroSection("home", "cloud-partners", locale),
     fetchHeroSection("home", "services", locale),
     fetchServices(locale),
     fetchHeroSection("home", "global-presence", locale),
@@ -44,7 +46,7 @@ async function HomeContent({ locale }: { locale: Locale }) {
 
   return (
     <>
-      <HeroSection data={heroData} />
+      <HeroSection data={heroData} cloudPartnersData={cloudPartnersData} />
       <ServicesSection services={services} header={servicesHeader} />
       <GlobalPresenceSection data={globalPresenceData} />
       <FeaturesSection data={featuresData} />

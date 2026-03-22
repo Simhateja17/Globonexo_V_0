@@ -219,7 +219,15 @@ export function Navbar() {
               width={190}
               height={30}
               priority
-              className="dark:brightness-100 brightness-0"
+              className="hidden dark:block"
+            />
+            <Image
+              src="/images/light_mode_logo.png"
+              alt="Globonexo"
+              width={190}
+              height={30}
+              priority
+              className="block dark:hidden"
             />
           </Link>
         </div>

@@ -1,12 +1,14 @@
+import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { getTranslations } from "next-intl/server";
 import type { HeroSection as HeroSectionType } from "@/lib/types/cms";
 
 interface HeroSectionProps {
   data?: HeroSectionType | null;
+  cloudPartnersData?: HeroSectionType | null;
 }
 
-export async function HeroSection({ data }: HeroSectionProps) {
+export async function HeroSection({ data, cloudPartnersData }: HeroSectionProps) {
   const t = await getTranslations("hero");
 
   const title = data?.title ?? t("defaultTitle");
@@ -140,6 +142,63 @@ export async function HeroSection({ data }: HeroSectionProps) {
               {cta2Text}
             </Link>
           </div>
+
+          {/* Cloud Partners Strip */}
+          {(() => {
+            const cpExtra = cloudPartnersData?.extra_data as Record<string, unknown> | null;
+            const cpLabel = cloudPartnersData?.title ?? "We specialise in";
+            const defaultPartners = [
+              { name: "Microsoft Azure", logo: "/images/microsoft-logo.svg", logoOnly: false },
+              { name: "AWS", logo: "/images/aws-logo.svg", logoOnly: true },
+              { name: "Google Cloud", logo: "/images/google-cloud-logo.svg", logoOnly: true },
+            ];
+            const partners = (cpExtra?.partners as Array<{ name: string; logo: string; logoOnly: boolean }>) ?? defaultPartners;
+            return (
+              <div
+                className="w-full flex flex-col items-center"
+                style={{
+                  marginTop: "clamp(48px, 6vw, 80px)",
+                  gap: "clamp(16px, 2vw, 24px)",
+                }}
+              >
+                <p
+                  style={{
+                    fontFamily: "Inter, sans-serif",
+                    fontWeight: 400,
+                    fontSize: "clamp(13px, 1vw, 16px)",
+                    color: "var(--text-tertiary)",
+                    letterSpacing: "0.02em",
+                  }}
+                >
+                  {cpLabel}
+                </p>
+                <div
+                  className="flex items-center justify-center flex-wrap"
+                  style={{ gap: "clamp(36px, 5vw, 80px)" }}
+                >
+                  {partners.map((partner) => (
+                    <div key={partner.name} className="flex items-center" style={{ gap: "10px", opacity: 0.6 }}>
+                      <Image
+                        src={partner.logo}
+                        alt={partner.name}
+                        width={partner.logoOnly ? 100 : 20}
+                        height={partner.logoOnly ? 30 : 20}
+                        style={partner.logoOnly
+                          ? { height: "clamp(20px, 1.8vw, 28px)", width: "auto" }
+                          : { flexShrink: 0 }
+                        }
+                      />
+                      {!partner.logoOnly && (
+                        <span style={{ fontFamily: "Inter, sans-serif", fontWeight: 500, fontSize: "clamp(14px, 1.3vw, 18px)", color: "var(--text-secondary)", whiteSpace: "nowrap" }}>
+                          {partner.name}
+                        </span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            );
+          })()}
 
         </div>
       </div>
