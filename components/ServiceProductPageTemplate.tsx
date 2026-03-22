@@ -393,14 +393,17 @@ async function PageContent({
   cmsPageKey: string;
   translationNs: string;
 }) {
-  const [heroSections, testimonials, faqs, whyChooseData, companySetting] =
+  const [heroSections, testimonials, faqs, pageWhyChoose, homeWhyChoose, companySetting] =
     await Promise.all([
       fetchHeroSections(cmsPageKey, locale),
       fetchTestimonials(locale),
       fetchFAQs(locale),
+      fetchHeroSection(cmsPageKey, "why-choose", locale),
       fetchHeroSection("home", "why-choose", locale),
       fetchSiteSetting("company"),
     ]);
+
+  const whyChooseData = pageWhyChoose ?? homeWhyChoose;
 
   const heroData =
     heroSections.find((s) => s.section_key === "hero") ?? null;

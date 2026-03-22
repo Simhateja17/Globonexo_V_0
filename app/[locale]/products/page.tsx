@@ -1,10 +1,10 @@
 import { redirect } from "next/navigation";
 
-export default async function ServicesPage({
+export default async function ProductsPage({
   params,
 }: {
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  redirect(`/${locale}/services/consulting`);
+  redirect(`/${locale}/products/defense`);
 }

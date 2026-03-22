@@ -1,6 +1,6 @@
 import ServiceProductPageTemplate from "@/components/ServiceProductPageTemplate";
 
-export default async function HardwareTestingPage({
+export default async function ConsultingPage({
   params,
 }: {
   params: Promise<{ locale: string }>;
@@ -9,8 +9,8 @@ export default async function HardwareTestingPage({
   return (
     <ServiceProductPageTemplate
       locale={locale}
-      cmsPageKey="outstaffing"
-      translationNs="outstaffingPage"
+      cmsPageKey="consulting"
+      translationNs="servicesPage"
     />
   );
 }

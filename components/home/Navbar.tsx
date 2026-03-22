@@ -139,7 +139,7 @@ export function Navbar() {
       href: "/services",
       dropdown: [
         { label: t("servicesConsulting"), href: "/services" },
-        { label: t("servicesSolutions"), href: "/services/hardware-testing" },
+        { label: t("servicesSolutions"), href: "/services/solutions" },
         { label: t("servicesTalentPool"), href: "/services/talent-pool" },
       ],
     },
