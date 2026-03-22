@@ -1,7 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import type {
   BlogPostInsert,
   BlogPostUpdate,
@@ -60,6 +60,7 @@ export async function createBlogPost(post: BlogPostInsert) {
   const supabase = await createClient();
   const { data, error } = await supabase.from("blog_posts").insert(post).select().single();
   if (error) throw error;
+  updateTag("blog-posts");
   revalidatePath("/admin/blog");
   revalidatePath("/en/blogs");
   revalidatePath("/de/blogs");
@@ -70,6 +71,7 @@ export async function updateBlogPost(id: string, post: BlogPostUpdate) {
   const supabase = await createClient();
   const { data, error } = await supabase.from("blog_posts").update(post).eq("id", id).select().single();
   if (error) throw error;
+  updateTag("blog-posts");
   revalidatePath("/admin/blog");
   revalidatePath("/en/blogs");
   revalidatePath("/de/blogs");
@@ -81,6 +83,7 @@ export async function deleteBlogPost(id: string) {
   const supabase = await createClient();
   const { error } = await supabase.from("blog_posts").delete().eq("id", id);
   if (error) throw error;
+  updateTag("blog-posts");
   revalidatePath("/admin/blog");
   revalidatePath("/en/blogs");
   revalidatePath("/de/blogs");
@@ -106,6 +109,7 @@ export async function createService(service: ServiceInsert) {
   const supabase = await createClient();
   const { data, error } = await supabase.from("services").insert(service).select().single();
   if (error) throw error;
+  updateTag("services");
   revalidatePath("/admin/services");
   revalidatePath("/en/services");
   revalidatePath("/de/services");
@@ -118,6 +122,7 @@ export async function updateService(id: string, service: ServiceUpdate) {
   const supabase = await createClient();
   const { data, error } = await supabase.from("services").update(service).eq("id", id).select().single();
   if (error) throw error;
+  updateTag("services");
   revalidatePath("/admin/services");
   revalidatePath("/en/services");
   revalidatePath("/de/services");
@@ -130,6 +135,7 @@ export async function deleteService(id: string) {
   const supabase = await createClient();
   const { error } = await supabase.from("services").delete().eq("id", id);
   if (error) throw error;
+  updateTag("services");
   revalidatePath("/admin/services");
   revalidatePath("/en/services");
   revalidatePath("/de/services");
@@ -157,6 +163,7 @@ export async function createTeamMember(member: TeamMemberInsert) {
   const supabase = await createClient();
   const { data, error } = await supabase.from("team_members").insert(member).select().single();
   if (error) throw error;
+  updateTag("team-members");
   revalidatePath("/admin/team");
   revalidatePath("/en/about");
   revalidatePath("/de/about");
@@ -167,6 +174,7 @@ export async function updateTeamMember(id: string, member: TeamMemberUpdate) {
   const supabase = await createClient();
   const { data, error } = await supabase.from("team_members").update(member).eq("id", id).select().single();
   if (error) throw error;
+  updateTag("team-members");
   revalidatePath("/admin/team");
   revalidatePath("/en/about");
   revalidatePath("/de/about");
@@ -177,6 +185,7 @@ export async function deleteTeamMember(id: string) {
   const supabase = await createClient();
   const { error } = await supabase.from("team_members").delete().eq("id", id);
   if (error) throw error;
+  updateTag("team-members");
   revalidatePath("/admin/team");
   revalidatePath("/en/about");
   revalidatePath("/de/about");
@@ -202,6 +211,7 @@ export async function createTestimonial(testimonial: TestimonialInsert) {
   const supabase = await createClient();
   const { data, error } = await supabase.from("testimonials").insert(testimonial).select().single();
   if (error) throw error;
+  updateTag("testimonials");
   revalidatePath("/admin/testimonials");
   revalidatePath("/en");
   revalidatePath("/de");
@@ -212,6 +222,7 @@ export async function updateTestimonial(id: string, testimonial: TestimonialUpda
   const supabase = await createClient();
   const { data, error } = await supabase.from("testimonials").update(testimonial).eq("id", id).select().single();
   if (error) throw error;
+  updateTag("testimonials");
   revalidatePath("/admin/testimonials");
   revalidatePath("/en");
   revalidatePath("/de");
@@ -222,6 +233,7 @@ export async function deleteTestimonial(id: string) {
   const supabase = await createClient();
   const { error } = await supabase.from("testimonials").delete().eq("id", id);
   if (error) throw error;
+  updateTag("testimonials");
   revalidatePath("/admin/testimonials");
   revalidatePath("/en");
   revalidatePath("/de");
@@ -247,6 +259,7 @@ export async function createFAQ(faq: FAQInsert) {
   const supabase = await createClient();
   const { data, error } = await supabase.from("faqs").insert(faq).select().single();
   if (error) throw error;
+  updateTag("faqs");
   revalidatePath("/admin/faqs");
   revalidatePath("/en");
   revalidatePath("/de");
@@ -257,6 +270,7 @@ export async function updateFAQ(id: string, faq: FAQUpdate) {
   const supabase = await createClient();
   const { data, error } = await supabase.from("faqs").update(faq).eq("id", id).select().single();
   if (error) throw error;
+  updateTag("faqs");
   revalidatePath("/admin/faqs");
   revalidatePath("/en");
   revalidatePath("/de");
@@ -267,6 +281,7 @@ export async function deleteFAQ(id: string) {
   const supabase = await createClient();
   const { error } = await supabase.from("faqs").delete().eq("id", id);
   if (error) throw error;
+  updateTag("faqs");
   revalidatePath("/admin/faqs");
   revalidatePath("/en");
   revalidatePath("/de");
@@ -344,6 +359,7 @@ export async function upsertHeroSection(section: HeroSectionInsert) {
     .select()
     .single();
   if (error) throw error;
+  updateTag("hero-sections");
   revalidatePath("/admin/hero");
   revalidatePath("/en");
   revalidatePath("/de");
@@ -354,6 +370,7 @@ export async function deleteHeroSection(id: string) {
   const supabase = await createClient();
   const { error } = await supabase.from("hero_sections").delete().eq("id", id);
   if (error) throw error;
+  updateTag("hero-sections");
   revalidatePath("/admin/hero");
   revalidatePath("/en");
   revalidatePath("/de");
@@ -377,6 +394,7 @@ export async function updateSiteSetting(key: string, update: SiteSettingUpdate) 
     .select()
     .single();
   if (error) throw error;
+  updateTag("site-settings");
   revalidatePath("/admin/settings");
   revalidatePath("/en");
   revalidatePath("/de");
