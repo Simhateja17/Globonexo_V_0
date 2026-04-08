@@ -417,61 +417,84 @@ export function JoinNowForm() {
               {t("footerLegal")}
             </h3>
             <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-              <p
+              <Link
+                href="/legal/privacy-policy"
                 style={{
                   margin: 0,
                   fontFamily: "Roboto, sans-serif",
                   fontSize: 14,
                   lineHeight: "22px",
                   color: "var(--join-footer-body)",
+                  textDecoration: "none",
                 }}
               >
                 {t("privacyPolicy")}
-              </p>
-              <p
+              </Link>
+              <Link
+                href="/legal/terms-of-service"
                 style={{
                   margin: 0,
                   fontFamily: "Roboto, sans-serif",
                   fontSize: 14,
                   lineHeight: "22px",
                   color: "var(--join-footer-body)",
+                  textDecoration: "none",
                 }}
               >
                 {t("terms")}
-              </p>
-              <p
+              </Link>
+              <Link
+                href="/legal/gdpr-compliance"
                 style={{
                   margin: 0,
                   fontFamily: "Roboto, sans-serif",
                   fontSize: 14,
                   lineHeight: "22px",
                   color: "var(--join-footer-body)",
+                  textDecoration: "none",
                 }}
               >
                 {t("gdpr")}
-              </p>
-              <p
+              </Link>
+              <Link
+                href="/legal/cookies-policy"
                 style={{
                   margin: 0,
                   fontFamily: "Roboto, sans-serif",
                   fontSize: 14,
                   lineHeight: "22px",
                   color: "var(--join-footer-body)",
+                  textDecoration: "none",
                 }}
               >
                 {t("cookies")}
-              </p>
-              <p
+              </Link>
+              <Link
+                href="/legal/sitemap"
                 style={{
                   margin: 0,
                   fontFamily: "Roboto, sans-serif",
                   fontSize: 14,
                   lineHeight: "22px",
                   color: "var(--join-footer-body)",
+                  textDecoration: "none",
                 }}
               >
                 {t("sitemap")}
-              </p>
+              </Link>
+              <Link
+                href="/legal/imprint"
+                style={{
+                  margin: 0,
+                  fontFamily: "Roboto, sans-serif",
+                  fontSize: 14,
+                  lineHeight: "22px",
+                  color: "var(--join-footer-body)",
+                  textDecoration: "none",
+                }}
+              >
+                {t("imprint")}
+              </Link>
             </div>
           </div>
 
