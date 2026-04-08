@@ -243,7 +243,7 @@ INSERT INTO hero_sections (page_key, section_key, title, subtitle, description, 
     'Although, final stages of the internal network gives a complete experience of The Parameter of Speculative Environment',
     'Join Now',
     '#',
-    '{"body2": "At Globonexo, we implement innovative IT solutions focused on the evolution, adaptation, and growth of your business. From outstaffing and product development to AI-driven automation, we deliver custom technology that scales with your ambitions.", "illustration": "/images/about-illustration.webp"}',
+    '{"body2": "At Globonexo, we implement innovative IT solutions focused on the evolution, adaptation, and growth of your business. From outstaffing and product development to AI-driven automation, we deliver custom technology that scales with your ambitions.", "illustration": "/images/about-illustration.svg"}',
     0,
     true
   ),

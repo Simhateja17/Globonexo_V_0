@@ -78,14 +78,14 @@ UPDATE hero_sections
 SET title = 'About us',
     subtitle = 'Engineering the Future of Intelligence',
     description = 'Globonexo International is a world-leading AI consulting and AI development company headquartered in Stuttgart, Germany. We empower enterprises and ambitious startups to transform artificial intelligence into measurable business value.',
-    extra_data = '{"body2": "While many organizations experiment with AI, Globonexo builds production-ready systems that are secure, scalable, compliant, and fully integrated into real business operations. The focus is always on outcomes — efficiency gains, revenue growth, operational resilience, and sustainable competitive advantage.", "illustration": "/images/about-illustration.webp"}'
+    extra_data = '{"body2": "While many organizations experiment with AI, Globonexo builds production-ready systems that are secure, scalable, compliant, and fully integrated into real business operations. The focus is always on outcomes — efficiency gains, revenue growth, operational resilience, and sustainable competitive advantage.", "illustration": "/images/about-illustration.svg"}'
 WHERE page_key = 'about' AND section_key = 'hero' AND locale = 'en';
 
 UPDATE hero_sections
 SET title = 'Über uns',
     subtitle = 'Engineering the Future of Intelligence',
     description = 'Globonexo International ist ein weltweit führendes KI-Beratungs- und Entwicklungsunternehmen mit Hauptsitz in Stuttgart. Wir befähigen Unternehmen und ambitionierte Startups, künstliche Intelligenz in messbaren Geschäftswert zu verwandeln.',
-    extra_data = '{"body2": "Während viele Organisationen mit KI experimentieren, baut Globonexo produktionsreife Systeme, die sicher, skalierbar, konform und vollständig in reale Geschäftsabläufe integriert sind.", "illustration": "/images/about-illustration.webp"}'
+    extra_data = '{"body2": "Während viele Organisationen mit KI experimentieren, baut Globonexo produktionsreife Systeme, die sicher, skalierbar, konform und vollständig in reale Geschäftsabläufe integriert sind.", "illustration": "/images/about-illustration.svg"}'
 WHERE page_key = 'about' AND section_key = 'hero' AND locale = 'de';
 
 UPDATE hero_sections

@@ -265,7 +265,7 @@ INSERT INTO hero_sections (page_key, section_key, title, subtitle, description, 
     'Bei Globonexo setzen wir innovative IT-Lösungen um, die auf die Evolution, Anpassung und das Wachstum Ihres Unternehmens ausgerichtet sind.',
     'Jetzt beitreten',
     '#',
-    '{"body2": "Bei Globonexo implementieren wir innovative IT-Lösungen mit Fokus auf die Evolution, Anpassung und das Wachstum Ihres Unternehmens. Von Outstaffing und Produktentwicklung bis hin zu KI-gesteuerter Automatisierung liefern wir maßgeschneiderte Technologie, die mit Ihren Ambitionen wächst.", "illustration": "/images/about-illustration.webp"}',
+    '{"body2": "Bei Globonexo implementieren wir innovative IT-Lösungen mit Fokus auf die Evolution, Anpassung und das Wachstum Ihres Unternehmens. Von Outstaffing und Produktentwicklung bis hin zu KI-gesteuerter Automatisierung liefern wir maßgeschneiderte Technologie, die mit Ihren Ambitionen wächst.", "illustration": "/images/about-illustration.svg"}',
     0,
     true,
     'de'

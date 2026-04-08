@@ -308,8 +308,9 @@ export function Navbar() {
               border: "1px solid var(--border-subtle)",
             }}
           >
-            <button
-              className="text-white font-normal text-center whitespace-nowrap"
+            <Link
+              href="/join"
+              className="text-white font-normal text-center whitespace-nowrap flex items-center justify-center"
               style={{
                 minWidth: "clamp(90px, 8vw, 130px)",
                 height: "clamp(28px, 2.5vw, 38px)",
@@ -322,10 +323,11 @@ export function Navbar() {
                 border: "1px solid rgba(255, 255, 255, 0.15)",
                 boxShadow: "inset 0px 0px 6px 3px rgba(255, 255, 255, 0.25)",
                 backdropFilter: "blur(14px)",
+                textDecoration: "none",
               }}
             >
               {t("joinWaitlist")}
-            </button>
+            </Link>
           </div>
         </div>
 
@@ -434,12 +436,14 @@ export function Navbar() {
             )}
 
             <hr style={{ borderColor: "var(--border-card)" }} className="my-2" />
-            <button
+            <Link
+              href="/join"
               className="mt-1 text-white text-sm font-normal text-center py-2 rounded-lg"
-              style={{ background: "#35BC47" }}
+              style={{ background: "#35BC47", textDecoration: "none" }}
+              onClick={() => setMobileMenuOpen(false)}
             >
               {t("joinWaitlist")}
-            </button>
+            </Link>
           </div>
         </div>
       )}

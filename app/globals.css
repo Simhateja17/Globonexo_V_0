@@ -52,6 +52,20 @@
     --bottom-fade: rgba(255,255,255,0.8);
     --mobile-menu-bg: rgba(255,255,255,0.95);
     --contact-gradient-end: rgb(255,255,255);
+    --join-bg: #ffffff;
+    --join-form-bg: rgba(255,255,255,0.72);
+    --join-form-border: #737f76;
+    --join-text: #000000;
+    --join-muted: #595959;
+    --join-accent: #389e0d;
+    --join-stars-opacity: 0;
+    --join-glow: rgba(231,255,236,0.95);
+    --join-footer-border: rgba(0,0,0,0.12);
+    --join-footer-title: #000000;
+    --join-footer-body: #595959;
+    --join-heading-start: #000000;
+    --join-heading-end: #000000;
+    --join-breadcrumb-muted: #8c8c8c;
   }
   .dark {
     /* Background from Figma: dark greenish-black */
@@ -102,6 +116,20 @@
     --bottom-fade: rgba(0,0,0,0.8);
     --mobile-menu-bg: rgba(5,2,8,0.95);
     --contact-gradient-end: rgb(2,1,3);
+    --join-bg: #000000;
+    --join-form-bg: linear-gradient(180deg, rgba(8, 12, 8, 0.85) 0%, rgba(0, 0, 0, 0.55) 100%);
+    --join-form-border: rgba(255,255,255,0.12);
+    --join-text: #ffffff;
+    --join-muted: #b6b8b7;
+    --join-accent: #397d4f;
+    --join-stars-opacity: 0.38;
+    --join-glow: rgba(57,125,79,0.5);
+    --join-footer-border: rgba(255,255,255,0.12);
+    --join-footer-title: #f0f0f0;
+    --join-footer-body: #bfbfbf;
+    --join-heading-start: #ffffff;
+    --join-heading-end: #95de64;
+    --join-breadcrumb-muted: #8c8c8c;
   }
 }
 
@@ -180,4 +208,10 @@
 
 .star {
   animation: twinkle 3s ease-in-out infinite;
+}
+
+.join-input::placeholder,
+.join-textarea::placeholder {
+  color: var(--join-muted);
+  opacity: 1;
 }

@@ -17,6 +17,43 @@ import {
 } from "@/lib/queries/cms";
 import type { HeroSection, Locale } from "@/lib/types/cms";
 
+const LEGACY_ILLUSTRATIONS = new Set([
+  "/images/first_illustration.webp",
+  "/images/second_illustration.webp",
+  "/images/third_illustration.webp",
+]);
+
+const DIVISION_PAGE_KEYS = new Set([
+  "consulting",
+  "solutions",
+  "talent-pool",
+  "defense",
+  "research",
+  "advertising",
+]);
+
+const DIVISION_SECTION_KEYS = new Set([
+  "end-to-end",
+  "automated-left",
+  "automated-right",
+]);
+
+function resolveDivisionIllustrationPath(
+  rawIllustration: string | undefined,
+  pageKey: string,
+  sectionKey: string,
+  fallback: string
+) {
+  if (
+    DIVISION_PAGE_KEYS.has(pageKey) &&
+    DIVISION_SECTION_KEYS.has(sectionKey) &&
+    (!rawIllustration || LEGACY_ILLUSTRATIONS.has(rawIllustration))
+  ) {
+    return `/images/divisions/${pageKey}-${sectionKey}.svg`;
+  }
+  return rawIllustration ?? fallback;
+}
+
 /* ─── gradient heading helper ──────────────────────────────────────────── */
 const gradientHeadingStyle: React.CSSProperties = {
   fontFamily: "Inter, sans-serif",
@@ -88,15 +125,15 @@ async function PageHeroSection({
       />
 
       <div
-        className="relative z-10 w-full flex justify-center px-5 sm:px-6 md:px-8 lg:px-10"
+        className="relative z-10 mx-auto px-5 sm:px-6 md:px-8 lg:px-10"
         style={{
+          maxWidth: "min(1400px, 96vw)",
           paddingTop: "calc(clamp(80px, 10vh, 120px) + 7px)",
           paddingBottom: "clamp(40px, 5vw, 80px)",
         }}
       >
         <div
           className="flex flex-col items-start w-full"
-          style={{ maxWidth: "min(1400px, 96vw)" }}
         >
           <h1
             style={{
@@ -135,17 +172,23 @@ async function PageHeroSection({
 async function TextLeftSection({
   data,
   ns,
+  pageKey,
 }: {
   data?: HeroSection | null;
   ns: string;
+  pageKey: string;
 }) {
   const t = await getTranslations(ns);
   const title = data?.title ?? t("endToEndTitle");
   const description = data?.description ?? t("endToEndDesc");
   const extra = data?.extra_data as Record<string, string> | null;
   const body2 = extra?.body2 ?? t("endToEndBody2");
-  const illustration =
-    extra?.illustration ?? "/images/first_illustration.webp";
+  const illustration = resolveDivisionIllustrationPath(
+    extra?.illustration,
+    pageKey,
+    "end-to-end",
+    "/images/first_illustration.webp"
+  );
   const ctaText = data?.cta_text ?? t("getStarted");
 
   return (
@@ -218,17 +261,23 @@ async function TextLeftSection({
 async function IllustrationLeftSection({
   data,
   ns,
+  pageKey,
 }: {
   data?: HeroSection | null;
   ns: string;
+  pageKey: string;
 }) {
   const t = await getTranslations(ns);
   const title = data?.title ?? t("automatedLeftTitle");
   const description = data?.description ?? t("automatedLeftDesc");
   const extra = data?.extra_data as Record<string, string> | null;
   const body2 = extra?.body2 ?? t("automatedLeftBody2");
-  const illustration =
-    extra?.illustration ?? "/images/second_illustration.webp";
+  const illustration = resolveDivisionIllustrationPath(
+    extra?.illustration,
+    pageKey,
+    "automated-left",
+    "/images/second_illustration.webp"
+  );
   const ctaText = data?.cta_text ?? t("learnNow");
 
   return (
@@ -304,17 +353,23 @@ async function IllustrationLeftSection({
 async function TextLeftSectionAlt({
   data,
   ns,
+  pageKey,
 }: {
   data?: HeroSection | null;
   ns: string;
+  pageKey: string;
 }) {
   const t = await getTranslations(ns);
   const title = data?.title ?? t("automatedRightTitle");
   const description = data?.description ?? t("automatedRightDesc");
   const extra = data?.extra_data as Record<string, string> | null;
   const body2 = extra?.body2 ?? t("automatedRightBody2");
-  const illustration =
-    extra?.illustration ?? "/images/third_illustration.webp";
+  const illustration = resolveDivisionIllustrationPath(
+    extra?.illustration,
+    pageKey,
+    "automated-right",
+    "/images/third_illustration.webp"
+  );
   const ctaText = data?.cta_text ?? t("learnNow");
 
   return (
@@ -421,9 +476,21 @@ async function PageContent({
   return (
     <>
       <PageHeroSection data={heroData} ns={translationNs} />
-      <TextLeftSection data={endToEndData} ns={translationNs} />
-      <IllustrationLeftSection data={automatedLeftData} ns={translationNs} />
-      <TextLeftSectionAlt data={automatedRightData} ns={translationNs} />
+      <TextLeftSection
+        data={endToEndData}
+        ns={translationNs}
+        pageKey={cmsPageKey}
+      />
+      <IllustrationLeftSection
+        data={automatedLeftData}
+        ns={translationNs}
+        pageKey={cmsPageKey}
+      />
+      <TextLeftSectionAlt
+        data={automatedRightData}
+        ns={translationNs}
+        pageKey={cmsPageKey}
+      />
       <WhyChooseSection data={whyChooseData} />
       <TestimonialsSection testimonials={testimonials} />
       <FaqSection faqs={faqs} />

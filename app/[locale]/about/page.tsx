@@ -37,7 +37,13 @@ async function AboutHero({ data }: { data?: HeroSection | null }) {
   const subtitle = data?.subtitle ?? t("defaultSubtitle");
   const extra = data?.extra_data as Record<string, string> | null;
   const body2 = extra?.body2 ?? t("defaultBody2");
-  const illustration = extra?.illustration ?? "/images/about-illustration.webp";
+  const rawIllustration = typeof extra?.illustration === "string" ? extra.illustration.trim() : "";
+  const illustration =
+    !rawIllustration ||
+    rawIllustration === "/images/about-illustration.webp" ||
+    rawIllustration === "/images/first_illustration.webp"
+      ? "/images/about-illustration.svg"
+      : rawIllustration;
   const ctaText = data?.cta_text ?? t("joinNow");
 
   return (
