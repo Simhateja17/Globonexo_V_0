@@ -14,6 +14,7 @@ import type {
   FAQInsert,
   FAQUpdate,
   ContactSubmissionUpdate,
+  JobApplicationUpdate,
   HeroSectionInsert,
   HeroSectionUpdate,
   SiteSettingUpdate,
@@ -335,6 +336,62 @@ export async function submitContactForm(formData: {
   return { success: true };
 }
 
+// ======================== JOB APPLICATIONS ========================
+
+export async function getJobApplications() {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("job_applications")
+    .select("*")
+    .order("created_at", { ascending: false });
+  if (error) throw error;
+  return data;
+}
+
+export async function updateJobApplication(id: string, update: JobApplicationUpdate) {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("job_applications")
+    .update(update)
+    .eq("id", id)
+    .select()
+    .single();
+  if (error) throw error;
+  revalidatePath("/admin/applications");
+  return data;
+}
+
+export async function deleteJobApplication(id: string) {
+  const supabase = await createClient();
+  const { error } = await supabase.from("job_applications").delete().eq("id", id);
+  if (error) throw error;
+  revalidatePath("/admin/applications");
+}
+
+export async function submitJobApplication(formData: {
+  full_name: string;
+  email: string;
+  phone?: string;
+  country?: string;
+  city?: string;
+  linkedin_url?: string;
+  github_url?: string;
+  motivation?: string;
+  open_to_relocation: boolean;
+  privacy_accepted: boolean;
+  profile_picture_file_name?: string;
+  cv_file_name?: string;
+  additional_documents_file_names?: string;
+}) {
+  const supabase = await createClient();
+  const { error } = await supabase.from("job_applications").insert({
+    ...formData,
+    status: "new",
+  });
+  if (error) throw error;
+  return { success: true };
+}
+
 // ======================== HERO SECTIONS ========================
 
 export async function getHeroSections(pageKey?: string, locale?: Locale) {
@@ -467,13 +524,14 @@ export async function uploadMedia(formData: FormData) {
 
 export async function getDashboardStats() {
   const supabase = await createClient();
-  const [posts, services, team, testimonials, faqs, contacts, media] = await Promise.all([
+  const [posts, services, team, testimonials, faqs, contacts, applications, media] = await Promise.all([
     supabase.from("blog_posts").select("id", { count: "exact", head: true }),
     supabase.from("services").select("id", { count: "exact", head: true }),
     supabase.from("team_members").select("id", { count: "exact", head: true }),
     supabase.from("testimonials").select("id", { count: "exact", head: true }),
     supabase.from("faqs").select("id", { count: "exact", head: true }),
     supabase.from("contact_submissions").select("id", { count: "exact", head: true }).eq("status", "new"),
+    supabase.from("job_applications").select("id", { count: "exact", head: true }).eq("status", "new"),
     supabase.from("media").select("id", { count: "exact", head: true }),
   ]);
   return {
@@ -483,6 +541,7 @@ export async function getDashboardStats() {
     testimonials: testimonials.count ?? 0,
     faqs: faqs.count ?? 0,
     newContacts: contacts.count ?? 0,
+    newApplications: applications.count ?? 0,
     mediaFiles: media.count ?? 0,
   };
 }

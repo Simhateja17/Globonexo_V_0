@@ -1,8 +1,10 @@
 "use client";
 
-import type { ReactNode } from "react";
+import type { FormEvent, ReactNode } from "react";
+import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
+import { submitJobApplication } from "@/lib/actions/cms";
 
 function SectionTitle({ children }: { children: ReactNode }) {
   return (
@@ -29,7 +31,19 @@ function SectionTitle({ children }: { children: ReactNode }) {
   );
 }
 
-function InputField({ label, required = false }: { label: string; required?: boolean }) {
+function InputField({
+  label,
+  required = false,
+  value,
+  onChange,
+  type = "text",
+}: {
+  label: string;
+  required?: boolean;
+  value: string;
+  onChange: (value: string) => void;
+  type?: string;
+}) {
   return (
     <div
       style={{
@@ -42,10 +56,12 @@ function InputField({ label, required = false }: { label: string; required?: boo
       }}
     >
       <input
-        type="text"
+        type={type}
         aria-label={label}
         placeholder={`${label}${required ? " *" : ""}`}
         className="join-input"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
         style={{
           width: "100%",
           background: "transparent",
@@ -99,13 +115,81 @@ function UploadBox({ title, subtitle }: { title: string; subtitle: string }) {
       >
         {subtitle}
       </span>
-      <input type="file" className="sr-only" />
     </label>
   );
 }
 
 export function JoinNowForm() {
   const t = useTranslations("join");
+  const [form, setForm] = useState({
+    fullName: "",
+    email: "",
+    phone: "",
+    country: "",
+    city: "",
+    linkedin: "",
+    github: "",
+    motivation: "",
+    relocation: true,
+    privacyAccepted: false,
+  });
+  const [files, setFiles] = useState({
+    profilePicture: "",
+    cv: "",
+    additionalDocs: "",
+  });
+  const [sending, setSending] = useState(false);
+  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+
+  const updateForm = <K extends keyof typeof form>(key: K, value: (typeof form)[K]) => {
+    setForm((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    if (!form.fullName || !form.email || !form.country || !form.city || !form.privacyAccepted) {
+      setStatus("error");
+      return;
+    }
+
+    setSending(true);
+    setStatus("idle");
+    try {
+      await submitJobApplication({
+        full_name: form.fullName,
+        email: form.email,
+        phone: form.phone || undefined,
+        country: form.country || undefined,
+        city: form.city || undefined,
+        linkedin_url: form.linkedin || undefined,
+        github_url: form.github || undefined,
+        motivation: form.motivation || undefined,
+        open_to_relocation: form.relocation,
+        privacy_accepted: form.privacyAccepted,
+        profile_picture_file_name: files.profilePicture || undefined,
+        cv_file_name: files.cv || undefined,
+        additional_documents_file_names: files.additionalDocs || undefined,
+      });
+      setStatus("success");
+      setForm({
+        fullName: "",
+        email: "",
+        phone: "",
+        country: "",
+        city: "",
+        linkedin: "",
+        github: "",
+        motivation: "",
+        relocation: true,
+        privacyAccepted: false,
+      });
+      setFiles({ profilePicture: "", cv: "", additionalDocs: "" });
+    } catch {
+      setStatus("error");
+    } finally {
+      setSending(false);
+    }
+  };
 
   return (
     <main
@@ -205,7 +289,8 @@ export function JoinNowForm() {
           </p>
         </header>
 
-        <section
+        <form
+          onSubmit={handleSubmit}
           style={{
             width: "min(100%, 560px)",
             margin: "0 auto",
@@ -259,35 +344,118 @@ export function JoinNowForm() {
                 >
                   {t("upload")}
                 </span>
-                <input type="file" className="sr-only" />
+                <input
+                  type="file"
+                  className="sr-only"
+                  onChange={(e) =>
+                    setFiles((prev) => ({
+                      ...prev,
+                      profilePicture: e.target.files?.[0]?.name ?? "",
+                    }))
+                  }
+                />
               </label>
 
               <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-                <InputField label={t("fullName")} required />
-                <InputField label={t("emailAddress")} required />
+                <InputField
+                  label={t("fullName")}
+                  required
+                  value={form.fullName}
+                  onChange={(value) => updateForm("fullName", value)}
+                />
+                <InputField
+                  label={t("emailAddress")}
+                  required
+                  type="email"
+                  value={form.email}
+                  onChange={(value) => updateForm("email", value)}
+                />
               </div>
             </div>
 
-            <InputField label={t("phoneNumber")} />
-            <InputField label={t("country")} required />
-            <InputField label={t("city")} required />
-            <InputField label={t("linkedin")} />
+            <InputField
+              label={t("phoneNumber")}
+              value={form.phone}
+              onChange={(value) => updateForm("phone", value)}
+            />
+            <InputField
+              label={t("country")}
+              required
+              value={form.country}
+              onChange={(value) => updateForm("country", value)}
+            />
+            <InputField
+              label={t("city")}
+              required
+              value={form.city}
+              onChange={(value) => updateForm("city", value)}
+            />
+            <InputField
+              label={t("linkedin")}
+              value={form.linkedin}
+              onChange={(value) => updateForm("linkedin", value)}
+            />
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             <SectionTitle>{t("profilePictureHeading")}</SectionTitle>
-            <UploadBox title={t("uploadPhoto")} subtitle={t("uploadPhotoHint")} />
+            <label>
+              <UploadBox title={t("uploadPhoto")} subtitle={t("uploadPhotoHint")} />
+              <input
+                type="file"
+                accept=".jpg,.jpeg,.png"
+                className="sr-only"
+                onChange={(e) =>
+                  setFiles((prev) => ({
+                    ...prev,
+                    profilePicture: e.target.files?.[0]?.name ?? "",
+                  }))
+                }
+              />
+            </label>
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             <SectionTitle>{t("cvHeading")}</SectionTitle>
-            <UploadBox title={t("uploadCv")} subtitle={t("uploadCvHint")} />
-            <UploadBox title={t("uploadAdditional")} subtitle={t("uploadAdditionalHint")} />
+            <label>
+              <UploadBox title={t("uploadCv")} subtitle={t("uploadCvHint")} />
+              <input
+                type="file"
+                accept=".pdf,.doc,.docx"
+                className="sr-only"
+                onChange={(e) =>
+                  setFiles((prev) => ({
+                    ...prev,
+                    cv: e.target.files?.[0]?.name ?? "",
+                  }))
+                }
+              />
+            </label>
+            <label>
+              <UploadBox title={t("uploadAdditional")} subtitle={t("uploadAdditionalHint")} />
+              <input
+                type="file"
+                multiple
+                className="sr-only"
+                onChange={(e) =>
+                  setFiles((prev) => ({
+                    ...prev,
+                    additionalDocs: Array.from(e.target.files ?? [])
+                      .map((file) => file.name)
+                      .join(", "),
+                  }))
+                }
+              />
+            </label>
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             <SectionTitle>{t("githubHeading")}</SectionTitle>
-            <InputField label={t("githubUrl")} />
+            <InputField
+              label={t("githubUrl")}
+              value={form.github}
+              onChange={(value) => updateForm("github", value)}
+            />
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
@@ -304,6 +472,8 @@ export function JoinNowForm() {
                 aria-label={t("motivationHeading")}
                 placeholder={t("motivationPrompt")}
                 className="join-textarea"
+                value={form.motivation}
+                onChange={(e) => updateForm("motivation", e.target.value)}
                 style={{
                   width: "100%",
                   minHeight: 96,
@@ -323,7 +493,8 @@ export function JoinNowForm() {
           <label style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
             <input
               type="checkbox"
-              defaultChecked
+              checked={form.relocation}
+              onChange={(e) => updateForm("relocation", e.target.checked)}
               style={{ accentColor: "var(--join-accent)", marginTop: 4, width: 18, height: 18 }}
             />
             <span
@@ -341,6 +512,8 @@ export function JoinNowForm() {
           <label style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
             <input
               type="checkbox"
+              checked={form.privacyAccepted}
+              onChange={(e) => updateForm("privacyAccepted", e.target.checked)}
               style={{ accentColor: "var(--join-accent)", marginTop: 4, width: 18, height: 18 }}
             />
             <span
@@ -352,15 +525,27 @@ export function JoinNowForm() {
               }}
             >
               {t("privacyPrefix")}{" "}
-              <Link href="/" style={{ color: "var(--join-accent)", textDecoration: "none" }}>
+              <Link href="/legal/privacy-policy" style={{ color: "var(--join-accent)", textDecoration: "none" }}>
                 {t("privacyPolicy")}
               </Link>
               .
             </span>
           </label>
 
+          {status === "success" ? (
+            <p style={{ margin: 0, color: "var(--join-accent)", fontFamily: "Roboto, sans-serif", fontSize: 14 }}>
+              Application submitted successfully.
+            </p>
+          ) : null}
+          {status === "error" ? (
+            <p style={{ margin: 0, color: "#dc2626", fontFamily: "Roboto, sans-serif", fontSize: 14 }}>
+              Please complete required fields and try again.
+            </p>
+          ) : null}
+
           <button
-            type="button"
+            type="submit"
+            disabled={sending}
             style={{
               width: "100%",
               border: "none",
@@ -372,12 +557,13 @@ export function JoinNowForm() {
               fontSize: 14,
               lineHeight: "22px",
               fontWeight: 500,
-              cursor: "pointer",
+              cursor: sending ? "not-allowed" : "pointer",
+              opacity: sending ? 0.7 : 1,
             }}
           >
-            {t("sendApplication")}
+            {sending ? "Sending..." : t("sendApplication")}
           </button>
-        </section>
+        </form>
 
         <footer
           style={{

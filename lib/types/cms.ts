@@ -83,6 +83,25 @@ export interface ContactSubmission {
   created_at: string;
 }
 
+export interface JobApplication {
+  id: string;
+  full_name: string;
+  email: string;
+  phone: string | null;
+  country: string | null;
+  city: string | null;
+  linkedin_url: string | null;
+  github_url: string | null;
+  motivation: string | null;
+  open_to_relocation: boolean;
+  privacy_accepted: boolean;
+  profile_picture_file_name: string | null;
+  cv_file_name: string | null;
+  additional_documents_file_names: string | null;
+  status: "new" | "reviewed" | "contacted" | "rejected";
+  created_at: string;
+}
+
 export interface HeroSection {
   id: string;
   page_key: string;
@@ -138,6 +157,9 @@ export type FAQUpdate = Partial<FAQInsert>;
 
 export type ContactSubmissionInsert = Omit<ContactSubmission, "id" | "created_at">;
 export type ContactSubmissionUpdate = Partial<Pick<ContactSubmission, "status">>;
+
+export type JobApplicationInsert = Omit<JobApplication, "id" | "created_at">;
+export type JobApplicationUpdate = Partial<Pick<JobApplication, "status">>;
 
 export type HeroSectionInsert = Omit<HeroSection, "id" | "created_at" | "updated_at">;
 export type HeroSectionUpdate = Partial<HeroSectionInsert>;

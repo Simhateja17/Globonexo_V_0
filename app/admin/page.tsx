@@ -6,6 +6,7 @@ import {
   MessageSquareQuote,
   HelpCircle,
   Mail,
+  ClipboardList,
   Image,
 } from "lucide-react";
 import Link from "next/link";
@@ -18,6 +19,7 @@ export default async function AdminDashboard() {
     teamMembers: 0,
     testimonials: 0,
     faqs: 0,
+    newApplications: 0,
     newContacts: 0,
     mediaFiles: 0,
   };
@@ -68,6 +70,14 @@ export default async function AdminDashboard() {
       href: "/admin/faqs",
       color: "text-cyan-500",
       bg: "bg-cyan-500/10",
+    },
+    {
+      label: "New Applications",
+      value: stats.newApplications,
+      icon: ClipboardList,
+      href: "/admin/applications",
+      color: "text-violet-500",
+      bg: "bg-violet-500/10",
     },
     {
       label: "New Messages",
@@ -136,6 +146,18 @@ export default async function AdminDashboard() {
           >
             <Image className="w-4 h-4" />
             Upload Media
+          </Link>
+          <Link
+            href="/admin/applications"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-border text-sm font-medium hover:bg-muted transition-colors"
+          >
+            <ClipboardList className="w-4 h-4" />
+            View Applications
+            {stats.newApplications > 0 && (
+              <span className="ml-1 px-1.5 py-0.5 text-xs rounded-full bg-violet-500/10 text-violet-500">
+                {stats.newApplications}
+              </span>
+            )}
           </Link>
           <Link
             href="/admin/contact"
