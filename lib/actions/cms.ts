@@ -380,8 +380,11 @@ export async function submitJobApplication(formData: {
   open_to_relocation: boolean;
   privacy_accepted: boolean;
   profile_picture_file_name?: string;
+  profile_picture_path?: string;
   cv_file_name?: string;
+  cv_path?: string;
   additional_documents_file_names?: string;
+  additional_documents_paths?: string;
 }) {
   const supabase = await createClient();
   const { error } = await supabase.from("job_applications").insert({
@@ -390,6 +393,15 @@ export async function submitJobApplication(formData: {
   });
   if (error) throw error;
   return { success: true };
+}
+
+export async function getJobApplicationFileSignedUrl(path: string) {
+  const supabase = await createClient();
+  const { data, error } = await supabase.storage
+    .from("applications")
+    .createSignedUrl(path, 60 * 60);
+  if (error) throw error;
+  return data.signedUrl;
 }
 
 // ======================== HERO SECTIONS ========================

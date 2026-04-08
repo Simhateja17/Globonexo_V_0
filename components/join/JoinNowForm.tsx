@@ -1,10 +1,11 @@
 "use client";
 
 import type { FormEvent, ReactNode } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { submitJobApplication } from "@/lib/actions/cms";
+import { createClient } from "@/lib/supabase/client";
 
 function SectionTitle({ children }: { children: ReactNode }) {
   return (
@@ -77,9 +78,17 @@ function InputField({
   );
 }
 
-function UploadBox({ title, subtitle }: { title: string; subtitle: string }) {
+function UploadBox({
+  title,
+  subtitle,
+  selectedText,
+}: {
+  title: string;
+  subtitle: string;
+  selectedText?: string;
+}) {
   return (
-    <label
+    <div
       style={{
         width: "100%",
         border: "1px dashed var(--join-form-border)",
@@ -115,7 +124,23 @@ function UploadBox({ title, subtitle }: { title: string; subtitle: string }) {
       >
         {subtitle}
       </span>
-    </label>
+      {selectedText ? (
+        <span
+          style={{
+            marginTop: 6,
+            fontFamily: "Roboto, sans-serif",
+            fontSize: 12,
+            lineHeight: "18px",
+            color: "var(--join-accent)",
+            textAlign: "center",
+            maxWidth: "100%",
+            wordBreak: "break-word",
+          }}
+        >
+          {selectedText}
+        </span>
+      ) : null}
+    </div>
   );
 }
 
@@ -138,23 +163,108 @@ export function JoinNowForm() {
     cv: "",
     additionalDocs: "",
   });
+  const [selectedFiles, setSelectedFiles] = useState<{
+    profilePicture: File | null;
+    cv: File | null;
+    additionalDocs: File[];
+  }>({
+    profilePicture: null,
+    cv: null,
+    additionalDocs: [],
+  });
+  const [profilePreviewUrl, setProfilePreviewUrl] = useState<string | null>(null);
   const [sending, setSending] = useState(false);
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+  const [missingFields, setMissingFields] = useState<string[]>([]);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const updateForm = <K extends keyof typeof form>(key: K, value: (typeof form)[K]) => {
     setForm((prev) => ({ ...prev, [key]: value }));
   };
 
+  useEffect(() => {
+    return () => {
+      if (profilePreviewUrl) URL.revokeObjectURL(profilePreviewUrl);
+    };
+  }, [profilePreviewUrl]);
+
+  const handleProfilePictureChange = (file: File | null) => {
+    setFiles((prev) => ({
+      ...prev,
+      profilePicture: file?.name ?? "",
+    }));
+    setSelectedFiles((prev) => ({ ...prev, profilePicture: file }));
+    if (profilePreviewUrl) URL.revokeObjectURL(profilePreviewUrl);
+    if (file && file.type.startsWith("image/")) {
+      setProfilePreviewUrl(URL.createObjectURL(file));
+    } else {
+      setProfilePreviewUrl(null);
+    }
+  };
+
+  const uploadFileToStorage = async (
+    supabase: ReturnType<typeof createClient>,
+    file: File,
+    folder: string
+  ) => {
+    const fileExt = file.name.split(".").pop() || "bin";
+    const safeExt = fileExt.toLowerCase();
+    const filePath = `${folder}/${Date.now()}-${Math.random().toString(36).slice(2)}.${safeExt}`;
+    const { error } = await supabase.storage.from("applications").upload(filePath, file, {
+      upsert: false,
+    });
+    if (error) {
+      throw new Error(`Upload failed for "${file.name}": ${error.message}`);
+    }
+    return filePath;
+  };
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (!form.fullName || !form.email || !form.country || !form.city || !form.privacyAccepted) {
+    const missing: string[] = [];
+    if (!form.fullName.trim()) missing.push(t("fullName"));
+    if (!form.email.trim()) missing.push(t("emailAddress"));
+    if (!form.country.trim()) missing.push(t("country"));
+    if (!form.city.trim()) missing.push(t("city"));
+    if (!form.privacyAccepted) missing.push(t("privacyPolicy"));
+
+    if (missing.length > 0) {
+      setMissingFields(missing);
+      setErrorMessage(`Please complete required fields: ${missing.join(", ")}.`);
       setStatus("error");
       return;
     }
 
     setSending(true);
     setStatus("idle");
+    setMissingFields([]);
+    setErrorMessage("");
+    const supabase = createClient();
+    const uploadedPaths: string[] = [];
     try {
+      let profilePicturePath: string | undefined;
+      let cvPath: string | undefined;
+      let additionalDocsPaths: string[] = [];
+
+      if (selectedFiles.profilePicture) {
+        profilePicturePath = await uploadFileToStorage(supabase, selectedFiles.profilePicture, "profile-pictures");
+        uploadedPaths.push(profilePicturePath);
+      }
+
+      if (selectedFiles.cv) {
+        cvPath = await uploadFileToStorage(supabase, selectedFiles.cv, "cv");
+        uploadedPaths.push(cvPath);
+      }
+
+      if (selectedFiles.additionalDocs.length > 0) {
+        additionalDocsPaths = await Promise.all(
+          selectedFiles.additionalDocs.map((file) =>
+            uploadFileToStorage(supabase, file, "additional-docs")
+          )
+        );
+        uploadedPaths.push(...additionalDocsPaths);
+      }
+
       await submitJobApplication({
         full_name: form.fullName,
         email: form.email,
@@ -167,10 +277,16 @@ export function JoinNowForm() {
         open_to_relocation: form.relocation,
         privacy_accepted: form.privacyAccepted,
         profile_picture_file_name: files.profilePicture || undefined,
+        profile_picture_path: profilePicturePath,
         cv_file_name: files.cv || undefined,
+        cv_path: cvPath,
         additional_documents_file_names: files.additionalDocs || undefined,
+        additional_documents_paths:
+          additionalDocsPaths.length > 0 ? JSON.stringify(additionalDocsPaths) : undefined,
       });
       setStatus("success");
+      setMissingFields([]);
+      setErrorMessage("");
       setForm({
         fullName: "",
         email: "",
@@ -184,7 +300,16 @@ export function JoinNowForm() {
         privacyAccepted: false,
       });
       setFiles({ profilePicture: "", cv: "", additionalDocs: "" });
-    } catch {
+      setSelectedFiles({ profilePicture: null, cv: null, additionalDocs: [] });
+      if (profilePreviewUrl) URL.revokeObjectURL(profilePreviewUrl);
+      setProfilePreviewUrl(null);
+    } catch (err) {
+      if (uploadedPaths.length > 0) {
+        await supabase.storage.from("applications").remove(uploadedPaths);
+      }
+      const message =
+        err instanceof Error ? err.message : "Submission failed. Please try again in a moment.";
+      setErrorMessage(message);
       setStatus("error");
     } finally {
       setSending(false);
@@ -332,27 +457,37 @@ export function JoinNowForm() {
                     color: "var(--join-muted)",
                   }}
                 >
-                  {t("profilePicture")}
+                  {profilePreviewUrl ? t("profilePictureHeading") : t("profilePicture")}
                 </span>
-                <span
-                  style={{
-                    fontFamily: "Space Grotesk, Inter, sans-serif",
-                    fontSize: 12,
-                    lineHeight: "20px",
-                    color: "var(--join-muted)",
-                  }}
-                >
-                  {t("upload")}
-                </span>
+                {profilePreviewUrl ? (
+                  <img
+                    src={profilePreviewUrl}
+                    alt={t("profilePictureHeading")}
+                    style={{
+                      width: 56,
+                      height: 56,
+                      objectFit: "cover",
+                      borderRadius: 999,
+                      border: "1px solid var(--join-form-border)",
+                    }}
+                  />
+                ) : (
+                  <span
+                    style={{
+                      fontFamily: "Space Grotesk, Inter, sans-serif",
+                      fontSize: 12,
+                      lineHeight: "20px",
+                      color: "var(--join-muted)",
+                    }}
+                  >
+                    {t("upload")}
+                  </span>
+                )}
                 <input
                   type="file"
+                  accept=".jpg,.jpeg,.png"
                   className="sr-only"
-                  onChange={(e) =>
-                    setFiles((prev) => ({
-                      ...prev,
-                      profilePicture: e.target.files?.[0]?.name ?? "",
-                    }))
-                  }
+                  onChange={(e) => handleProfilePictureChange(e.target.files?.[0] ?? null)}
                 />
               </label>
 
@@ -398,53 +533,50 @@ export function JoinNowForm() {
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            <SectionTitle>{t("profilePictureHeading")}</SectionTitle>
-            <label>
-              <UploadBox title={t("uploadPhoto")} subtitle={t("uploadPhotoHint")} />
-              <input
-                type="file"
-                accept=".jpg,.jpeg,.png"
-                className="sr-only"
-                onChange={(e) =>
-                  setFiles((prev) => ({
-                    ...prev,
-                    profilePicture: e.target.files?.[0]?.name ?? "",
-                  }))
-                }
-              />
-            </label>
-          </div>
-
-          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             <SectionTitle>{t("cvHeading")}</SectionTitle>
-            <label>
-              <UploadBox title={t("uploadCv")} subtitle={t("uploadCvHint")} />
+            <label htmlFor="join-cv-upload">
+              <UploadBox
+                title={t("uploadCv")}
+                subtitle={t("uploadCvHint")}
+                selectedText={files.cv ? `Selected: ${files.cv}` : undefined}
+              />
               <input
+                id="join-cv-upload"
                 type="file"
                 accept=".pdf,.doc,.docx"
                 className="sr-only"
-                onChange={(e) =>
+                onChange={(e) => {
+                  const file = e.target.files?.[0] ?? null;
+                  setSelectedFiles((prev) => ({ ...prev, cv: file }));
                   setFiles((prev) => ({
                     ...prev,
-                    cv: e.target.files?.[0]?.name ?? "",
-                  }))
-                }
+                    cv: file?.name ?? "",
+                  }));
+                }}
               />
             </label>
-            <label>
-              <UploadBox title={t("uploadAdditional")} subtitle={t("uploadAdditionalHint")} />
+            <label htmlFor="join-additional-upload">
+              <UploadBox
+                title={t("uploadAdditional")}
+                subtitle={t("uploadAdditionalHint")}
+                selectedText={files.additionalDocs ? `Selected: ${files.additionalDocs}` : undefined}
+              />
               <input
+                id="join-additional-upload"
                 type="file"
                 multiple
+                accept=".pdf,.doc,.docx,.zip"
                 className="sr-only"
-                onChange={(e) =>
+                onChange={(e) => {
+                  const filesArr = Array.from(e.target.files ?? []);
+                  setSelectedFiles((prev) => ({ ...prev, additionalDocs: filesArr }));
                   setFiles((prev) => ({
                     ...prev,
-                    additionalDocs: Array.from(e.target.files ?? [])
+                    additionalDocs: filesArr
                       .map((file) => file.name)
                       .join(", "),
-                  }))
-                }
+                  }));
+                }}
               />
             </label>
           </div>
@@ -539,7 +671,7 @@ export function JoinNowForm() {
           ) : null}
           {status === "error" ? (
             <p style={{ margin: 0, color: "#dc2626", fontFamily: "Roboto, sans-serif", fontSize: 14 }}>
-              Please complete required fields and try again.
+              {errorMessage}
             </p>
           ) : null}
 
@@ -564,165 +696,6 @@ export function JoinNowForm() {
             {sending ? "Sending..." : t("sendApplication")}
           </button>
         </form>
-
-        <footer
-          style={{
-            marginTop: 100,
-            borderTop: "1px solid var(--join-footer-border)",
-            paddingTop: 26,
-            display: "grid",
-            gap: 24,
-            gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
-          }}
-        >
-          <div>
-            <p
-              style={{
-                margin: 0,
-                fontFamily: "Roboto, sans-serif",
-                fontSize: 12,
-                lineHeight: "20px",
-                color: "var(--join-footer-body)",
-              }}
-            >
-              {t("footerAbout")}
-            </p>
-          </div>
-
-          <div>
-            <h3
-              style={{
-                margin: "0 0 12px",
-                fontFamily: "Roboto, sans-serif",
-                fontSize: 20,
-                lineHeight: "28px",
-                fontWeight: 500,
-                color: "var(--join-footer-title)",
-              }}
-            >
-              {t("footerLegal")}
-            </h3>
-            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-              <Link
-                href="/legal/privacy-policy"
-                style={{
-                  margin: 0,
-                  fontFamily: "Roboto, sans-serif",
-                  fontSize: 14,
-                  lineHeight: "22px",
-                  color: "var(--join-footer-body)",
-                  textDecoration: "none",
-                }}
-              >
-                {t("privacyPolicy")}
-              </Link>
-              <Link
-                href="/legal/terms-of-service"
-                style={{
-                  margin: 0,
-                  fontFamily: "Roboto, sans-serif",
-                  fontSize: 14,
-                  lineHeight: "22px",
-                  color: "var(--join-footer-body)",
-                  textDecoration: "none",
-                }}
-              >
-                {t("terms")}
-              </Link>
-              <Link
-                href="/legal/gdpr-compliance"
-                style={{
-                  margin: 0,
-                  fontFamily: "Roboto, sans-serif",
-                  fontSize: 14,
-                  lineHeight: "22px",
-                  color: "var(--join-footer-body)",
-                  textDecoration: "none",
-                }}
-              >
-                {t("gdpr")}
-              </Link>
-              <Link
-                href="/legal/cookies-policy"
-                style={{
-                  margin: 0,
-                  fontFamily: "Roboto, sans-serif",
-                  fontSize: 14,
-                  lineHeight: "22px",
-                  color: "var(--join-footer-body)",
-                  textDecoration: "none",
-                }}
-              >
-                {t("cookies")}
-              </Link>
-              <Link
-                href="/legal/sitemap"
-                style={{
-                  margin: 0,
-                  fontFamily: "Roboto, sans-serif",
-                  fontSize: 14,
-                  lineHeight: "22px",
-                  color: "var(--join-footer-body)",
-                  textDecoration: "none",
-                }}
-              >
-                {t("sitemap")}
-              </Link>
-              <Link
-                href="/legal/imprint"
-                style={{
-                  margin: 0,
-                  fontFamily: "Roboto, sans-serif",
-                  fontSize: 14,
-                  lineHeight: "22px",
-                  color: "var(--join-footer-body)",
-                  textDecoration: "none",
-                }}
-              >
-                {t("imprint")}
-              </Link>
-            </div>
-          </div>
-
-          <div>
-            <h3
-              style={{
-                margin: "0 0 12px",
-                fontFamily: "Roboto, sans-serif",
-                fontSize: 20,
-                lineHeight: "28px",
-                fontWeight: 500,
-                color: "var(--join-footer-title)",
-              }}
-            >
-              {t("footerServices")}
-            </h3>
-            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-              <p
-                style={{
-                  margin: 0,
-                  fontFamily: "Roboto, sans-serif",
-                  fontSize: 14,
-                  lineHeight: "22px",
-                  color: "var(--join-footer-body)",
-                }}
-              >
-                {t("services")}
-              </p>
-              <p
-                style={{
-                  margin: 0,
-                  fontFamily: "Roboto, sans-serif",
-                  fontSize: 14,
-                  lineHeight: "22px",
-                  color: "var(--join-footer-body)",
-                }}
-              >
-                {t("industries")}
-              </p>
-            </div>
-          </div>
-        </footer>
       </div>
     </main>
   );

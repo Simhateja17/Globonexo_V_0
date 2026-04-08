@@ -96,8 +96,11 @@ export interface JobApplication {
   open_to_relocation: boolean;
   privacy_accepted: boolean;
   profile_picture_file_name: string | null;
+  profile_picture_path: string | null;
   cv_file_name: string | null;
+  cv_path: string | null;
   additional_documents_file_names: string | null;
+  additional_documents_paths: string | null;
   status: "new" | "reviewed" | "contacted" | "rejected";
   created_at: string;
 }

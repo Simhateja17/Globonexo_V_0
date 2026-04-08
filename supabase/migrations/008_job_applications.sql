@@ -24,11 +24,13 @@ CREATE INDEX IF NOT EXISTS idx_job_applications_created ON job_applications(crea
 ALTER TABLE job_applications ENABLE ROW LEVEL SECURITY;
 
 -- Public can submit job applications
+DROP POLICY IF EXISTS "Public can submit job applications" ON job_applications;
 CREATE POLICY "Public can submit job applications"
   ON job_applications FOR INSERT
   WITH CHECK (true);
 
 -- Admins can manage job applications
+DROP POLICY IF EXISTS "Admins can manage job applications" ON job_applications;
 CREATE POLICY "Admins can manage job applications"
   ON job_applications FOR ALL
   USING (auth.role() = 'authenticated');

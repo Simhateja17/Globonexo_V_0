@@ -85,8 +85,10 @@ export function ContactSection({ contactInfo, heading }: ContactSectionProps) {
 
   return (
     <section
+      id="contact"
       className="relative"
       style={{
+        scrollMarginTop: "90px",
         paddingTop: "clamp(40px, 5vw, 80px)",
         paddingBottom: "clamp(60px, 8vw, 120px)",
         overflow: "hidden",

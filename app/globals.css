@@ -215,3 +215,11 @@
   color: var(--join-muted);
   opacity: 1;
 }
+
+.join-input:focus,
+.join-input:focus-visible,
+.join-textarea:focus,
+.join-textarea:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}

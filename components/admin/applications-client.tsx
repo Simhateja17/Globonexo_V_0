@@ -21,6 +21,7 @@ import { Eye, Trash2, CheckCircle2, Mail } from "lucide-react";
 import {
   updateJobApplication,
   deleteJobApplication,
+  getJobApplicationFileSignedUrl,
 } from "@/lib/actions/cms";
 import { toast } from "sonner";
 import type { JobApplication } from "@/lib/types/cms";
@@ -72,6 +73,16 @@ export function ApplicationsClient({
       toast.error("Delete failed");
     }
     setDeleteId(null);
+  };
+
+  const openFile = async (path: string | null) => {
+    if (!path) return;
+    try {
+      const url = await getJobApplicationFileSignedUrl(path);
+      window.open(url, "_blank", "noopener,noreferrer");
+    } catch {
+      toast.error("Could not open file");
+    }
   };
 
   return (
@@ -184,6 +195,44 @@ export function ApplicationsClient({
                 <div><p className="text-muted-foreground">Profile photo file</p><p className="font-medium break-all">{selected.profile_picture_file_name || "—"}</p></div>
                 <div><p className="text-muted-foreground">CV file</p><p className="font-medium break-all">{selected.cv_file_name || "—"}</p></div>
                 <div className="sm:col-span-2"><p className="text-muted-foreground">Additional docs</p><p className="font-medium break-all">{selected.additional_documents_file_names || "—"}</p></div>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  disabled={!selected.profile_picture_path}
+                  onClick={() => void openFile(selected.profile_picture_path)}
+                >
+                  Open profile picture
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  disabled={!selected.cv_path}
+                  onClick={() => void openFile(selected.cv_path)}
+                >
+                  Open CV
+                </Button>
+                {(() => {
+                  let additionalPaths: string[] = [];
+                  try {
+                    additionalPaths = selected.additional_documents_paths
+                      ? JSON.parse(selected.additional_documents_paths)
+                      : [];
+                  } catch {
+                    additionalPaths = [];
+                  }
+                  return additionalPaths.map((path, idx) => (
+                    <Button
+                      key={`${path}-${idx}`}
+                      variant="outline"
+                      size="sm"
+                      onClick={() => void openFile(path)}
+                    >
+                      Open doc {idx + 1}
+                    </Button>
+                  ));
+                })()}
               </div>
               <div>
                 <p className="text-muted-foreground mb-1">Motivation</p>
