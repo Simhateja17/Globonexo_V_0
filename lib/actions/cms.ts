@@ -144,7 +144,7 @@ export async function deleteService(id: string) {
   revalidatePath("/de");
 }
 
-// ======================== TEAM MEMBERS ========================
+// ======================== TEAM MEMBERS  ========================
 
 export async function getTeamMembers(includeAll = false, locale?: Locale) {
   const supabase = await createClient();

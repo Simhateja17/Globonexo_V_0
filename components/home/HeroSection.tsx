@@ -17,7 +17,7 @@ export async function HeroSection({ data, cloudPartnersData }: HeroSectionProps)
   const ctaLink = data?.cta_link ?? "/join";
   const extra = data?.extra_data as Record<string, string> | null;
   const cta2Text = extra?.cta2_text ?? t("scheduleConsultation");
-  const cta2Link = extra?.cta2_link ?? "/consultation";
+  const cta2Link = extra?.cta2_link ?? "/#contact";
 
   return (
     <section

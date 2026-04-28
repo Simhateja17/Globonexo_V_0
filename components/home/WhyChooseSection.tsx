@@ -1,4 +1,5 @@
 import { getTranslations } from "next-intl/server";
+import Image from "next/image";
 import type { HeroSection } from "@/lib/types/cms";
 
 interface WhyChooseSectionProps {
@@ -48,10 +49,32 @@ const cardInner: React.CSSProperties = {
   flex: 1,
 };
 
-function WhyCard({ title, description }: { title: string; description: string }) {
+function WhyCard({
+  title,
+  description,
+  icon,
+}: {
+  title: string;
+  description: string;
+  icon?: string;
+}) {
   return (
     <div style={conicBorder}>
       <div style={cardInner}>
+        {icon && (
+          <Image
+            src={icon}
+            alt=""
+            aria-hidden
+            width={97}
+            height={95}
+            style={{
+              width: "clamp(72px, 7vw, 97px)",
+              height: "auto",
+              marginBottom: "14px",
+            }}
+          />
+        )}
         <h3
           style={{
             fontFamily: "Inter, sans-serif",
@@ -89,6 +112,12 @@ export async function WhyChooseSection({ data }: WhyChooseSectionProps) {
   const subtitle = data?.subtitle ?? t("defaultSubtitle");
   const extra = data?.extra_data as Record<string, unknown> | null;
   const cards = (extra?.cards as Array<{ title: string; description: string }>) ?? getDefaultCards(t);
+  const cardIcons = [
+    "/images/offerings/what-we-offer-card-1.svg",
+    "/images/offerings/what-we-offer-card-2.svg",
+    "/images/offerings/what-we-offer-card-3.svg",
+    "/images/offerings/what-we-offer-card-4.svg",
+  ] as const;
 
   return (
     <section
@@ -165,8 +194,13 @@ export async function WhyChooseSection({ data }: WhyChooseSectionProps) {
             marginBottom: "clamp(16px, 2vw, 24px)",
           }}
         >
-          {cards.slice(0, 4).map((card) => (
-            <WhyCard key={card.title} title={card.title} description={card.description} />
+          {cards.slice(0, 4).map((card, index) => (
+            <WhyCard
+              key={card.title}
+              title={card.title}
+              description={card.description}
+              icon={cardIcons[index]}
+            />
           ))}
         </div>
 
